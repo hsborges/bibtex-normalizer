@@ -7,6 +7,9 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+  this.route('bibtex');
+  this.route('about');
+  this.route('editor');
 });
 
 export default Router;

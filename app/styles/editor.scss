@@ -1,0 +1,19 @@
+.app-editor {
+  padding-top: 25px;
+
+  .options {
+    @extend .pull-right;
+    padding-top: 15px;
+
+    .btn {
+      width: 125px;
+      font-size: 16px;
+      font-weight: bold;
+      height: 40px;
+      margin-left: 15px;
+
+      i { padding-right: 5px; }
+    }
+  }
+
+}

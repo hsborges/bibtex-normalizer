@@ -2,7 +2,12 @@
   "predef": [
     "document",
     "window",
-    "-Promise"
+    "bibtexParse",
+    "_",
+    "-Promise",
+    "SyntaxHighlighter",
+    "swal",
+    "saveAs"
   ],
   "browser": true,
   "boss": true,

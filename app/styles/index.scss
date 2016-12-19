@@ -1,0 +1,72 @@
+.app-index {
+  .header {
+    min-height: 300px;
+    position: relative;
+    transform: translateY(45%);
+
+    .slogan {
+      font-size: 40px;
+      font-weight: bold;
+      margin: 0 0 15px 0;
+    }
+
+    .features {
+      font-size: 20px;
+      .fa-check { color: green; }
+    }
+
+  }
+
+  .body {
+    min-height: 300px;
+    position: relative;
+    transform: translateY(35%);
+    padding: 15px 0 0 0;
+
+    .open-file {
+      margin: 0 auto;
+
+      .btn {
+        font-weight: bold;
+        font-size: 16px;
+        height: 40px;
+        width: 200px;
+        line-height: 25px;
+      }
+    }
+
+    .separator {
+      padding: 15px 0 15px 0;
+      margin: 0 auto;
+
+      span {
+        font-size: 20px;
+        line-height: 40px;
+        font-weight: bold;
+      }
+    }
+
+    .drop-file-area {
+      width: 300px;
+      height: 100px;
+      margin: 0 auto;
+      line-height: 91px;
+      font-size: 16px;
+      color: gray;
+      border-style: dashed;
+      cursor: pointer;
+    }
+
+    .drop-file-area:hover {
+      background-color: #f0f0f0;
+    }
+  }
+}
+
+@media(max-width: 992px) {
+  .app-index {
+    .header, .body { transform: translateY(25%); }
+    .header { min-height: 200px; }
+    .body .separator { padding: 5px 0 5px 0; }
+  }
+}
