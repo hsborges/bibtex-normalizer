@@ -1,4 +1,19 @@
 .app-bibtex {
+  .sub-header.fixed-top {
+    position: fixed;
+    width: 100%;
+    height: 70px;
+    top: 0;
+    z-index: 999;
+
+    .logo { visibility: visible; }
+
+    a {
+      font-size: 20px;
+      line-height: 70px;
+    }
+  }
+
   .sub-header {
     display: flex;
     align-items: center;
@@ -7,11 +22,7 @@
     margin: 0 0 25px 0;
     background-color: rgb(250, 250, 250);
 
-    .logo {
-      position: absolute;
-      left: 5%;
-      display: none;
-    }
+    .logo { visibility: hidden; }
 
     i { margin-right: 5px; }
 
@@ -27,6 +38,7 @@
     .option:hover {
       font-size: 22px;
       font-weight: bold;
+      color: $brand-primary;
     }
   }
 

@@ -1,18 +1,19 @@
 <div class="app-bibtex">
   <div class="sub-header">
-    {{#link-to 'index' class="option logo"}}
-      <i class="fa fa-home"></i>Home
-    {{/link-to}}
     <div class="options">
-      {{#link-to "editor" class="option text-center"}}<i class="fa fa-pencil" aria-hidden="true">
-        </i> <span>Edit</span>
+      {{#link-to 'index' class="option text-center logo"}}
+        <i class="fa fa-home"></i><span>Home</span>
       {{/link-to}}
 
-      <a class="option copy text-center" {{action "copyToClipboard"}}><i class="fa fa-clipboard" aria-hidden="true">
-        </i><span>Copy</span>
+      {{#link-to "editor" class="option text-center"}}
+        <i class="fa fa-pencil" aria-hidden="true"></i><span>Edit</span>
+      {{/link-to}}
+
+      <a class="option copy text-center" {{action "copyToClipboard"}}>
+        <i class="fa fa-clipboard" aria-hidden="true"></i><span>Copy</span>
       </a>
-      <a class="option text-center" {{action "save"}}><i class="fa fa-download" aria-hidden="true">
-        </i><span>Download</span>
+      <a class="option text-center" {{action "save"}}>
+        <i class="fa fa-download" aria-hidden="true"></i><span>Download</span>
       </a>
     </div>
   </div>

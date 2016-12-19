@@ -1,7 +1,10 @@
 import Ember from 'ember';
 
 const Entry = Ember.Object.extend({
-  json: null,
+  bibtex: null,
+  invalidFields: null,
+  missingFields: null,
+  formattedFields: null,
 
   requiredFields: null,
 
@@ -20,9 +23,10 @@ const Entry = Ember.Object.extend({
       },
       fix: (value) => {
         const authors = value.split(' and ').map(_.trim);
-        const validAuthors = _.map(authors, author => {
+        const validAuthors = _.map(authors, (author) => {
           const match = author.match(/(\w+),([\w\s]+)/i);
-          return `${_.trim(match[2])} ${_.trim(match[1])}`;
+          if (match) { return `${_.trim(match[2])} ${_.trim(match[1])}`; }
+          return author;
         });
         return _.join(validAuthors, ' and ');
       },
@@ -58,69 +62,91 @@ const Entry = Ember.Object.extend({
     return { field, isValid, alternative, message };
   },
 
-  toString() {
-    const json = this.get('json');
+  normalize() {
+    this.set('invalidFields', []);
+    this.set('missingFields', []);
+    this.set('formattedFields', []);
 
-    if (!json.entryType) {
-      return null;
-    }
+    const json = _.first(bibtexParse.toJSON(this.get('bibtex')));
+
+    if (!json.entryType) { return this; }
 
     let requiredFields = this.get('requiredFields');
     if (requiredFields) { requiredFields = _.map(requiredFields, _.toLower); }
 
-    const errors = [];
-    const missing = [];
-    const formatted = [];
-
     let bibtex = `@${json.entryType}{${json.citationKey},\n`;
-    let line = 0;
+    let line = 1;
 
     _.forIn(json.entryTags, (value, key) => {
-      if (requiredFields && !_.includes(requiredFields, _.toLower(key))) {
-        return;
-      }
+      if (requiredFields && !_.includes(requiredFields, _.toLower(key))) { return; }
 
-      const valid = this.validate(key, value, true);
+      const validation = this.validate(key, value, true);
       line += 1;
 
-      if (!valid.isValid) { errors.push(line); }
-      if (valid.alternative) { formatted.push(key); }
+      if (!validation.isValid && !validation.alternative) {
+        this.get('invalidFields').addObject({ field: validation.field, line: line, message: validation.message });
+      }
 
-      bibtex += `  ${key} = { ${_.trim(valid.alternative || value)} },\n`;
+      if (validation.alternative) {
+        this.get('formattedFields').addObject({ field: validation.field, line: line, message: validation.message });
+      }
+
+      bibtex += `  ${key} = { ${_.trim(validation.alternative || value)} },\n`;
     });
 
     const missingFields = _.differenceWith(requiredFields, _.chain(json.entryTags).keys().map(_.toLower).value());
 
     _.each(missingFields, (field) => {
       bibtex += `  ${field} = { XX },\n`;
-      errors.push(++line);
-      missing.push(field);
+      this.get('missingFields').addObject({ field: field, line: ++line, message: `"${field}" is a required field for @${json.entryType}.` });
     });
 
     bibtex += '}';
 
-    return {bibtex, errors, missing, formatted};
+    this.set('bibtex', bibtex);
+
+    return this;
   }
 });
 
 const Bibtex = Ember.Object.extend({
-  text: null,
-  json: null,
+  bibtex: null,
   invalidFields: null,
   missingFields: null,
   formattedFields: null,
 
   init() {
-    this.normalize();
+    if (this.get('bibtex')) { this.normalize(); }
+  },
+
+  clear() {
+    this.set('bibtex', '');
+    this.set('invalidFields', []);
+    this.set('missingFields', []);
+    this.set('formattedFields', []);
   },
 
   normalize() {
-    const text = this.get('text');
+    let bibtex = this.get('bibtex');
+    const missingFields = this.get('missingFields');
 
-    const json = bibtexParse.toJSON(text);
+    if (missingFields && missingFields.length) {
+      let tokens = _.split(bibtex, '\n');
+      const removeLines = _.map(missingFields, (mf) => (mf.line - 1));
+      tokens = _.map(tokens, (t, i) => (_.includes(removeLines, i) ? null : t));
+      bibtex = _.join(tokens, '\n');
+    }
+
+    // parse bibtex file
+    const json = bibtexParse.toJSON(bibtex);
+    // reset fields
+    this.clear();
+
+    let lines = 0;
+    let output = '';
 
     _.each(json, (entry) => {
-      const entryObject = Entry.create({ json: entry });
+      const entryObject = Entry.create({ bibtex: bibtexParse.toBibtex([entry]) });
 
       switch (_.toLower(entry.entryType)) {
         case 'article':
@@ -141,89 +167,37 @@ const Bibtex = Ember.Object.extend({
       }
 
       entryObject.normalize();
+
+      const errors = _.concat(entryObject.get('invalidFields'), entryObject.get('missingFields'), entryObject.get('formattedFields'));
+
+      _.each(errors, (err) => {
+        err.citationKey = entry.citationKey;
+        err.line += lines;
+      });
+
+      this.get('invalidFields').addObjects(entryObject.get('invalidFields'));
+      this.get('missingFields').addObjects(entryObject.get('missingFields'));
+      this.get('formattedFields').addObjects(entryObject.get('formattedFields'));
+
+      output += `${entryObject.get('bibtex')}\n\n`;
+      lines = _.split(output, '\n').length - 1;
     });
 
-    this.set('text', this.toString()); //TODO
-    this.set('json', null); //TODO
-    this.set('invalidFields', null); //TODO
-    this.set('missingFields', null); //TODO
-    this.set('formattedFields', null); //TODO
-  },
+    this.set('bibtex', _.trim(output));
 
-  toString() {
-    return ''; //TODO
+    return this;
   },
 });
 
 export default Ember.Service.extend({
-  source: null,
-  json: null,
-
-  result: null,
+  bibtex: Bibtex.create({}),
 
   init() {
     this._super(...arguments);
   },
 
-  analyze() {
-    const source = this.get('source');
-
-    if (!source) {
-      this.set('json', null);
-      this.set('output', null);
-      return null;
-    }
-
-    const json = bibtexParse.toJSON(source);
-    this.set('json', json);
-
-    let output = {
-      bibtex: '',
-      marks: [],
-      total: {
-        missing: 0,
-        formatted: 0,
-        errors: 0
-      }
-    };
-
-    _.each(json, (entry) => {
-      const entryObject = Entry.create({ json: entry });
-
-      switch (_.toLower(entry.entryType)) {
-        case 'article':
-          entryObject.set('requiredFields', ['author', 'title', 'journal', 'year']);
-          break;
-        case 'inproceedings':
-        case 'conference':
-          entryObject.set('requiredFields', ['author', 'title', 'booktitle', 'year']);
-          break;
-        case 'book':
-          entryObject.set('requiredFields', ['author', 'editor', 'title', 'publisher', 'year']);
-          break;
-        case 'phdthesis':
-          entryObject.set('requiredFields', ['author', 'title', 'school', 'year']);
-          break;
-        default:
-          console.log('Unknown entry type: ', entry.entryType);
-      }
-
-      const result = entryObject.toString();
-      const bibtexStrLines = output.bibtex.split('\n').length;
-
-      output.marks = _.concat(output.marks, _.map(result.errors, e => (e+bibtexStrLines)));
-      output.total.errors += result.errors.length;
-      output.total.missing += result.missing.length;
-      output.total.formatted += result.formatted.length;
-
-      output.bibtex += `\n\n${result.bibtex}`;
-    });
-
-    output.bibtex = _.trim(output.bibtex);
-
-    this.set('source', output.bibtex);
-    this.set('result', output);
-
-    return output;
+  normalize(bibtex) {
+    this.set('bibtex', Bibtex.create({ bibtex: bibtex }));
+    return this.get('bibtex');
   },
 });

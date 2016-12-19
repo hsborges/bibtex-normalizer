@@ -1,9 +1,9 @@
 {
-  "name": "bibtex-ember",
-  "version": "0.0.0",
-  "description": "Small description for bibtex-ember goes here",
+  "name": "bibtex-normalizer",
+  "version": "0.0.1",
+  "description": "Normalize your .bibtex file",
   "license": "MIT",
-  "author": "",
+  "author": "Hudson Silva Borges <hsborges@dcc.ufmg.br>",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -35,6 +35,7 @@
     "ember-data": "^2.10.0",
     "ember-export-application-global": "^1.0.5",
     "ember-font-awesome": "2.2.0",
+    "ember-link-action": "0.0.35",
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^2.0.3",
     "ember-welcome-page": "^1.0.3",

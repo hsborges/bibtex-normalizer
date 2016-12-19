@@ -315,7 +315,7 @@
     /* added during hackathon don't hate on me */
     exports.toBibtex = function(json) {
         var out = '';
-        for ( var i in json) {
+        for (var i = 0; i < json.length; i++) {
             out += "@" + json[i].entryType;
             out += '{';
             if (json[i].citationKey)

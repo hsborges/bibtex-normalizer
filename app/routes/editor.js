@@ -4,6 +4,6 @@ export default Ember.Route.extend({
   formatter: Ember.inject.service(),
 
   model() {
-    return this.get('formatter');
+    return this.get('formatter').get('bibtex');
   }
 });

@@ -5,10 +5,10 @@ export default Ember.Controller.extend({
 
   actions: {
     clear() {
-      this.get('formatter').set('source', '');
+      this.get('formatter').get('bibtex').clear();
     },
     normalize() {
-      this.get('formatter').analyze();
+      this.get('formatter').get('bibtex').normalize();
       this.transitionToRoute('bibtex');
     }
   }

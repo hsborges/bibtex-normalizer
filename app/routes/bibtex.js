@@ -2,60 +2,65 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   formatter: Ember.inject.service(),
-  errors: null,
 
   beforeModel() {
-    const f = this.get('formatter');
-
-    if (!f.get('source')) {
-      this.transitionTo('index');
-    }
+    if (!this.get('formatter').get('bibtex').bibtex) { this.transitionTo('index'); }
   },
 
   model() {
-    const result = this.get('formatter').analyze();
+    const bibtex = this.get('formatter').get('bibtex');
 
-    this.set('errors', result.marks);
-
-    const totalErrors = result.total.errors - result.total.missing;
-
-    result.alerts = [
-      totalErrors ? {
+    const alerts = [
+      bibtex.invalidFields.length ? {
         icon: 'exclamation-triangle',
-        text: `${totalErrors} errors found.`,
+        text: `${bibtex.invalidFields.length} invalid fields found.`,
         class: 'danger'
       } : null,
-      result.total.missing ? {
+      bibtex.missingFields.length ? {
         icon: 'plus',
-        text: `${result.total.missing} missing fields added.`,
+        text: `${bibtex.missingFields.length} missing fields added.`,
         class: 'danger'
       } : null,
-      result.total.formatted ? {
+      bibtex.formattedFields.length ? {
         icon: 'pencil-square-o',
-        text: `${result.total.formatted} fields auto-formatted`,
+        text: `${bibtex.formattedFields.length} fields auto-formatted`,
         class: 'warning',
       } : null,
     ];
 
-    result.alerts = _.compact(result.alerts);
+    bibtex.set('alerts', _.compact(alerts));
 
-    result.marks = result.marks.join(', ');
-
-    return result;
+    return bibtex;
   },
 
   actions: {
     willTransition() {
       Ember.$('.app-header').removeClass('border-bottom');
-      // Ember.$('.app-header .option.result').addClass('hide');
     },
     didTransition() {
       Ember.run.schedule("afterRender", this, function() {
-        Ember.$('.app-header').addClass('border-bottom');
-        // Ember.$('.app-header .option.result').removeClass('hide');
+        const $ = Ember.$;
+
+        $('.app-header, .sub-header').addClass('border-bottom');
+
+        const errors = _.concat(this.currentModel.invalidFields, this.currentModel.missingFields, this.currentModel.formattedFields);
         SyntaxHighlighter.defaults["toolbar"] = false;
-        SyntaxHighlighter.defaults["highlight"] = this.get('errors');
+        SyntaxHighlighter.defaults["highlight"] = _.map(errors, 'line');
         SyntaxHighlighter.highlight();
+
+        const subHeader = Ember.$('.sub-header');
+
+        $(window).scroll(function(e) {
+          var windowTop = $(window).scrollTop();
+          var divTop = $('.sub-header').offset().top;
+
+          if (windowTop > 100) {
+            $('.sub-header').addClass('fixed-top');
+          } else {
+            console.log('removed');
+            $('.sub-header').removeClass('fixed-top');
+          }
+        });
       });
     },
   }

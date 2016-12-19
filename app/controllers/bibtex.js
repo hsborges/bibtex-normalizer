@@ -5,10 +5,9 @@ export default Ember.Controller.extend({
 
   actions: {
     copyToClipboard() {
-      const formatter = this.get('formatter');
       const $tmp = Ember.$('<textarea>');
       Ember.$('body').append($tmp);
-      $tmp.val(_.trim(formatter.get('result').bibtex || '')).select();
+      $tmp.val(this.model.bibtex).select();
       document.execCommand('copy');
       $tmp.remove();
 
@@ -18,8 +17,7 @@ export default Ember.Controller.extend({
       });
     },
     save() {
-      const formatter = this.get('formatter');
-      const file = new File([_.trim(formatter.get('result').bibtex)], "references.bib", {type: "text/plain;charset=utf-8"});
+      const file = new File([this.model.bibtex], "references.bib", {type: "text/plain;charset=utf-8"});
       saveAs(file);
     },
   }

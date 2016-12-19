@@ -36,8 +36,7 @@ export default Ember.Controller.extend({
     const reader = new FileReader();
 
     reader.onload = (e) => {
-      const formatter = this.get('formatter');
-      formatter.set('source', e.target.result);
+      this.get('formatter').normalize(e.target.result);
       this.transitionToRoute('bibtex');
     };
 
