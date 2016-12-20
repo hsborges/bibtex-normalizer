@@ -15,20 +15,19 @@ class TitleValidator {
     return {
       isValid,
       message: 'Proper names must be between brackets.',
-      alternative: this.fix(value)
+      alternative: isValid ? null : this.fix(value)
     };
   }
 
   fix(value) {
     let words = _.words(value);
-    let formatted = false;
 
     _.each(this.properNames, (word) => {
       const found = _.findIndex(words, w => (_.toLower(w) === _.toLower(word)));
-      if (found >= 0) { words[found] = `{${word}}`; formatted = true; }
+      if (found >= 0) { words[found] = `{${word}}`; }
     });
 
-    return formatted ? _.join(words, ' ') : null;
+    return _.join(words, ' ');
   }
 }
 
