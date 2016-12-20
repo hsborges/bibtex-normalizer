@@ -1,0 +1,19 @@
+<div class="marks panel panel-default">
+  <div class="panel-heading">Use highlight on</div>
+  <div class="panel-body">
+    <label>{{input type="checkbox" name="markInvalid" checked=markInvalid}}<strong>{{model.invalidFields.length}}</strong> invalid fields</label>
+    <label>{{input type="checkbox" name="markMissing" checked=markMissing}}<strong>{{model.missingFields.length}}</strong> missing fields</label>
+    <label>{{input type="checkbox" name="markFormatted" checked=markFormatted}}<strong>{{model.formattedFields.length}}</strong> auto-formatted fields</label>
+  </div>
+</div>
+{{!-- <div class="alerts row">
+  {{#each model.alerts as |alert|}}
+  <div class="alert alert-{{alert.class}} alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <i class="fa fa-{{alert.icon}} fa-lg" aria-hidden="true"></i>   {{{alert.text}}}
+  </div>
+  {{/each}}
+</div> --}}
+<div id="bibtex-panel" class="bibtex row"></div>

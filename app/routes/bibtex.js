@@ -40,25 +40,16 @@ export default Ember.Route.extend({
     didTransition() {
       Ember.run.schedule("afterRender", this, function() {
         const $ = Ember.$;
-
-        $('.app-header, .sub-header').addClass('border-bottom');
-
-        const errors = _.concat(this.currentModel.invalidFields, this.currentModel.missingFields, this.currentModel.formattedFields);
-        SyntaxHighlighter.defaults["toolbar"] = false;
-        SyntaxHighlighter.defaults["highlight"] = _.map(errors, 'line');
-        SyntaxHighlighter.highlight();
-
         const subHeader = Ember.$('.sub-header');
-
+        $('.app-header, .sub-header').addClass('border-bottom');
         $(window).scroll(function(e) {
           var windowTop = $(window).scrollTop();
-          var divTop = $('.sub-header').offset().top;
+          var divTop = subHeader.offset().top;
 
           if (windowTop > 100) {
-            $('.sub-header').addClass('fixed-top');
+            subHeader.addClass('fixed-top');
           } else {
-            console.log('removed');
-            $('.sub-header').removeClass('fixed-top');
+            subHeader.removeClass('fixed-top');
           }
         });
       });

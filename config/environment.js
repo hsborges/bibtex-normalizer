@@ -2,7 +2,7 @@
 
 module.exports = function(environment) {
   var ENV = {
-    modulePrefix: 'bibtex-ember',
+    modulePrefix: 'bibtex-normalizer',
     environment: environment,
     rootURL: '/',
     locationType: 'auto',

@@ -1,0 +1,17 @@
+.app-about {
+  @extend .text-center;
+
+  img {
+    transform: translateY(65%);
+    max-height: 250px;
+  }
+}
+
+@media(max-width: $screen-sm) {
+  .app-about {
+    img {
+      transform: translateY(85%);
+      width: 80%
+    }
+  }
+}

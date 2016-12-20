@@ -6,7 +6,7 @@
     top: 0;
     z-index: 999;
 
-    .logo { visibility: visible; }
+    .logo { display: inline-block; }
 
     a {
       font-size: 20px;
@@ -22,7 +22,7 @@
     margin: 0 0 25px 0;
     background-color: rgb(250, 250, 250);
 
-    .logo { visibility: hidden; }
+    .logo { display: none; }
 
     i { margin-right: 5px; }
 
@@ -38,12 +38,36 @@
     .option:hover {
       font-size: 22px;
       font-weight: bold;
-      color: $brand-primary;
+      text-decoration: underline;
     }
   }
 
   .body {
-    .syntaxhighlighter {
+    .marks {
+      .panel-heading {
+        font-weight: bold;
+        font-size: 16px;
+      }
+
+      .panel-body {
+        width: 100%;
+        display: flex;
+
+        label {
+          text-align: center;
+          flex: 1;
+
+          input {
+            zoom: 1.25;
+            margin-right: 5px;
+          }
+
+          strong { color: red; }
+        }
+      }
+    }
+
+    .bibtex .syntaxhighlighter {
      overflow-y: hidden !important;
      overflow-x: hidden !important;
     }

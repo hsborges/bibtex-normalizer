@@ -63,7 +63,7 @@
   }
 }
 
-@media(max-width: 992px) {
+@media(max-width: $screen-sm) {
   .app-index {
     .header, .body { transform: translateY(25%); }
     .header { min-height: 200px; }
