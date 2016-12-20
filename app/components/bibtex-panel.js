@@ -3,8 +3,8 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   model: null,
 
-  markInvalid: Ember.computed('model', function(){ return !!_.get(this.get('model'), 'invalidFields', []).length }),
-  markMissing: Ember.computed('model', function(){ return !!_.get(this.get('model'), 'missingFields', []).length }),
+  markInvalid: Ember.computed('model', function(){ return !!_.get(this.get('model'), 'invalidFields', []).length; }),
+  markMissing: Ember.computed('model', function(){ return !!_.get(this.get('model'), 'missingFields', []).length; }),
   markFormatted: false,
 
   didRender() {

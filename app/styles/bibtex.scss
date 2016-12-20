@@ -6,9 +6,9 @@
     top: 0;
     z-index: 999;
 
-    .logo { display: inline-block; }
+    .logo, .top, .separator { display: inline-block; }
 
-    a {
+    .option {
       font-size: 20px;
       line-height: 70px;
     }
@@ -22,17 +22,24 @@
     margin: 0 0 25px 0;
     background-color: rgb(250, 250, 250);
 
-    .logo { display: none; }
+    .logo, .top, .separator { display: none; }
 
-    i { margin-right: 5px; }
+    .separator {
+      padding-right: 15px;
+      font-weight: bold;
+      font-size: 25px;
+      color: rgb(75, 75, 75);
+    }
 
-    a {
+    .option {
       padding-right: 20px;
       font-size: 18px;
       line-height: 60px;
       color: rgb(75, 75, 75);
       cursor: pointer;
       text-decoration: none;
+
+      i { margin-right: 5px; }
     }
 
     .option:hover {

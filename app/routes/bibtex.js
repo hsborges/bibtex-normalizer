@@ -42,11 +42,8 @@ export default Ember.Route.extend({
         const $ = Ember.$;
         const subHeader = Ember.$('.sub-header');
         $('.app-header, .sub-header').addClass('border-bottom');
-        $(window).scroll(function(e) {
-          var windowTop = $(window).scrollTop();
-          var divTop = subHeader.offset().top;
-
-          if (windowTop > 100) {
+        $(window).scroll(function() {
+          if ($(window).scrollTop() > 100) {
             subHeader.addClass('fixed-top');
           } else {
             subHeader.removeClass('fixed-top');
