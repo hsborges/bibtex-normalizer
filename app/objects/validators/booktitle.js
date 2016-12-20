@@ -1,12 +1,11 @@
 class BooktitleValidator {
-  constructor() {
-    // required fields
-    this.field = 'booktitle';
-    this.message = 'Format: [number]th [conference name] ([abbreviation]).';
-  }
+  constructor() { }
 
   validate(value) {
-    return /^(\d+)(st|nd|rd|th) (.*?) \((.+)\)?$/i.test(_.trim(value));
+    return {
+      isValid: /^(\d+)(st|nd|rd|th) (.*?) \((.+)\)?$/i.test(_.trim(value)),
+      message: 'Must follow the format [number]th [conference name] ([abbreviation]).'
+    };
   }
 }
 

@@ -9,23 +9,25 @@ export default Ember.Object.extend({
 
   requiredFields: null,
 
-  validate(field, value, format) {
+  validate(field, value) {
     const validator = validators.getValidator(_.toLower(field));
 
-    let isValid = true;
-    let alternative = null;
-    let message = null;
-
     if (validator) {
-      isValid = validator.validate(value);
-      if (!isValid) { message = validator.message; }
-      if (format && !isValid && validator.fix) {
-        alternative = validator.fix(value);
-        if (alternative) { isValid = true; }
-      }
+      const result = validator.validate(value);
+      return {
+        field,
+        isValid: result.isValid,
+        alternative: result.alternative,
+        message: result.message
+      };
+    } else {
+      return {
+        field,
+        isValid: true,
+        alternative: null,
+        message: null
+      };
     }
-
-    return { field, isValid, alternative, message };
   },
 
   normalize() {
@@ -46,7 +48,7 @@ export default Ember.Object.extend({
     _.forIn(json.entryTags, (value, key) => {
       if (requiredFields && !_.includes(requiredFields, _.toLower(key))) { return; }
 
-      const validation = this.validate(key, value, true);
+      const validation = this.validate(key, value);
       line += 1;
 
       if (!validation.isValid && !validation.alternative) {
