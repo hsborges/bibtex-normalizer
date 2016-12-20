@@ -1,9 +1,21 @@
 <div class="marks panel panel-default">
   <div class="panel-heading">Use highlight on</div>
   <div class="panel-body">
-    <label>{{input type="checkbox" name="markInvalid" checked=markInvalid}}<strong>{{model.invalidFields.length}}</strong> invalid fields</label>
-    <label>{{input type="checkbox" name="markMissing" checked=markMissing}}<strong>{{model.missingFields.length}}</strong> missing fields</label>
-    <label>{{input type="checkbox" name="markFormatted" checked=markFormatted}}<strong>{{model.formattedFields.length}}</strong> auto-formatted fields</label>
+    <div class="panel-options row">
+      <div class="option"><label>{{input type="checkbox" name="markInvalid" checked=markInvalid}}<strong>{{model.invalidFields.length}}</strong> invalid fields</label> <a class="details" {{action "showInvalidDetails"}}>(details)</a></div>
+      <div class="option"><label>{{input type="checkbox" name="markMissing" checked=markMissing}}<strong>{{model.missingFields.length}}</strong> missing fields</label> <a class="details" {{action "showMissingDetails"}}>(details)</a></div>
+      <div class="option"><label>{{input type="checkbox" name="markFormatted" checked=markFormatted}}<strong>{{model.formattedFields.length}}</strong> auto-formatted fields</label> <a class="details" {{action "showFormattedDetails"}}>(details)</a></div>
+    </div>
+    {{#if showDetails}}
+    <div class="panel-keys row">
+      <span class="keys">Citation keys:</span> {{#each citationKeys as |key|}}<div class="badge">{{key}}</div>{{/each}}
+    </div>
+    <div class="panel-details row">
+      {{#each details as |detail|}}
+        <span class="field">Field "{{detail.field}}": </span><span class="message">{{detail.message}}</span><br>
+      {{/each}}
+    </div>
+    {{/if}}
   </div>
 </div>
 {{!-- <div class="alerts row">

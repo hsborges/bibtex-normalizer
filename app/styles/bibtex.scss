@@ -57,19 +57,40 @@
       }
 
       .panel-body {
-        width: 100%;
-        display: flex;
+        .panel-options {
+          padding-bottom: 10px;
+          display: flex;
 
-        label {
-          text-align: center;
-          flex: 1;
+          .option {
+            text-align: center;
+            flex: 1;
 
-          input {
-            zoom: 1.25;
-            margin-right: 5px;
+            input {
+              zoom: 1.25;
+              margin-right: 5px;
+            }
+
+            strong { color: red; }
+
+            a.details {
+              width: 100%;
+              font-weight: bold;
+              cursor: pointer;
+            }
           }
+        }
 
-          strong { color: red; }
+        .panel-keys {
+          border-top-style: solid;
+          border-top-color: rgb(220, 220, 220);
+          padding: 10px 0 0 40px;
+          .keys { font-weight: bold; }
+          .badge { margin: 0 0 0 5px; padding: 6px 6px 6px 6px; font-weight: normal; }
+        }
+
+        .panel-details {
+          padding: 5px 0 0 40px;
+          .field { font-weight: bold; }
         }
       }
     }
