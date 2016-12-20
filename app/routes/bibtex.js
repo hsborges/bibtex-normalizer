@@ -49,6 +49,20 @@ export default Ember.Route.extend({
             subHeader.removeClass('fixed-top');
           }
         });
+
+        if (this.currentModel.invalidFields.length || this.currentModel.missingFields.length) {
+          swal({
+          	title: 'We found errors in your bibtex file. Please, check that out before use it!',
+          });
+        } else if (this.currentModel.formattedFields.length) {
+          swal({
+          	title: 'We automatically fixed some fields of your bibtex file. Check it out before download!',
+          });
+        } else {
+          swal({
+          	title: 'Congratulations! We didn\'t find errors in your bibtex file.',
+          });
+        }
       });
     },
   }
