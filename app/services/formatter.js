@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
+const camel = ['Android', 'GitHub', 'YouTube', 'Twitter', 'Facebook'];
+
 const Entry = Ember.Object.extend({
   bibtex: null,
   invalidFields: null,
@@ -9,6 +11,32 @@ const Entry = Ember.Object.extend({
   requiredFields: null,
 
   validators: [
+    {
+      field: 'title',
+      validate: (value) => {
+        let valid = true;
+        let words = _.words(value);
+        // test camel case words
+        _.each(camel, (word, index) => {
+          const found = _.findIndex(words, w => (_.toLower(w) === _.toLower(word)));
+          if (found >= 0) { valid = false; }
+        });
+
+        return valid;
+      },
+      fix: (value) => {
+        let words = _.words(value);
+        let formatted = false;
+
+        _.each(camel, (word, index) => {
+          const found = _.findIndex(words, w => (_.toLower(w) === _.toLower(word)));
+          if (found >= 0) { words[found] = `{${word}}`; formatted = true; }
+        });
+
+        return formatted? _.join(words, ' ') : null;
+      },
+      message: 'Use brackets to keep camel case words.',
+    },
     {
       field: 'year',
       validate: value => /^\d{4}/.test(value),
@@ -41,6 +69,11 @@ const Entry = Ember.Object.extend({
       },
       message: 'Valid formats for "pages": 42-111 or 7,41,73-97 or 43+',
     },
+    {
+      field: 'booktitle',
+      validate: value => /^(\d+)(st|nd|rd|th) (.*?) \((.+)\)?$/i.test(_.trim(value)),
+      message: 'Format: [number]th [conference name] ([abbreviation]).',
+    },
   ],
 
   validate(field, value, format) {
@@ -55,7 +88,7 @@ const Entry = Ember.Object.extend({
       if (!isValid) { message = validator.message; }
       if (format && !isValid && validator.fix) {
         alternative = validator.fix(value);
-        isValid = true;
+        if (alternative) { isValid = true; }
       }
     }
 
