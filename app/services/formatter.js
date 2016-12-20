@@ -17,7 +17,7 @@ const Entry = Ember.Object.extend({
         let valid = true;
         let words = _.words(value);
         // test camel case words
-        _.each(camel, (word, index) => {
+        _.each(camel, (word) => {
           const found = _.findIndex(words, w => (_.toLower(w) === _.toLower(word)));
           if (found >= 0) { valid = false; }
         });
@@ -28,7 +28,7 @@ const Entry = Ember.Object.extend({
         let words = _.words(value);
         let formatted = false;
 
-        _.each(camel, (word, index) => {
+        _.each(camel, (word) => {
           const found = _.findIndex(words, w => (_.toLower(w) === _.toLower(word)));
           if (found >= 0) { words[found] = `{${word}}`; formatted = true; }
         });
