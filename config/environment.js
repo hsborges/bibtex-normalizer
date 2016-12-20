@@ -45,6 +45,7 @@ module.exports = function(environment) {
   if (environment === 'production') {
     ENV.locationType = 'hash';
     ENV.rootURL = '/bibtex-normalizer/';
+    ENV.googleAnalytics = { webPropertyId: 'UA-89271089-1' };
 
   }
 
