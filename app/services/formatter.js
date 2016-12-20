@@ -15,7 +15,7 @@ const Entry = Ember.Object.extend({
       field: 'title',
       validate: (value) => {
         let valid = true;
-        let words = _.words(value);
+        let words = _.split(value, ' ');
         // test camel case words
         _.each(camel, (word) => {
           const found = _.findIndex(words, w => (_.toLower(w) === _.toLower(word)));
