@@ -48,6 +48,8 @@ export default Ember.Object.extend({
     _.forIn(json.entryTags, (value, key) => {
       if (requiredFields && !_.includes(requiredFields, _.toLower(key))) { return; }
 
+      value = value.replace(/\s+/g, ' ');
+
       const validation = this.validate(key, value);
       line += 1;
 
