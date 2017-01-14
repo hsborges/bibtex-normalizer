@@ -42,11 +42,11 @@ export default Ember.Object.extend({
 
       switch (_.toLower(entry.entryType)) {
         case 'article':
-          entryObject.set('requiredFields', ['author', 'title', 'journal', 'year']);
+          entryObject.set('requiredFields', ['author', 'title', 'journal', 'volume', 'number', 'pages', 'year']);
           break;
         case 'inproceedings':
         case 'conference':
-          entryObject.set('requiredFields', ['author', 'title', 'booktitle', 'year']);
+          entryObject.set('requiredFields', ['author', 'title', 'booktitle', 'pages', 'year']);
           break;
         case 'book':
           entryObject.set('requiredFields', ['author', 'editor', 'title', 'publisher', 'year']);
