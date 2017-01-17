@@ -1,6 +1,6 @@
 class TitleValidator {
   constructor() {
-    this.properNames = ['Android', 'GitHub', 'YouTube', 'Twitter', 'Facebook'];
+    this.properNames = ['Android', 'GitHub', 'YouTube', 'Twitter', 'Facebook', 'API', 'Java', 'JavaScript', 'Ruby'];
   }
 
   validate(value) {
