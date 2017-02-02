@@ -52,8 +52,7 @@
             if (this.input.substring(this.pos, this.pos + s.length) == s) {
                 this.pos += s.length;
             } else {
-                throw "Token mismatch, expected " + s + ", found "
-                        + this.input.substring(this.pos);
+                throw "Token mismatch, expected " + s + ", found sample" + this.input.substring(this.pos);
             };
             this.skipWhitespace(canCommentOut);
         };

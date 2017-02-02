@@ -36,6 +36,7 @@ export default Ember.Object.extend({
 
     let lines = 0;
     let output = '';
+    let entryKeys = new Array(0);
 
     _.each(json, (entry) => {
       const entryObject = Entry.create({ bibtex: bibtexParse.toBibtex([entry]) });
@@ -62,6 +63,7 @@ export default Ember.Object.extend({
 
       const errors = _.concat(entryObject.get('invalidFields'), entryObject.get('missingFields'), entryObject.get('formattedFields'));
 
+      // for each missing field in each entry, an error is added
       _.each(errors, (err) => {
         err.citationKey = entry.citationKey;
         err.line += lines;
