@@ -36,6 +36,16 @@ export default Ember.Controller.extend({
     const reader = new FileReader();
 
     reader.onload = (e) => {
+      // no bibtex entries were detected
+      if (this.get('formatter').get('bibtex').bibtex == null) {
+        swal({
+          title: "Your <small>.bib</small> file may be empty. Try upload it again",
+          html: true,
+          timer: 2000
+        });
+      }
+      console.log(this.get('formatter').get('bibtex').bibtex);
+
       try {
         this.get('formatter').normalize(e.target.result);
       } catch (e) {
@@ -45,16 +55,15 @@ export default Ember.Controller.extend({
               "<ul>" +
                 "<li>Every entry has been opened and closed with '{' and '}' characters, respectively </li>" +
                 "<li>The content from each attribute is enclosed with '{' and '}' or '\"' and '\"'</li>" +
+                "<li>Assigning values is set by '='</li>" +
               "</ul>"
             ,
             html: true,
-          // timer: 2000
+          timer: 2000
         });
       } finally {
-
+        this.transitionToRoute('bibtex');
       }
-
-      this.transitionToRoute('bibtex');
     };
 
     reader.readAsText(file);
