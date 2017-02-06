@@ -40,7 +40,14 @@ export default Ember.Controller.extend({
         this.get('formatter').normalize(e.target.result);
       } catch (e) {
         swal({
-        	title: e,
+        	title: "Your .bib file is incorrect, check one of the following:",
+            text:
+              "<ul>" +
+                "<li>Every entry has been opened and closed with '{' and '}' characters, respectively </li>" +
+                "<li>The content from each attribute is enclosed with '{' and '}' or '\"' and '\"'</li>" +
+              "</ul>"
+            ,
+            html: true,
           // timer: 2000
         });
       } finally {
