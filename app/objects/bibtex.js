@@ -41,6 +41,8 @@ export default Ember.Object.extend({
     _.each(json, (entry) => {
       const entryObject = Entry.create({ bibtex: bibtexParse.toBibtex([entry]) });
 
+      entryKeys.push(entry.citationKey);
+
       switch (_.toLower(entry.entryType)) {
         case 'article':
           entryObject.set('requiredFields', ['author', 'title', 'journal', 'volume', 'number', 'pages', 'year']);

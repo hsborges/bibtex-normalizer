@@ -9,12 +9,13 @@ export default Ember.Controller.extend({
     },
     normalize() {
       // no bibtex entries were detected
-      if (this.get('formatter').get('bibtex'))
+      if (this.get('formatter').get('bibtex')){
         swal({
           title: "Your content may not be on <small>bibtex</small> standard. Please, try again.",
           html: true,
           timer: 2000
         });
+      }
       console.log(this.get('formatter').get('bibtex'));
 
       try {

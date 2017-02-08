@@ -44,20 +44,18 @@ export default Ember.Controller.extend({
           timer: 2000
         });
       }
-      console.log(this.get('formatter').get('bibtex').bibtex);
 
       try {
         this.get('formatter').normalize(e.target.result);
-      } catch (e) {
+      } catch (errorMessage) {
         swal({
-        	title: "Your .bib file is incorrect, check one of the following:",
+        	title: "Your <small>.bib</small> file is incorrect, check one of the following:",
             text:
               "<ul>" +
                 "<li>Every entry has been opened and closed with '{' and '}' characters, respectively </li>" +
                 "<li>The content from each attribute is enclosed with '{' and '}' or '\"' and '\"'</li>" +
                 "<li>Assigning values is set by '='</li>" +
-              "</ul>"
-            ,
+              "</ul>",
             html: true,
           timer: 2000
         });
