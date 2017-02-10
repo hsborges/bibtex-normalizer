@@ -43,8 +43,6 @@ export default Ember.Controller.extend({
           html: true,
           timer: 2000
         });
-
-        return;
       }
 
       try {

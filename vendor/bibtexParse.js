@@ -272,6 +272,7 @@
             this.entry_body(d);
         };
 
+        // TODO: throw when there isn't a citationKey instead of an alternative
         this.alernativeCitationKey = function () {
             this.entries.forEach(function (entry) {
                 if (!entry.citationKey && entry.entryTags) {
@@ -313,6 +314,7 @@
 
     /* added during hackathon don't hate on me */
     exports.toBibtex = function(json) {
+      console.log(JSON.stringify(json));
         var out = '';
         for (var i = 0; i < json.length; i++) {
             out += "@" + json[i].entryType;

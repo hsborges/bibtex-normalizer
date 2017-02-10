@@ -20,9 +20,20 @@ export default Ember.Controller.extend({
 
       try {
         this.get('formatter').get('bibtex').normalize();
+
+        // no bibtex entries were detected
+        if (this.get('formatter').get('bibtex').get('bibtex') == ""){
+          swal({
+            title: "Your entry may not be on <small>bibtex</small> standard.",
+            html: true,
+            timer: 2000
+          });
+
+          return;
+        }
       } catch (e) {
         swal({
-        	title: "Your .bib file is incorrect, check one of the following:",
+        	title: "Your entry is incorrect, check one of the following:",
           text:
             "<ul>" +
               "<li>Every entry has been opened and closed with '{' and '}' characters, respectively </li>" +
@@ -34,17 +45,6 @@ export default Ember.Controller.extend({
         });
       } finally {
         this.transitionToRoute('bibtex');
-      }
-
-      // no bibtex entries were detected
-      if (this.get('formatter').get('bibtex').get('bibtex') == ""){
-        swal({
-          title: "Your entry may not be on <small>bibtex</small> standard.",
-          html: true,
-          timer: 2000
-        });
-
-        return;
       }
 
     }
