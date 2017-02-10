@@ -8,15 +8,15 @@ export default Ember.Controller.extend({
       this.get('formatter').get('bibtex').clear();
     },
     normalize() {
-      // no bibtex entries were detected
-      if (this.get('formatter').get('bibtex')){
+      // textarea was empty
+      if (this.get('formatter').get('bibtex').get('bibtex') == ""){
         swal({
-          title: "Your content may not be on <small>bibtex</small> standard. Please, try again.",
-          html: true,
+          title: "Your entry is empty.",
           timer: 2000
         });
+
+        return;
       }
-      console.log(this.get('formatter').get('bibtex'));
 
       try {
         this.get('formatter').get('bibtex').normalize();
@@ -35,6 +35,18 @@ export default Ember.Controller.extend({
       } finally {
         this.transitionToRoute('bibtex');
       }
+
+      // no bibtex entries were detected
+      if (this.get('formatter').get('bibtex').get('bibtex') == ""){
+        swal({
+          title: "Your entry may not be on <small>bibtex</small> standard.",
+          html: true,
+          timer: 2000
+        });
+
+        return;
+      }
+
     }
   }
 });

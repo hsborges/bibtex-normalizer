@@ -36,13 +36,15 @@ export default Ember.Controller.extend({
     const reader = new FileReader();
 
     reader.onload = (e) => {
-      // no bibtex entries were detected
-      if (this.get('formatter').get('bibtex').bibtex == null) {
+      // no bibtex entries were detected (empty file or random string)
+      if (this.get('formatter').get('bibtex').get('bibtex') == null) {
         swal({
-          title: "Your <small>.bib</small> file may be empty. Try upload it again",
+          title: "Your <small>.bib</small> file may be empty. Try upload it again.",
           html: true,
           timer: 2000
         });
+
+        return;
       }
 
       try {
