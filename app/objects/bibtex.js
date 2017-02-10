@@ -7,6 +7,8 @@ export default Ember.Object.extend({
   missingFields: null,
   formattedFields: null,
 
+  citationKeys: null,
+
   init() {
     if (this.get('bibtex')) { this.normalize(); }
   },
@@ -16,6 +18,7 @@ export default Ember.Object.extend({
     this.set('invalidFields', []);
     this.set('missingFields', []);
     this.set('formattedFields', []);
+    this.set('citationKeys', []);
   },
 
   normalize() {
@@ -36,12 +39,11 @@ export default Ember.Object.extend({
 
     let lines = 0;
     let output = '';
-    let entryKeys = new Array(0);
 
     _.each(json, (entry) => {
       const entryObject = Entry.create({ bibtex: bibtexParse.toBibtex([entry]) });
 
-      entryKeys.push(entry.citationKey);
+      entryObject.set('citationKey', entry.citationKey);
 
       switch (_.toLower(entry.entryType)) {
         case 'article':
@@ -74,6 +76,7 @@ export default Ember.Object.extend({
       this.get('invalidFields').addObjects(entryObject.get('invalidFields'));
       this.get('missingFields').addObjects(entryObject.get('missingFields'));
       this.get('formattedFields').addObjects(entryObject.get('formattedFields'));
+      this.get('citationKeys').addObject(entryObject.get('citationKey'));
 
       output += `${entryObject.get('bibtex')}\n\n`;
       lines = _.split(output, '\n').length - 1;

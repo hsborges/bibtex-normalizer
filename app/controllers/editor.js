@@ -16,11 +16,12 @@ export default Ember.Controller.extend({
           timer: 2000
         });
       }
-      console.log(this.get('formatter').get('bibtex'));
 
       try {
         this.get('formatter').get('bibtex').normalize();
       } catch (e) {
+        console.log(JSON.stringify(this.get('formatter').get('bibtex').get('citationKeys')));
+
         swal({
         	title: "Your .bib file is incorrect, check one of the following:",
           text:

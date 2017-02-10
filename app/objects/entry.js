@@ -8,6 +8,7 @@ export default Ember.Object.extend({
   formattedFields: null,
 
   requiredFields: null,
+  citationKeys: null,
 
   validate(field, value) {
     const validator = validators.getValidator(_.toLower(field));
@@ -34,6 +35,7 @@ export default Ember.Object.extend({
     this.set('invalidFields', []);
     this.set('missingFields', []);
     this.set('formattedFields', []);
+    this.set('citationKeys', []);
 
     const json = _.first(bibtexParse.toJSON(this.get('bibtex')));
 
@@ -60,6 +62,8 @@ export default Ember.Object.extend({
       if (validation.alternative) {
         this.get('formattedFields').addObject({ field: validation.field, line: line, message: validation.message });
       }
+      // Adding entry name in Entry object
+      this.get('citationKeys').addObject(citationKey);
 
       bibtex += `  ${key} = { ${_.trim(validation.alternative || value)} },\n`;
     });
