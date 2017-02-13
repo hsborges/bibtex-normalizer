@@ -9,6 +9,11 @@ module.exports = function(defaults) {
       includePaths: [
         'bower_components/bootstrap-sass/assets/stylesheets'
       ]
+    },
+    ace: {
+      themes: ['ambiance', 'chaos'],
+      modes: ['latex'],
+      workers: ['latex']
     }
   });
 
