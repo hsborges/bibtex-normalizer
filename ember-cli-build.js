@@ -11,9 +11,9 @@ module.exports = function(defaults) {
       ]
     },
     ace: {
-      themes: ['ambiance', 'chaos'],
-      modes: ['latex'],
-      workers: ['latex']
+      themes: ['ambiance', 'chaos', 'clouds'],
+      modes: ['latex', 'tex'],
+      workers: ['latex', 'tex']
     }
   });
 

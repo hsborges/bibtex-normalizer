@@ -63,7 +63,7 @@ export default Ember.Object.extend({
         this.get('formattedFields').addObject({ field: validation.field, line: line, message: validation.message });
       }
       // Adding entry name in Entry object
-      this.get('citationKeys').addObject(citationKey);
+      this.get('citationKeys').addObject(json.citationKey);
 
       bibtex += `  ${key} = { ${_.trim(validation.alternative || value)} },\n`;
     });

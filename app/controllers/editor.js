@@ -1,4 +1,7 @@
 import Ember from 'ember';
+import ace from 'ember-ace';
+
+const acce = require('ember-ace');
 
 export default Ember.Controller.extend({
   formatter: Ember.inject.service(),
@@ -9,7 +12,7 @@ export default Ember.Controller.extend({
     },
     normalize() {
       // textarea was empty
-      if (this.get('formatter').get('bibtex').get('bibtex') == ""){
+      if (this.get('formatter').get('bibtex').get('bibtex') === ""){
         swal({
           title: "Your entry is empty.",
           timer: 2000
@@ -22,7 +25,7 @@ export default Ember.Controller.extend({
         this.get('formatter').get('bibtex').normalize();
 
         // no bibtex entries were detected
-        if (this.get('formatter').get('bibtex').get('bibtex') == ""){
+        if (this.get('formatter').get('bibtex').get('bibtex') === ""){
           swal({
             title: "Your entry may not be on <small>bibtex</small> standard.",
             html: true,
@@ -49,6 +52,9 @@ export default Ember.Controller.extend({
         this.transitionToRoute('bibtex');
       }
 
+    },
+    buildEditor() {
+      this.get('formatter').setOption(fontSize, 40);
     }
   }
 });

@@ -1,6 +1,5 @@
 <div class="app-editor container">
-  {{textarea value=model.bibtex class="form-control" rows="25" placeholder="Put your bibtex content here" autofocus=true}}
-  {{ember-ace lines=10 value=value update=(action 'valueUpdated')}}
+  {{ember-ace ready=(action 'buildEditor') value=model.bibtex mode="ace/mode/latex" lines=25 theme=clouds class="form-control" tabindex="1"}}
   <div class="options">
     <button type="button" class="btn btn-default" name="button" {{action "clear"}}><i class="fa fa-eraser"></i>Clear</button>
     <button type="button" class="btn btn-primary" name="button" {{action "normalize"}}><i class="fa fa-cog"></i>Normalize</button>
