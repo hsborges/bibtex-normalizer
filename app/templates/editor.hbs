@@ -1,5 +1,5 @@
 <div class="app-editor container">
-  {{ember-ace ready=(action 'buildEditor') value=model.bibtex mode="ace/mode/latex" lines=25 theme=clouds class="form-control" tabindex="1"}}
+  {{ember-ace ready=(action 'buildEditor') id="formatter" mode="ace/mode/latex" lines=30 class="form-control"}}
   <div class="options">
     <button type="button" class="btn btn-default" name="button" {{action "clear"}}><i class="fa fa-eraser"></i>Clear</button>
     <button type="button" class="btn btn-primary" name="button" {{action "normalize"}}><i class="fa fa-cog"></i>Normalize</button>

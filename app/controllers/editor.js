@@ -1,18 +1,17 @@
 import Ember from 'ember';
-import ace from 'ember-ace';
-
-const acce = require('ember-ace');
 
 export default Ember.Controller.extend({
   formatter: Ember.inject.service(),
 
   actions: {
     clear() {
+      ace.edit("formatter").setValue("");
       this.get('formatter').get('bibtex').clear();
     },
     normalize() {
+      const input = ace.edit("formatter").getValue();
       // textarea was empty
-      if (this.get('formatter').get('bibtex').get('bibtex') === ""){
+      if (input === ""){
         swal({
           title: "Your entry is empty.",
           timer: 2000
@@ -22,7 +21,7 @@ export default Ember.Controller.extend({
       }
 
       try {
-        this.get('formatter').get('bibtex').normalize();
+        this.get('formatter').normalize(input);
 
         // no bibtex entries were detected
         if (this.get('formatter').get('bibtex').get('bibtex') === ""){
@@ -54,7 +53,8 @@ export default Ember.Controller.extend({
 
     },
     buildEditor() {
-      this.get('formatter').setOption(fontSize, 40);
+      const bibtex = this.get('formatter').get('bibtex');
+      ace.edit("formatter").setValue(bibtex.get('bibtex') || '');
     }
   }
 });
