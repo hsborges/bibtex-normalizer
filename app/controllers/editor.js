@@ -34,8 +34,6 @@ export default Ember.Controller.extend({
           return;
         }
       } catch (e) {
-        console.log(JSON.stringify(this.get('formatter').get('bibtex').get('citationKeys')));
-
         swal({
         	title: "Your entry is incorrect, check one of the following:",
           text:
