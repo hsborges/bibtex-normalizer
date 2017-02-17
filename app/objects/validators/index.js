@@ -9,10 +9,10 @@ class Validator {
   constructor() {
     this.title = title;
     this.year = year;
-    this.number = number;
     this.author = author;
     this.pages = pages;
     this.booktitle = booktitle;
+    this.number = number;
   }
 
   getValidator(field) {

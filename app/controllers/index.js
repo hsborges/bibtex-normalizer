@@ -21,7 +21,8 @@ export default Ember.Controller.extend({
     // Ember.$('html').on('dragenter', prevent);
   },
 
-  readAndRedirect() {
+  // firefox requires event as a parameter to get uploaded file
+  readAndRedirect(event) {
     const file = _.first(event.target.files || event.dataTransfer.files);
 
     if (!_.endsWith(file.name, '.bib')) {
@@ -34,10 +35,9 @@ export default Ember.Controller.extend({
     }
 
     const reader = new FileReader();
-
     reader.onload = (e) => {
       // no bibtex entries were detected (empty file or random string)
-      if (this.get('formatter').get('bibtex').get('bibtex') == null) {
+      if (this.get('formatter').get('bibtex').get('bibtex') === null) {
         swal({
           title: "Your <small>.bib</small> file may be empty. Try upload it again.",
           html: true,
