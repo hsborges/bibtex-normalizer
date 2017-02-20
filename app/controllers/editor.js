@@ -43,11 +43,13 @@ export default Ember.Controller.extend({
               "<li>Assigning values is set by '='</li>" +
             "</ul>",
           html: true,
-          timer: 2000
+          timer: 10000
         });
-      } finally {
-        this.transitionToRoute('bibtex');
+        
+        return;
       }
+
+      this.transitionToRoute('bibtex');
 
     },
     buildEditor() {

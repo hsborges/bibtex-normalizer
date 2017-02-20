@@ -50,14 +50,14 @@ export default Ember.Controller.extend({
       } catch (errorMessage) {
         swal({
         	title: "Your <small>.bib</small> file is incorrect, check one of the following:",
-            text:
-              "<ul>" +
-                "<li>Every entry has been opened and closed with '{' and '}' characters, respectively </li>" +
-                "<li>The content from each attribute is enclosed with '{' and '}' or '\"' and '\"'</li>" +
-                "<li>Assigning values is set by '='</li>" +
-              "</ul>",
-            html: true,
-          timer: 2000
+          text:
+            "<ul>" +
+              "<li>Every entry has been opened and closed with '{' and '}' characters, respectively </li>" +
+              "<li>The content from each attribute is enclosed with '{' and '}' or '\"' and '\"'</li>" +
+              "<li>Assigning values is set by '='</li>" +
+            "</ul>",
+          html: true,
+          timer: 10000
         });
       } finally {
         this.transitionToRoute('bibtex');
