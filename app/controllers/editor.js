@@ -27,8 +27,7 @@ export default Ember.Controller.extend({
         if (this.get('formatter').get('bibtex').get('bibtex') === ""){
           swal({
             title: "Your entry may not be on <small>bibtex</small> standard.",
-            html: true,
-            timer: 2000
+            html: true
           });
 
           return;
@@ -42,10 +41,9 @@ export default Ember.Controller.extend({
               "<li>The content from each attribute is enclosed with '{' and '}' or '\"' and '\"'</li>" +
               "<li>Assigning values is set by '='</li>" +
             "</ul>",
-          html: true,
-          timer: 10000
+          html: true
         });
-        
+
         return;
       }
 

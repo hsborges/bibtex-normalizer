@@ -34,6 +34,8 @@ export default Ember.Controller.extend({
       return;
     }
 
+    console.log();
+
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
@@ -44,8 +46,7 @@ export default Ember.Controller.extend({
         } else {
           swal({
             title: "Your entry may not be on <small>bibtex</small> standard.",
-            html: true,
-            timer: 5*1000
+            html: true
           });
         }
       // Second attempt: Bibtex file incorrect
@@ -58,8 +59,7 @@ export default Ember.Controller.extend({
               "<li>The content from each attribute is enclosed with '{' and '}' or '\"' and '\"'</li>" +
               "<li>Assigning values is set by '='</li>" +
             "</ul>",
-          html: true,
-          timer: 10*1000
+          html: true
         });
       }
     };
@@ -73,6 +73,9 @@ export default Ember.Controller.extend({
     },
     select(event) {
       this.readAndRedirect(event);
+      console.log(Ember.$('.file-input'));
+      Ember.$('.app-index .body .file-input').val("");
+      console.log(Ember.$('.app-index .body .file-input'));
     },
     drop(event) {
       event.preventDefault();
