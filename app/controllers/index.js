@@ -36,17 +36,19 @@ export default Ember.Controller.extend({
 
     const reader = new FileReader();
     reader.onload = (e) => {
-      // no bibtex entries were detected (empty file or random string)
-      if (this.get('formatter').get('bibtex').get('bibtex') === null) {
-        swal({
-          title: "Your <small>.bib</small> file may be empty. Try upload it again.",
-          html: true,
-          timer: 2000
-        });
-      }
-
       try {
         this.get('formatter').normalize(e.target.result);
+        // First attempt: Check the file out of Bibtex standards (or empty)
+        if (this.get('formatter').get('bibtex').get('bibtex')) {
+          this.transitionToRoute('bibtex');
+        } else {
+          swal({
+            title: "Your entry may not be on <small>bibtex</small> standard.",
+            html: true,
+            timer: 5*1000
+          });
+        }
+      // Second attempt: Bibtex file incorrect
       } catch (errorMessage) {
         swal({
         	title: "Your <small>.bib</small> file is incorrect, check one of the following:",
@@ -57,10 +59,8 @@ export default Ember.Controller.extend({
               "<li>Assigning values is set by '='</li>" +
             "</ul>",
           html: true,
-          timer: 10000
+          timer: 10*1000
         });
-      } finally {
-        this.transitionToRoute('bibtex');
       }
     };
 
