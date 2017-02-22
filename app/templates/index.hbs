@@ -17,7 +17,7 @@
     </div>
     <div class="drop-file text-center">
       <div class="drop-file-area" onclick={{action "choose"}}><b>Drag your file here</b></div>
-      <input type="file" name="file" value=""  class="file-input hidden" onchange={{action "select"}} multiple="false" accept=".bib">
+      {{input type="file" name="file" class="file-input hidden" multiple="false" accept=".bib" change=(action 'select') }}
     </div>
   </div>
 </div>

@@ -279,6 +279,7 @@
                     entry.citationKey = '';
                     if (entry.entryTags.author) {
                         entry.citationKey += entry.entryTags.author.split(',')[0] += ', ';
+                        console.log(entry.citationKey);
                     }
                     entry.citationKey += entry.entryTags.year;
                 }

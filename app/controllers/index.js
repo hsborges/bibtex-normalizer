@@ -34,8 +34,6 @@ export default Ember.Controller.extend({
       return;
     }
 
-    console.log();
-
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
@@ -73,9 +71,8 @@ export default Ember.Controller.extend({
     },
     select(event) {
       this.readAndRedirect(event);
-      console.log(Ember.$('.file-input'));
-      Ember.$('.app-index .body .file-input').val("");
-      console.log(Ember.$('.app-index .body .file-input'));
+      // slow and deprecated for Ember 1.x
+      // Ember.$('.app-index .body .file-input').val("");
     },
     drop(event) {
       event.preventDefault();
