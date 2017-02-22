@@ -3,7 +3,7 @@ class NumberValidator {
 
   validate(value) {
     return {
-      isValid: /^\d/.test(value),
+      isValid: /^\d+$/.test(value),
       message: 'Must consist of numerals (e.g., 99).'
     };
   }
