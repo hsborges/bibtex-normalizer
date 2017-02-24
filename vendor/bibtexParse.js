@@ -31,6 +31,8 @@
         this.input = "";
         this.entries = new Array();
 
+        this.citationKeys = new Array();
+
         this.currentEntry = "";
 
         this.setInput = function(t) {
@@ -272,7 +274,6 @@
             this.entry_body(d);
         };
 
-        // TODO: throw when there isn't a citationKey instead of an alternative
         this.alernativeCitationKey = function () {
             this.entries.forEach(function (entry) {
                 if (!entry.citationKey && entry.entryTags) {
@@ -319,9 +320,9 @@
         for (var i = 0; i < json.length; i++) {
             out += "@" + json[i].entryType;
             out += '{';
-            if (json[i].citationKey)
+            if (json[i].citationKey) {
                 out += json[i].citationKey + ', \n';
-            if (json[i].entry)
+            } if (json[i].entry)
                 out += json[i].entry ;
             if (json[i].entryTags) {
                 var tags = '';

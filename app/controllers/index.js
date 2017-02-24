@@ -38,6 +38,7 @@ export default Ember.Controller.extend({
     reader.onload = (e) => {
       try {
         this.get('formatter').normalize(e.target.result);
+
         // First attempt: Check the file out of Bibtex standards (or empty)
         if (this.get('formatter').get('bibtex').get('bibtex')) {
           this.transitionToRoute('bibtex');
@@ -47,19 +48,30 @@ export default Ember.Controller.extend({
             html: true
           });
         }
+
       // Second attempt: Bibtex file incorrect
       } catch (errorMessage) {
-        swal({
-        	title: "Your <small>.bib</small> file is incorrect, check one of the following:",
-          text:
-            "<ul>" +
-              "<li>Every entry has been opened and closed with '{' and '}' characters, respectively </li>" +
-              "<li>The content from each attribute is enclosed with '{' and '}' or '\"' and '\"'</li>" +
-              "<li>Assigning values is set by '='</li>" +
-            "</ul>",
-          html: true
-        });
+        // Check whether the exception came from duplicated citation key
+        if(errorMessage.name == "DuplicatedKey") {
+          swal({
+            title: "Your <small>.bib</small> file has at least one duplicated citation key!",
+            text: errorMessage.message,
+            html: true
+          });
+        } else {
+          swal({
+          	title: "Your <small>.bib</small> file is incorrect, check one of the following:",
+            text:
+              "<ul>" +
+                "<li>Every entry has been opened and closed with '{' and '}' characters, respectively </li>" +
+                "<li>The content from each attribute is enclosed with '{' and '}' or '\"' and '\"'</li>" +
+                "<li>Assigning values is set by '='</li>" +
+              "</ul>",
+            html: true
+          });
+        }
       }
+
     };
 
     reader.readAsText(file);
@@ -72,7 +84,7 @@ export default Ember.Controller.extend({
     select(event) {
       this.readAndRedirect(event);
       // slow and deprecated for Ember 1.x
-      // Ember.$('.app-index .body .file-input').val("");
+      Ember.$('.app-index .body .file-input').val("");
     },
     drop(event) {
       event.preventDefault();

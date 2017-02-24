@@ -3,7 +3,7 @@ class YearValidator {
 
   validate(value) {
     return {
-      isValid: /^\d{4}$/.test(value),
+      isValid: /^\d{4}$/.test(value.trim()),
       message: 'Must consist of four numerals (e.g., 1999).'
     };
   }

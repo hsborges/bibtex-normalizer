@@ -3,8 +3,8 @@ class PublisherValidator {
 
   validate(value) {
     return {
-      isValid: /^\S/.test(value),
-      message: 'Must consist of literals (a-z, A-Z).'
+      isValid: /^\S[^XX]/.test(value),
+      message: 'Must consist of literals (a-z, A-Z). Bibtex-normalizer default: XX'
     };
   }
 }

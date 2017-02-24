@@ -39,6 +39,7 @@ export default Ember.Object.extend({
 
     let lines = 0;
     let output = '';
+    let citationKeysLength = 0;
 
     _.each(json, (entry) => {
       const entryObject = Entry.create({ bibtex: bibtexParse.toBibtex([entry]) });
@@ -77,6 +78,10 @@ export default Ember.Object.extend({
       this.get('missingFields').addObjects(entryObject.get('missingFields'));
       this.get('formattedFields').addObjects(entryObject.get('formattedFields'));
       this.get('citationKeys').addObject(entryObject.get('citationKey'));
+      if(this.get('citationKeys').length > citationKeysLength)
+        ++citationKeysLength;
+      else
+        throw {name: "DuplicatedKey", message: `Duplicated "${entryObject.get('citationKey')}" key.`};
 
       output += `${entryObject.get('bibtex')}\n\n`;
       lines = _.split(output, '\n').length - 1;
