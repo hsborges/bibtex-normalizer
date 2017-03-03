@@ -52,7 +52,7 @@ export default Ember.Controller.extend({
       // Second attempt: Bibtex file incorrect
       } catch (errorMessage) {
         // Check whether the exception came from duplicated citation key
-        if(errorMessage.name == "DuplicatedKey") {
+        if(errorMessage.name === "DuplicatedKey") {
           swal({
             title: "Your <small>.bib</small> file has at least one duplicated citation key!",
             text: errorMessage.message,

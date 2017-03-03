@@ -32,17 +32,26 @@ export default Ember.Controller.extend({
 
           return;
         }
-      } catch (e) {
-        swal({
-        	title: "Your entry is incorrect, check one of the following:",
-          text:
-            "<ul>" +
-              "<li>Every entry has been opened and closed with '{' and '}' characters, respectively </li>" +
-              "<li>The content from each attribute is enclosed with '{' and '}' or '\"' and '\"'</li>" +
-              "<li>Assigning values is set by '='</li>" +
-            "</ul>",
-          html: true
-        });
+      } catch (errorMessage) {
+        // Check whether the exception came from duplicated citation key
+        if(errorMessage.name === "DuplicatedKey") {
+          swal({
+            title: "Your <small>.bib</small> file has at least one duplicated citation key!",
+            text: errorMessage.message,
+            html: true
+          });
+        } else {
+          swal({
+          	title: "Your entry is incorrect, check one of the following:",
+            text:
+              "<ul>" +
+                "<li>Every entry has been opened and closed with '{' and '}' characters, respectively </li>" +
+                "<li>The content from each attribute is enclosed with '{' and '}' or '\"' and '\"'</li>" +
+                "<li>Assigning values is set by '='</li>" +
+              "</ul>",
+            html: true
+          });
+        }
 
         return;
       }

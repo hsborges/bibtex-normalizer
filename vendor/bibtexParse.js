@@ -278,10 +278,8 @@
             this.entries.forEach(function (entry) {
                 if (!entry.citationKey && entry.entryTags) {
                     entry.citationKey = '';
-                    if (entry.entryTags.author) {
+                    if (entry.entryTags.author)
                         entry.citationKey += entry.entryTags.author.split(',')[0] += ', ';
-                        console.log(entry.citationKey);
-                    }
                     entry.citationKey += entry.entryTags.year;
                 }
             });
