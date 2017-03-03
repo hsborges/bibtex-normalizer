@@ -1,0 +1,13 @@
+<div class="app-config container">
+  <div class="header col-lg-6 col-lg-offset-3 text-center">
+    <h1><strong>Configuration</strong></h1>
+    <h2>Choose the elements that must have in your <small>.bib</small> file</h2>
+  </div>
+  <div class="col-lg-4">
+    {{#form-for model as |f|}}
+       {{f.text-field "firstname"}}
+       {{f.text-field "lastname"}}
+
+     {{/form-for}}
+  </div>
+</div>
