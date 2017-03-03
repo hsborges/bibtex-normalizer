@@ -48,6 +48,7 @@ export default Ember.Controller.extend({
                 "<li>Every entry has been opened and closed with '{' and '}' characters, respectively </li>" +
                 "<li>The content from each attribute is enclosed with '{' and '}' or '\"' and '\"'</li>" +
                 "<li>Assigning values is set by '='</li>" +
+                "<li>Every entry must have an identification (citation key)</li>" +
               "</ul>",
             html: true
           });

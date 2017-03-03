@@ -39,6 +39,7 @@
     "ember-data": "^2.10.0",
     "ember-export-application-global": "^1.0.5",
     "ember-font-awesome": "2.2.0",
+    "ember-form-for": "2.0.0-alpha.15",
     "ember-link-action": "0.0.35",
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^2.0.3",
