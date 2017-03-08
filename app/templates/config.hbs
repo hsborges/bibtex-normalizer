@@ -7,232 +7,31 @@
   </div>
 
   <div class="row">
-    <div class="col-lg-4 col-md-6 col-sm-12">
-      <div class="panel panel-default">
-        <div class="panel-heading clearfix">
-          <h3 class="panel-title pull-left">Article</h3>
-        </div>
-        <div class="panel-body">
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="article_Author" checked="true"}} Author
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="article_Title" checked="true"}} Title
-            </div>
+    {{#each-in model as |entry attributes|}}
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="panel panel-default list-group">
+
+          <div class="panel-heading clearfix">
+            <h3 class="panel-title pull-left text-capitalize"><strong>{{entry}}</strong></h3>
           </div>
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="article_Journal" checked="true"}} Journal
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="article_Year" checked="true"}} Year
+
+          <div class="panel-body">
+            <div class="row">
+              {{#each-in attributes as |option list|}}
+                {{#each-in list as |key value|}}
+                  <div class="col-lg-6 text-capitalize">
+                    <input type="checkbox" name="{{entry}}_{{value}}" checked="{{teste}}"/> {{value}}
+                  </div>
+                {{/each-in}}
+              {{/each-in}}
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="article_Volume"}} Volume
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="article_Number"}} Number
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="article_Pages"}} Pages
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="article_Month"}} Month
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="article_Note"}} Note
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="article_Key"}} Key
-            </div>
-          </div>
         </div>
       </div>
-    </div>
-
-    <div class="col-lg-4 col-md-6 col-sm-12">
-      <div class="panel panel-default">
-        <div class="panel-heading clearfix">
-          <h3 class="panel-title pull-left">Book</h3>
-        </div>
-        <div class="panel-body">
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Author" checked="true"}} Author
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Editor" checked="true"}} Editor
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Title" checked="true"}} Title
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Publisher" checked="true"}} Publisher
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Year" checked="true"}} Year
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Volume"}} Volume
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Series"}} Series
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Address"}} Address
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Edition"}} Edition
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Month"}} Month
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Note"}} Note
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Key"}} Key
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-lg-4 col-md-6 col-sm-12">
-      <div class="panel panel-default">
-        <div class="panel-heading clearfix">
-          <h3 class="panel-title pull-left">Inproceedings</h3>
-        </div>
-        <div class="panel-body">
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Author" checked="true"}} Author
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Title" checked="true"}} Title
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Booktitle" checked="true"}} Booktitle
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Year" checked="true"}} Year
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Editor"}} Editor
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Pages"}} Pages
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Organization"}} Organization
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Publisher"}} Publisher
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Address"}} Address
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Month"}} Month
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Note"}} Note
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Key"}} Key
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-lg-4 col-md-6 col-sm-12">
-      <div class="panel panel-default">
-        <div class="panel-heading clearfix">
-          <h3 class="panel-title pull-left">Conference</h3>
-        </div>
-        <div class="panel-body">
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Author" checked="true"}} Author
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Title" checked="true"}} Title
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Booktitle" checked="true"}} Booktitle
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Year" checked="true"}} Year
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Editor"}} Editor
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Pages"}} Pages
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Organization"}} Organization
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Publisher"}} Publisher
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Address"}} Address
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Month"}} Month
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Note"}} Note
-            </div>
-            <div class="col-lg-6">
-              {{input type="checkbox" name="book_Key"}} Key
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    {{/each-in}}
   </div>
+
   <div class="row">
     <div class="col text-center">
       <button class="btn btn-primary btn-lg" {{action "configure"}}>Save</button>
