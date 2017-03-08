@@ -17,13 +17,16 @@
 
           <div class="panel-body">
             <div class="row">
-              {{#each-in attributes as |option list|}}
-                {{#each-in list as |key value|}}
-                  <div class="col-lg-6 text-capitalize">
-                    <input type="checkbox" name="{{entry}}_{{value}}" checked="{{teste}}"/> {{value}}
-                  </div>
-                {{/each-in}}
-              {{/each-in}}
+              {{#each attributes.required as |req|}}
+                <div class="col-lg-6 text-capitalize">
+                  <input type="checkbox" name="{{entry}}" class="{{entry}}" checked="" disabled=""/> {{req}}
+                </div>
+              {{/each}}
+              {{#each attributes.optional as |opt|}}
+                <div class="col-lg-6 text-capitalize">
+                  <input type="checkbox" name="{{entry}}" class="{{entry}}"/> {{opt}}
+                </div>
+              {{/each}}
             </div>
           </div>
 

@@ -27,7 +27,7 @@ export default Ember.Route.extend({
 
   actions: {
     configure() {
-      console.log(this.get('teste'));
+      console.log(Ember.$('.article').get('checked'));
     }
   }
 });
