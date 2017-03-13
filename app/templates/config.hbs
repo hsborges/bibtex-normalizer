@@ -6,6 +6,7 @@
     </div>
   </div>
 
+  <form {{action "configure" on="submit"}}>
   <div class="row">
     {{#each-in model as |entry attributes|}}
       <div class="col-lg-4 col-md-6 col-sm-12">
@@ -19,12 +20,12 @@
             <div class="row">
               {{#each attributes.required as |req|}}
                 <div class="col-lg-6 text-capitalize">
-                  <input type="checkbox" name="{{entry}}" class="{{entry}}" checked="" disabled=""/> {{req}}
+                  <input id="input-{{entry}}-{{req}}" type="checkbox" name="{{entry}}-{{req}}" class="{{entry}}" checked="" disabled=""/> {{req}}
                 </div>
               {{/each}}
               {{#each attributes.optional as |opt|}}
                 <div class="col-lg-6 text-capitalize">
-                  <input type="checkbox" name="{{entry}}" class="{{entry}}"/> {{opt}}
+                  <input id="input-{{entry}}-{{opt}}" type="checkbox" name="{{entry}}-{{opt}}" class="{{entry}}" checked="{{teste}}"/> {{opt}}
                 </div>
               {{/each}}
             </div>
@@ -37,7 +38,9 @@
 
   <div class="row">
     <div class="col text-center">
-      <button class="btn btn-primary btn-lg" {{action "configure"}}>Save</button>
+      <button class="btn btn-primary btn-lg" type="submit">Submit</button>
     </div>
   </div>
+  </form>
+
 </div>
