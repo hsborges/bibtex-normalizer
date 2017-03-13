@@ -32,7 +32,16 @@ export default Ember.Route.extend({
 
         for(let i=0; i < indexEntry.optional.length; i++) {
           let idOptional = `#input-${entry}-${indexEntry.optional[i]}`;
-          console.log(`${$(idOptional).is(':checked')}`);
+
+          // comparsion is in string
+          if(`${$(idOptional).is(':checked')}` === "true") {
+            this.controllerFor('ember-cli-cookie').send('setAction', `${entry}-${indexEntry.optional[i]}`, true);
+            console.log(this.controllerFor('ember-cli-cookie').send('getAction', `${entry}-${indexEntry.optional[i]}`));
+          } else {
+            this.controllerFor('ember-cli-cookie').send('removeAction', `${entry}-${indexEntry.optional[i]}`);
+          }
+
+
         }
 
       }
