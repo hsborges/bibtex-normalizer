@@ -20,12 +20,12 @@
             <div class="row">
               {{#each attributes.required as |req|}}
                 <div class="col-lg-6 text-capitalize">
-                  <input id="input-{{entry}}-{{req}}" type="checkbox" name="{{entry}}-{{req}}" class="{{entry}}" checked="" disabled=""/> {{req}}
+                  <input id="input-{{entry}}-{{req}}" type="checkbox" checked="checked" disabled=""/> {{req}}
                 </div>
               {{/each}}
               {{#each attributes.optional as |opt|}}
                 <div class="col-lg-6 text-capitalize">
-                  <input id="input-{{entry}}-{{opt}}" type="checkbox" name="{{entry}}-{{opt}}" class="{{entry}}" checked="{{teste}}"/> {{opt}}
+                  <input id="input-{{entry}}-{{opt}}" type="checkbox" /> {{opt}}
                 </div>
               {{/each}}
             </div>
