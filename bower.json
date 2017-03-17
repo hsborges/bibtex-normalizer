@@ -11,6 +11,7 @@
     "clipboard": "^1.5.16",
     "bootstrap-sass": "^3.3.7",
     "ace-builds": "^1.2.6",
-    "sweetalert2": "^6.4.2"
+    "sweetalert2": "^6.4.2",
+    "js-cookie": "^2.1.3"
   }
 }

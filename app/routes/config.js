@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  formatter: Ember.inject.service(),
+  cookie: Ember.inject.service('cookie'),
 
   entriesObjects: {
     "article": {
@@ -27,17 +27,23 @@ export default Ember.Route.extend({
   },
 
   init() {
-    for(let entry in this.get('entriesObjects')) {
-      let indexEntry = this.get('entriesObjects')[entry];
+    Ember.run.schedule("afterRender", this, function() {
+      for(let entry in this.get('entriesObjects')) {
+        let indexEntry = this.get('entriesObjects')[entry];
 
-      for(let i=0; i < indexEntry.optional.length; i++) {
-        this.controllerFor('ember-cli-cookie').send('findInCookie', `${entry}-${indexEntry.optional[i]}`);
-        if(this.controllerFor('ember-cli-cookie').get('preConfigStatus'))
-          $(`#input-${entry}-${indexEntry.optional[i]}`).prop('checked', true);
-        // console.log(`$('#input-${entry}-${indexEntry.optional[i]}').prop('checked'): ${$(`#input-${entry}-${indexEntry.optional[i]}`).is(':checked')}`);
+        for(let i=0; i < indexEntry.optional.length; i++) {
+          let idOptional = `${entry}-${indexEntry.optional[i]}`;
+
+          console.log(this.get('cookie').isCookie(idOptional));
+
+          if(this.get('cookie').isCookie(idOptional)) {
+            console.log(this.get('cookie').getCookie(idOptional));
+            $(`#input-${idOptional}`).attr('checked', true);
+          }
+
+        }
       }
-
-    }
+    });
   },
 
   actions: {
@@ -46,15 +52,14 @@ export default Ember.Route.extend({
         let indexEntry = this.get('entriesObjects')[entry];
 
         for(let i=0; i < indexEntry.optional.length; i++) {
-          let idOptional = `#input-${entry}-${indexEntry.optional[i]}`;
+          let idOptional = `${entry}-${indexEntry.optional[i]}`;
 
           try {
-            if(`${$(idOptional).is(':checked')}` === "true") {
-              this.controllerFor('ember-cli-cookie').send('setAction', `${entry}-${indexEntry.optional[i]}`, true);
-              this.controllerFor('ember-cli-cookie').send('getAction', `${entry}-${indexEntry.optional[i]}`);
-              console.log(`${this.controllerFor('ember-cli-cookie').get('attrStatus')}`);
+            console.log($(`#input-${idOptional}`).is(':checked'));
+            if($(`#input-${idOptional}`).is(':checked') === "true") {
+              this.get('cookie').setCookie(idOptional, true);
             } else {
-              this.controllerFor('ember-cli-cookie').send('removeAction', `${entry}-${indexEntry.optional[i]}`);
+              this.get('cookie').removeCookie(idOptional);
             }
 
           } catch (e) {
