@@ -28,6 +28,7 @@ export default Ember.Route.extend({
 
   init() {
     Ember.run.schedule("afterRender", this, function() {
+      console.log(this.get('cookie').getAllCookie());
       for(let entry in this.get('entriesObjects')) {
         let indexEntry = this.get('entriesObjects')[entry];
 
@@ -53,7 +54,7 @@ export default Ember.Route.extend({
 
           try {
             if($(`#input-${idOptional}`).is(':checked')) {
-              this.get('cookie').setCookie(idOptional);
+              this.get('cookie').setCookie(entry, indexEntry.optional[i]);
             } else {
               this.get('cookie').removeCookie(idOptional);
             }
