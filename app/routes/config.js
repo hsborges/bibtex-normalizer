@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  cookie: Ember.inject.service('cookie'),
+  cookie: Ember.inject.service(),
 
   entriesObjects: {
     "article": {
@@ -34,10 +34,7 @@ export default Ember.Route.extend({
         for(let i=0; i < indexEntry.optional.length; i++) {
           let idOptional = `${entry}-${indexEntry.optional[i]}`;
 
-          console.log(this.get('cookie').isCookie(idOptional));
-
-          if(this.get('cookie').isCookie(idOptional)) {
-            console.log(this.get('cookie').getCookie(idOptional));
+          if(this.get('cookie').getCookie(idOptional)) {
             $(`#input-${idOptional}`).attr('checked', true);
           }
 
@@ -55,13 +52,11 @@ export default Ember.Route.extend({
           let idOptional = `${entry}-${indexEntry.optional[i]}`;
 
           try {
-            console.log($(`#input-${idOptional}`).is(':checked'));
-            if($(`#input-${idOptional}`).is(':checked') === "true") {
-              this.get('cookie').setCookie(idOptional, true);
+            if($(`#input-${idOptional}`).is(':checked')) {
+              this.get('cookie').setCookie(idOptional);
             } else {
               this.get('cookie').removeCookie(idOptional);
             }
-
           } catch (e) {
             swal({
               title: 'An unexpetced error',
@@ -69,14 +64,14 @@ export default Ember.Route.extend({
             });
           }
 
-          swal({
-            title: 'Saved',
-            type: 'success'
-          });
-
         }
-
       }
+
+      swal({
+        title: 'Saved',
+        type: 'success'
+      });
+
     }
   }
 });

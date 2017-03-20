@@ -38,7 +38,7 @@ module.exports = function(defaults) {
   app.import('bower_components/sweetalert/dist/sweetalert.min.js');
   app.import('bower_components/clipboard/dist/clipboard.min.js');
   app.import('bower_components/lodash/dist/lodash.min.js');
-  app.import('bower_components/js-cookie/src/js-cookie');
+  app.import('bower_components/js-cookie/src/js.cookie.js');
   app.import('vendor/FileSaver.min.js');
   app.import('vendor/bibtexParse.js');
   return app.toTree();
