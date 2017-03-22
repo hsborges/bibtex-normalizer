@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Service.extend({
 
   setCookie: function(entry, attribute) {
-    Cookies.set(entry, {attribute}, {expires: 365});
+    Cookies.set(entry, JSON.stringify(attribute), {expires: 365});
   },
 
   getCookie: function(attribute) {

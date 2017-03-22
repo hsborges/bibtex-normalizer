@@ -27,6 +27,7 @@ class Validator {
     this.key = key;
     this.note = note;
     this.number = number;
+    this.organization = organization;
     this.pages = pages;
     this.publisher = publisher;
     this.school = school;

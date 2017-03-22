@@ -28,18 +28,14 @@ export default Ember.Route.extend({
 
   init() {
     Ember.run.schedule("afterRender", this, function() {
-      console.log(this.get('cookie').getAllCookie());
       for(let entry in this.get('entriesObjects')) {
-        let indexEntry = this.get('entriesObjects')[entry];
+        let attrEntryArray = this.get('cookie').getCookie(entry);
 
-        for(let i=0; i < indexEntry.optional.length; i++) {
-          let idOptional = `${entry}-${indexEntry.optional[i]}`;
-
-          if(this.get('cookie').getCookie(idOptional)) {
-            $(`#input-${idOptional}`).attr('checked', true);
+        if(attrEntryArray)
+          for(let i=0; i<attrEntryArray.length; i++) {
+            $(`#input-${entry}-${attrEntryArray[i]}`).attr('checked', true);
           }
 
-        }
       }
     });
   },
@@ -48,13 +44,14 @@ export default Ember.Route.extend({
     configure() {
       for(let entry in this.get('entriesObjects')) {
         let indexEntry = this.get('entriesObjects')[entry];
+        let attrEntryArray = new Array();
 
         for(let i=0; i < indexEntry.optional.length; i++) {
           let idOptional = `${entry}-${indexEntry.optional[i]}`;
 
           try {
             if($(`#input-${idOptional}`).is(':checked')) {
-              this.get('cookie').setCookie(entry, indexEntry.optional[i]);
+              attrEntryArray.push(indexEntry.optional[i]);
             } else {
               this.get('cookie').removeCookie(idOptional);
             }
@@ -66,6 +63,8 @@ export default Ember.Route.extend({
           }
 
         }
+        if(attrEntryArray.length > 0)
+          this.get('cookie').setCookie(entry, attrEntryArray);
       }
 
       swal({
