@@ -2,12 +2,14 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   formatter: Ember.inject.service(),
+  cookie: Ember.inject.service(),
 
   actions: {
     clear() {
       ace.edit("formatter").setValue("");
       this.get('formatter').get('bibtex').clear();
     },
+
     normalize() {
       const input = ace.edit("formatter").getValue();
       // textarea was empty
@@ -21,7 +23,7 @@ export default Ember.Controller.extend({
       }
 
       try {
-        this.get('formatter').normalize(input);
+        this.get('formatter').normalize(input, this.get('cookie').getAllCookie());
 
         // no bibtex entries were detected
         if (this.get('formatter').get('bibtex').get('bibtex') === ""){

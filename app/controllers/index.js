@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   formatter: Ember.inject.service(),
+  cookie: Ember.inject.service(),
 
   init() {
     const prevent = function(event) {
@@ -37,7 +38,7 @@ export default Ember.Controller.extend({
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
-        this.get('formatter').normalize(e.target.result);
+        this.get('formatter').normalize(e.target.result, this.get('cookie').getAllCookie());
 
         // First attempt: Check the file out of Bibtex standards (or empty)
         if (this.get('formatter').get('bibtex').get('bibtex')) {

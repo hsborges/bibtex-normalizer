@@ -9,6 +9,7 @@ export default Ember.Controller.extend({
 
   editor: Ember.computed.equal('currentPath', 'editor'),
   about: Ember.computed.equal('currentPath', 'about'),
+  config: Ember.computed.equal('currentPath', 'config'),
 
   actions: {
     clear() {

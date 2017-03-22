@@ -3,10 +3,11 @@ import { Entry } from './index';
 
 export default Ember.Object.extend({
   bibtex: null,
+  config: null,
+
   invalidFields: null,
   missingFields: null,
   formattedFields: null,
-
   citationKeys: null,
 
   init() {
@@ -48,17 +49,17 @@ export default Ember.Object.extend({
 
       switch (_.toLower(entry.entryType)) {
         case 'article':
-          entryObject.set('requiredFields', ['author', 'title', 'journal', 'volume', 'number', 'pages', 'year']);
+          entryObject.set('requiredFields', this.get('config')['article']);
           break;
         case 'inproceedings':
         case 'conference':
-          entryObject.set('requiredFields', ['author', 'title', 'booktitle', 'pages', 'year']);
+          entryObject.set('requiredFields', this.get('config')['conference']);
           break;
         case 'book':
-          entryObject.set('requiredFields', ['author', 'editor', 'title', 'publisher', 'year']);
+          entryObject.set('requiredFields', this.get('config')['book']);
           break;
         case 'phdthesis':
-          entryObject.set('requiredFields', ['author', 'title', 'school', 'year']);
+          entryObject.set('requiredFields', this.get('config')['phdthesis']);
           break;
         default:
           console.log('Unknown entry type: ', entry.entryType);
