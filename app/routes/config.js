@@ -78,7 +78,6 @@ export default Ember.Route.extend({
         }
 
       }
-      // console.log(this.get('cookie').getAllCookie());
     });
   },
 
