@@ -8,6 +8,12 @@
 
   <form {{action "configure" on="submit"}}>
   <div class="row">
+    <div class="col text-center">
+      <button class="btn btn-primary btn-lg" type="submit">Save</button>
+    </div>
+  </div>
+
+  <div class="row">
     {{#each-in model as |entry attributes|}}
       <div class="col-lg-4 col-md-6 col-sm-12">
         <div class="panel panel-default list-group">
@@ -38,7 +44,7 @@
 
   <div class="row">
     <div class="col text-center">
-      <button class="btn btn-primary btn-lg" type="submit">Submit</button>
+      <button class="btn btn-primary btn-lg" type="submit">Save</button>
     </div>
   </div>
   </form>
