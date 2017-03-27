@@ -66,21 +66,6 @@ export default Ember.Route.extend({
     return this.get('entriesObjects');
   },
 
-  init() {
-    Ember.run.schedule("afterRender", this, function() {
-      for(let entry in this.get('entriesObjects')) {
-        let attrEntryArray = this.get('cookie').getCookie(entry);
-
-        if(attrEntryArray) {
-          for(let i=0; i<attrEntryArray.length; i++) {
-            $(`#input-${entry}-${attrEntryArray[i]}`).attr('checked', true);
-          }
-        }
-
-      }
-    });
-  },
-
   actions: {
     configure() {
       for(let entry in this.get('entriesObjects')) {
@@ -107,6 +92,21 @@ export default Ember.Route.extend({
         type: 'success'
       });
 
+    },
+
+    didTransition: function() {
+      Ember.run.schedule("afterRender", this, function() {
+        for(let entry in this.get('entriesObjects')) {
+          let attrEntryArray = this.get('cookie').getCookie(entry);
+
+          if(attrEntryArray) {
+            for(let i=0; i<attrEntryArray.length; i++) {
+              $(`#input-${entry}-${attrEntryArray[i]}`).attr('checked', true);
+            }
+          }
+
+        }
+      });
     }
   }
 });
