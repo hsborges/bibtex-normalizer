@@ -15,8 +15,8 @@
 
   <div class="row">
     {{#each-in model as |entry attributes|}}
-      <div class="col-lg-4 col-md-6 col-sm-12">
-        <div class="panel panel-default list-group" style="height: 230px;">
+      <div class="col-lg-4 col-md-4 col-sm-12">
+        <div class="panel panel-default list-group" style="min-height: 260px;">
 
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left text-capitalize"><strong>{{entry}}</strong></h3>
@@ -25,12 +25,12 @@
           <div class="panel-body">
             <div class="row">
               {{#each attributes.required as |req|}}
-                <div class="col-lg-6 text-capitalize">
+                <div class="col-lg-6 col-md-6 text-capitalize">
                   <input id="input-{{entry}}-{{req}}" type="checkbox" checked="checked" disabled=""/> {{req}}
                 </div>
               {{/each}}
               {{#each attributes.optional as |opt|}}
-                <div class="col-lg-6 text-capitalize">
+                <div class="col-lg-6 col-md-6 text-capitalize">
                   <input id="input-{{entry}}-{{opt}}" type="checkbox" /> {{opt}}
                 </div>
               {{/each}}

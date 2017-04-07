@@ -27,10 +27,16 @@ class TitleValidator {
     for(let j=0; j<occurrences.length; j++) {
       _.each(this.properNames, (word) => {
         let index = -1;
-        //TODO: substitute replace methods for regex use
+
+        let stringFixed = "";
+        if(occurrences[j][0] == '{')
+          stringFixed = "{";
+        stringFixed += word;
+
         if(occurrences[j].trim().replace('{', '').replace('}','').toLowerCase() === word.toLowerCase()) {
+          stringFixed += (occurrences[j][occurrences[j].length-1] == '}') ? '}' : '';
           while ((index = value.indexOf(occurrences[j], index+1)) != -1){
-            value = value.replace(occurrences[j], ` {${word}} `);
+            value = value.replace(occurrences[j], ` {${stringFixed}} `);
           }
         }
       });
