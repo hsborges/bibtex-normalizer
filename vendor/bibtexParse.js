@@ -54,7 +54,7 @@
             if (this.input.substring(this.pos, this.pos + s.length) == s) {
                 this.pos += s.length;
             } else {
-                throw {name: "Token Mismatch", message: `Token mismatch, expected ${s}, found sample ${this.input.substring(this.pos)}`};
+                throw "Token mismatch, expected " + s + ", found sample" + this.input.substring(this.pos);
             };
             this.skipWhitespace(canCommentOut);
         };
@@ -113,7 +113,7 @@
                     } else if (this.input[this.pos] == '{') {
                         bracecount++;
                     } else if (this.pos >= this.input.length - 1) {
-                        throw {name: "Unterminated value", message: `Unterminated value`};
+                        throw "Unterminated value";
                     };
                 };
                 if (this.input[this.pos] == '\\' && escaped == false)
@@ -134,7 +134,7 @@
                 if (this.input[this.pos] == '}')
                     brcktCnt--;
                 if (this.pos >= this.input.length - 1) {
-                    throw {name: "Unterminated value", message: `Unterminated value: ${this.input.substring(start)}`};
+                    throw "Unterminated value:" + this.input.substring(start);
                 };
                 this.pos++;
             };
@@ -152,7 +152,7 @@
                         this.match('"', false);
                         return this.input.substring(start, end);
                     } else if (this.pos >= this.input.length - 1) {
-                        throw {name: "Unterminated value", message: `Unterminated value: ${this.input.substring(start)}`};
+                        throw "Unterminated value:" + this.input.substring(start);
                     };
                 }
                 if (this.input[this.pos] == '\\' && escaped == false)
@@ -176,7 +176,7 @@
                 else if (this.months.indexOf(k.toLowerCase()) >= 0)
                     return k.toLowerCase();
                 else
-                    throw {name: "Unexpected value", message: `Value expected: ${this.input.substring(start)} for key: ${k}`};
+                    throw "Value expected:" + this.input.substring(start) + ' for key: ' + k;
 
             };
         };
@@ -195,7 +195,7 @@
             var start = this.pos;
             while (true) {
                 if (this.pos >= this.input.length) {
-                    throw {name: "Runaway key", message: `Runaway key`};
+                    throw "Runaway key";
                 };
                                 // а-яА-Я is Cyrillic
                 //console.log(this.input[this.pos]);
@@ -219,7 +219,8 @@
                 var val = this.value();
                 return [ key, val ];
             } else {
-                throw {name: "Attribution expected", message: `<ATTRIBUTE> = <VALUE> expected, equals sign missing: ${this.input.substring(this.pos)}`};
+                throw "... = value expected, equals sign missing:"
+                        + this.input.substring(this.pos);
             };
         };
 

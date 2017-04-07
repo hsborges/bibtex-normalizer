@@ -7,7 +7,9 @@
     "-Promise",
     "SyntaxHighlighter",
     "swal",
-    "saveAs"
+    "saveAs",
+    "Cookies",
+    "ace"
   ],
   "browser": true,
   "boss": true,

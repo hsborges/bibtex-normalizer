@@ -16,8 +16,6 @@ class TitleValidator {
   }
 
   fix(value) {
-    let result;
-
     // filter: unique values in array
     let occurrences = value.match(this.properNamesRegex).filter(function (value, index, self) {
       return self.indexOf(value) === index;
@@ -34,8 +32,8 @@ class TitleValidator {
         stringFixed += word;
 
         if(occurrences[j].trim().replace('{', '').replace('}','').toLowerCase() === word.toLowerCase()) {
-          stringFixed += (occurrences[j][occurrences[j].length-1] == '}') ? '}' : '';
-          while ((index = value.indexOf(occurrences[j], index+1)) != -1){
+          stringFixed += (occurrences[j][occurrences[j].length-1] === '}') ? '}' : '';
+          while ((index = value.indexOf(occurrences[j], index+1)) !== -1){
             value = value.replace(occurrences[j], ` {${stringFixed}} `);
           }
         }

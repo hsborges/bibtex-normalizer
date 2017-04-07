@@ -75,7 +75,7 @@ export default Ember.Route.extend({
         for(let i=0; i < indexEntry.optional.length; i++) {
           let idOptional = `${entry}-${indexEntry.optional[i]}`;
 
-          if($(`#input-${idOptional}`).is(':checked')) {
+          if(Ember.$(`#input-${idOptional}`).is(':checked')) {
             attrEntryArray.push(indexEntry.optional[i]);
           } else {
             this.get('cookie').removeCookie(idOptional);
@@ -101,7 +101,7 @@ export default Ember.Route.extend({
 
           if(attrEntryArray) {
             for(let i=0; i<attrEntryArray.length; i++) {
-              $(`#input-${entry}-${attrEntryArray[i]}`).attr('checked', true);
+              Ember.$(`#input-${entry}-${attrEntryArray[i]}`).attr('checked', true);
             }
           }
 
