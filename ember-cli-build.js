@@ -13,6 +13,11 @@ module.exports = function(defaults) {
     ace: {
       modes: ['latex'],
       workers: ['latex']
+    },
+    minifyJS: {
+      options: {
+        exclude: ["**/vendor.js"]
+      }
     }
   });
 
@@ -30,11 +35,11 @@ module.exports = function(defaults) {
   // along with the exports of each module as its value.
 
   // styles
-  app.import('bower_components/bootstrap-sass/assets/javascripts/bootstrap.js');
   app.import('bower_components/font-awesome/scss/font-awesome.scss');
   app.import('bower_components/sweetalert/dist/sweetalert.css');
   // app.import('bower_components/font-awesome/css/font-awesome.min.css');
   // scripts
+  app.import('bower_components/bootstrap-sass/assets/javascripts/bootstrap.js');
   app.import('bower_components/sweetalert/dist/sweetalert.min.js');
   app.import('bower_components/clipboard/dist/clipboard.min.js');
   app.import('bower_components/lodash/dist/lodash.min.js');
