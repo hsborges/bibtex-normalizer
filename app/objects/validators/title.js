@@ -16,8 +16,6 @@ class TitleValidator {
   }
 
   fix(value) {
-    let result;
-
     // filter: unique values in array
     let occurrences = value.match(this.properNamesRegex).filter(function (value, index, self) {
       return self.indexOf(value) === index;
@@ -29,7 +27,7 @@ class TitleValidator {
         let index = -1;
         //TODO: substitute replace methods for regex use
         if(occurrences[j].trim().replace('{', '').replace('}','').toLowerCase() === word.toLowerCase()) {
-          while ((index = value.indexOf(occurrences[j], index+1)) != -1){
+          while ((index = value.indexOf(occurrences[j], index+1)) !== -1){
             value = value.replace(occurrences[j], ` {${word}} `);
           }
         }
