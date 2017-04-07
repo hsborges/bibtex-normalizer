@@ -13,11 +13,6 @@ module.exports = function(defaults) {
     ace: {
       modes: ['latex'],
       workers: ['latex']
-    },
-    minifyJS: {
-      options: {
-        exclude: ["**/vendor.js"]
-      }
     }
   });
 
