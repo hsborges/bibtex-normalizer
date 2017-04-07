@@ -75,7 +75,8 @@ export default Ember.Object.extend({
       this.get('missingFields').addObject({ field: field, line: ++line, message: `"${field}" is a required field for @${json.entryType}.` });
     });
 
-    bibtex += '}';
+    //remove last comma from last attribute
+    bibtex = `${bibtex.substr(0, bibtex.length-2)}\n}`;
 
     this.set('bibtex', bibtex);
 

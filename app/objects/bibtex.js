@@ -50,24 +50,6 @@ export default Ember.Object.extend({
 
       entryObject.set('requiredFields', this.get('config')[_.toLower(entry.entryType)]);
 
-      // switch (_.toLower(entry.entryType)) {
-      //   case 'article':
-      //     entryObject.set('requiredFields', this.get('config')['article']);
-      //     break;
-      //   case 'inproceedings':
-      //   case 'conference':
-      //     entryObject.set('requiredFields', this.get('config')['conference']);
-      //     break;
-      //   case 'book':
-      //     entryObject.set('requiredFields', this.get('config')['book']);
-      //     break;
-      //   case 'phdthesis':
-      //     entryObject.set('requiredFields', this.get('config')['phdthesis']);
-      //     break;
-      //   default:
-      //     console.log('Unknown entry type: ', entry.entryType);
-      // }
-
       entryObject.normalize();
 
       const errors = _.concat(entryObject.get('invalidFields'), entryObject.get('missingFields'), entryObject.get('formattedFields'));

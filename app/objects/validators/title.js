@@ -1,34 +1,43 @@
 class TitleValidator {
   constructor() {
     this.properNames = ['Android', 'GitHub', 'YouTube', 'Twitter', 'Facebook', 'API', 'Java', 'JavaScript', 'Ruby'];
+    //regex (RegExp object) to identify multiple properNames in attribute
+    this.properNamesRegex = new RegExp(`\\W(${this.properNames.join(")(\\W|$)|\\W(")})(\\W|$)`, 'gi');
   }
 
   validate(value) {
-    let isValid = true;
-
-    _.each(this.properNames, (word) => {
-      // find word
-      const found = value.toLowerCase().indexOf(_.toLower(word));
-      // test if it is equals
-      if (found >= 0 && value.substr(found, word.length) !== word) { isValid = false; return; }
-      // test if it is between braces
-      if (found >= 0 && value.indexOf(`{${word}}`) < 0) { isValid = false; return; }
-    });
+    let isValid = !this.properNamesRegex.test(value);
 
     return {
-      isValid,
+      isValid: isValid,
       message: 'Proper names must be between braces (e.g., {YouTube}, {Twitter}, and {Facebook})',
       alternative: isValid ? null : this.fix(value)
     };
   }
 
   fix(value) {
-    _.each(this.properNames, (word) => {
-      const found = value.toLowerCase().indexOf(_.toLower(word));
-      if (found >= 0) { value = `${value.substr(0, found)}{${word}}${value.substr(found + word.length)}`; }
+    let result;
+
+    // filter: unique values in array
+    let occurrences = value.match(this.properNamesRegex).filter(function (value, index, self) {
+      return self.indexOf(value) === index;
     });
 
-    return value.replace(/\{+/, '{').replace(/\}+/, '}');
+    // for each invalid proper name, find all occurrences from term
+    for(let j=0; j<occurrences.length; j++) {
+      _.each(this.properNames, (word) => {
+        let index = -1;
+        //TODO: substitute replace methods for regex use
+        if(occurrences[j].trim().replace('{', '').replace('}','').toLowerCase() === word.toLowerCase()) {
+          while ((index = value.indexOf(occurrences[j], index+1)) != -1){
+            value = value.replace(occurrences[j], ` {${word}} `);
+          }
+        }
+      });
+    }
+
+    // return value.replace(/\{+/, '{').replace(/\}+/, '}');
+    return value.replace(/ +(?= )/g,'');
   }
 }
 
