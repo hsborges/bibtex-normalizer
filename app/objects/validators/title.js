@@ -26,9 +26,11 @@ class TitleValidator {
       _.each(this.properNames, (word) => {
         let index = -1;
 
+        // stringFixed allows to fetch any brackets found in regex and put it with the correct word
         let stringFixed = "";
-        if(occurrences[j][0] == '{')
+        if(occurrences[j][0] === '{') {
           stringFixed = "{";
+        }
         stringFixed += word;
 
         if(occurrences[j].trim().replace('{', '').replace('}','').toLowerCase() === word.toLowerCase()) {

@@ -1,4 +1,4 @@
-class AddressValidator {
+class MonthValidator {
   constructor() { }
 
   validate(value) {
@@ -9,4 +9,4 @@ class AddressValidator {
   }
 }
 
-export default (new AddressValidator());
+export default (new MonthValidator());

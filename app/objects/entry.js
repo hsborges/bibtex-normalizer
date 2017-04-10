@@ -71,7 +71,7 @@ export default Ember.Object.extend({
     const missingFields = _.differenceWith(requiredFields, _.chain(json.entryTags).keys().map(_.toLower).value());
 
     _.each(missingFields, (field) => {
-      bibtex += `  ${field} = { XX },\n`;
+      bibtex += `  ${field} = { MISSING },\n`;
       this.get('missingFields').addObject({ field: field, line: ++line, message: `"${field}" is a required field for @${json.entryType}.` });
     });
 

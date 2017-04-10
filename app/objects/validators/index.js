@@ -5,6 +5,7 @@ import edition from './edition';
 import editor from './editor';
 import journal from './journal';
 import key from './key';
+import month from './month';
 import note from './note';
 import number from './number';
 import organization from './organization';
@@ -25,6 +26,7 @@ class Validator {
     this.editor = editor;
     this.journal = journal;
     this.key = key;
+    this.month = month;
     this.note = note;
     this.number = number;
     this.organization = organization;
