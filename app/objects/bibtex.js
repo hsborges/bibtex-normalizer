@@ -46,12 +46,8 @@ export default Ember.Object.extend({
       const entryObject = Entry.create({ bibtex: bibtexParse.toBibtex([entry]) });
 
       entryObject.set('citationKey', entry.citationKey);
-
       entryObject.set('requiredFields', this.get('config')[_.toLower(entry.entryType)]);
-
       entryObject.normalize();
-
-      console.log("just returned from entry object js");
 
       const errors = _.concat(entryObject.get('invalidFields'), entryObject.get('missingFields'), entryObject.get('formattedFields'));
 
