@@ -3,10 +3,13 @@ class TitleValidator {
     this.properNames = ['Android', 'GitHub', 'YouTube', 'Twitter', 'Facebook', 'API', 'Java', 'JavaScript', 'Ruby'];
     //regex (RegExp object) to identify multiple properNames in attribute
     this.properNamesRegex = new RegExp(`\\W(${this.properNames.join(")(\\W|$)|\\W(")})(\\W|$)`, 'gi');
+    this.correctRegex = new RegExp(`\\{${this.properNames.join("\\}|\\{")}\\}`, 'gi');
   }
 
   validate(value) {
-    let isValid = !this.properNamesRegex.test(value);
+    console.log(!this.properNamesRegex.test(value), this.correctRegex.test(value));
+    let isValid = !this.properNamesRegex.test(value) || this.correctRegex.test(value);
+    console.log(value.match(this.properNamesRegex));
 
     return {
       isValid: isValid,
