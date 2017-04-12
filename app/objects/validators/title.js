@@ -7,9 +7,10 @@ class TitleValidator {
   }
 
   validate(value) {
-    let isValid = (this.properNamesRegex.test(value) && this.correctRegex.test(value)) || (!this.properNamesRegex.test(value) && !this.correctRegex.test(value));
-    console.log(isValid, (this.properNamesRegex.test(value) && this.correctRegex.test(value)), value.match(this.properNamesRegex));
-    console.log(isValid, (!this.properNamesRegex.test(value) && !this.correctRegex.test(value)), value.match(this.correctRegex));
+    let a = this.properNamesRegex.test(value),
+      b = this.correctRegex.test(value);
+    // XNOR: valid content when both regex return same boolean
+    let isValid = !((a && !b) || (!a && b));
 
     return {
       isValid: isValid,
