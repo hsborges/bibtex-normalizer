@@ -6,6 +6,11 @@ export default Ember.Service.extend({
     Cookies.set(entry, JSON.stringify(attribute), {expires: 365});
   },
 
+  //TODO
+  getTest: () => {
+    console.log(Cookies.get());
+  },
+
   getCookie: function(attribute) {
     return Cookies.getJSON(attribute);
   },
@@ -16,10 +21,6 @@ export default Ember.Service.extend({
 
   removeCookie: function(attribute) {
     Cookies.remove(attribute);
-  },
-
-  removeCookieEntry: function(entry) {
-    Cookies.remove(entry);
   },
 
   getAllCookie: function() {

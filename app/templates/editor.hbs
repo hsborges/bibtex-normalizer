@@ -1,7 +1,8 @@
 <div class="app-editor container">
-  {{ember-ace ready=(action 'buildEditor') id="formatter" mode="ace/mode/latex" lines=30 class="form-control"}}
+  {{ember-ace ready=(action 'buildEditor') id="formatter" mode="ace/mode/latex" lines=30}}
   <div class="options">
     <button type="button" class="btn btn-default" name="button" {{action "clear"}}><i class="fa fa-eraser"></i>Clear</button>
     <button type="button" class="btn btn-primary" name="button" {{action "normalize"}}><i class="fa fa-cog"></i>Normalize</button>
+    <button type="button" class="btn btn-primary" name="button" {{action "addMarker" 4}}><i class="fa fa-cog"></i>Range it</button>
   </div>
 </div>

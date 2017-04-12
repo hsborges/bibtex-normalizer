@@ -3,11 +3,21 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   formatter: Ember.inject.service(),
   cookie: Ember.inject.service(),
+  Range: ace.require('ace/range').Range,
 
   actions: {
     clear() {
       ace.edit("formatter").setValue("");
       this.get('formatter').get('bibtex').clear();
+    },
+
+    gotoLine(lineNumber) {
+      ace.edit("formatter").gotoLine(lineNumber);
+    },
+
+    addMarker(beginLine) {
+      console.log(beginLine+2);
+      ace.edit("formatter").session.addMarker(new this.Range(beginLine, 0, beginLine+2, 0), "auto-formatted-fields", "line");
     },
 
     normalize() {
@@ -65,6 +75,7 @@ export default Ember.Controller.extend({
     buildEditor() {
       const bibtex = this.get('formatter').get('bibtex');
       ace.edit("formatter").setValue(bibtex.get('bibtex') || '');
+      ace.edit("formatter").getSession().setUseWrapMode(true);
     }
   }
 });

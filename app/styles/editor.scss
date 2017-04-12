@@ -17,7 +17,18 @@
   }
 
   pre.ace_editor {
-    font-size: 20px;
+    font-size: 16px;
+  }
+
+  .missing-fields, .invalid-fields{
+    position:absolute;
+    background:rgba(255, 92, 63,0.5);
+    z-index:20
+  }
+  .auto-formatted-fields{
+    position:absolute;
+    background:rgba(255, 210, 63,0.5);
+    z-index:40
   }
 
 }
