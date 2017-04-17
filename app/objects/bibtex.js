@@ -8,7 +8,9 @@ export default Ember.Object.extend({
   invalidFields: null,
   missingFields: null,
   formattedFields: null,
+
   citationKeys: null,
+  lines: null,
 
   init() {
     if (this.get('bibtex')) { this.normalize(); }
@@ -20,6 +22,7 @@ export default Ember.Object.extend({
     this.set('missingFields', []);
     this.set('formattedFields', []);
     this.set('citationKeys', []);
+    this.set('lines', []);
   },
 
   normalize() {
@@ -55,6 +58,9 @@ export default Ember.Object.extend({
       _.each(errors, (err) => {
         err.citationKey = entry.citationKey;
         err.line += lines;
+
+        // console.log(err.line);
+        this.get('lines').addObject(err.line);
       });
 
       this.get('invalidFields').addObjects(entryObject.get('invalidFields'));

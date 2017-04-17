@@ -4,20 +4,29 @@ export default Ember.Controller.extend({
   formatter: Ember.inject.service(),
   cookie: Ember.inject.service(),
   Range: ace.require('ace/range').Range,
+  rangeLines: [],
+
+  // highlight warning lines from ace-editor
+  addMarker(beginLine) {
+    let range = new this.Range(beginLine-1, 0, beginLine, 0);
+    this.get('rangeLines').addObject(range);
+
+    ace.edit("formatter").session.addMarker(range, "auto-formatted-fields", "line");
+  },
+
+  // clear all highlighted lines from ace-editor
+  clearMarkers() {
+    Ember.$.each(rangeLines, (range) => {
+      ace.edit("formatter").session.removeMarker(range);
+    });
+    this.set('rangeLines', []);
+  },
 
   actions: {
     clear() {
       ace.edit("formatter").setValue("");
       this.get('formatter').get('bibtex').clear();
-    },
-
-    gotoLine(lineNumber) {
-      ace.edit("formatter").gotoLine(lineNumber);
-    },
-
-    addMarker(beginLine) {
-      console.log(beginLine+2);
-      ace.edit("formatter").session.addMarker(new this.Range(beginLine, 0, beginLine+2, 0), "auto-formatted-fields", "line");
+      clearMarkers();
     },
 
     normalize() {
@@ -69,13 +78,22 @@ export default Ember.Controller.extend({
         return;
       }
 
-      this.transitionToRoute('bibtex');
+      ace.edit("formatter").setValue(this.get('formatter').get('bibtex').get('bibtex') || '');
+      Ember.$.each(this.get('formatter').get('bibtex').get('lines'), (index, line) => {
+        this.addMarker(line);
+      });
+      ace.edit("formatter").gotoLine(0);
 
+      console.log(this.get('formatter').get('bibtex').get('lines'));
+
+      // this.transitionToRoute('bibtex');
     },
     buildEditor() {
       const bibtex = this.get('formatter').get('bibtex');
-      ace.edit("formatter").setValue(bibtex.get('bibtex') || '');
+      // editor configuration
       ace.edit("formatter").getSession().setUseWrapMode(true);
+      // bibtex content
+      ace.edit("formatter").setValue(bibtex.get('bibtex') || '');
     }
   }
 });
