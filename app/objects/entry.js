@@ -56,11 +56,11 @@ export default Ember.Object.extend({
       line += 1;
 
       if (!validation.isValid && !validation.alternative) {
-        this.get('invalidFields').addObject({ field: validation.field, line: line, message: validation.message });
+        this.get('invalidFields').addObject({ field: validation.field, line: line, message: validation.message, type: 'invalidField' });
       }
 
       if (validation.alternative) {
-        this.get('formattedFields').addObject({ field: validation.field, line: line, message: validation.message });
+        this.get('formattedFields').addObject({ field: validation.field, line: line, message: validation.message, type: 'formattedField' });
       }
       // Adding entry name in Entry object
       this.get('citationKeys').addObject(json.citationKey);
@@ -72,7 +72,7 @@ export default Ember.Object.extend({
 
     _.each(missingFields, (field) => {
       bibtex += `  ${field} = { MISSING },\n`;
-      this.get('missingFields').addObject({ field: field, line: ++line, message: `"${field}" is a required field for @${json.entryType}.` });
+      this.get('missingFields').addObject({ field: field, line: ++line, message: `required field for @${json.entryType}.`, type: 'missingField' });
     });
 
     //remove last comma from last attribute

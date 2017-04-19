@@ -9,14 +9,10 @@ export default Ember.Controller.extend({
   // highlight warning lines from ace-editor
   addMarker(beginLine) {
     let range = new this.Range(beginLine-1, 0, beginLine, 0);
-    this.get('rangeLines').addObject(range);
-
     ace.edit("formatter").session.addMarker(range, "auto-formatted-fields", "line");
-  },
 
-  addBreakpoint(line) {
-    console.log("adicionando breakpoint");
-    ace.edit("formatter").session.addGutterDecoration(line, "breakpoint");
+    // stored for cleaning maker purposes
+    this.get('rangeLines').addObject(range);
   },
 
   // clear all highlighted lines from ace-editor
@@ -83,18 +79,29 @@ export default Ember.Controller.extend({
         return;
       }
 
-      let annotations = [];
+      let annotations = [], lineObjectType = "";
       ace.edit("formatter").setValue(this.get('formatter').get('bibtex').get('bibtex') || '');
-      Ember.$.each(this.get('formatter').get('bibtex').get('lines'), (index, line) => {
+      Ember.$.each(this.get('formatter').get('bibtex').get('lines'), (index, lineObject) => {
+        // define type of annotation by using type of error
+        switch (lineObject.type) {
+          case 'invalidField':
+            lineObjectType = 'error';
+            break;
+          case 'missingField':
+            lineObjectType = 'warning';
+            break;
+          default:
+            lineObjectType = 'info';
+        }
         // mark a specific line
-        this.addMarker(line);
+        this.addMarker(lineObject.line);
         annotations.push({
-          row: (line-1),
-          type: "error", // error|warning|info
-          text: "error"
+          row: (lineObject.line-1),
+          type: lineObjectType, // error|warning|info
+          text: lineObject.message
         });
       });
-      // add all 'breakpoints' called annotations
+      // add all 'breakpoints' (officially called annotations)
       ace.edit("formatter").session.setAnnotations(annotations);
       ace.edit("formatter").gotoLine(0);
 

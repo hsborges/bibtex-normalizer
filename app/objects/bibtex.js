@@ -59,8 +59,11 @@ export default Ember.Object.extend({
         err.citationKey = entry.citationKey;
         err.line += lines;
 
-        // console.log(err.line);
-        this.get('lines').addObject(err.line);
+        this.get('lines').addObject({
+          line: err.line,
+          type: err.type,
+          message: `"${err.field}": ${err.message}`
+        });
       });
 
       this.get('invalidFields').addObjects(entryObject.get('invalidFields'));
