@@ -42,7 +42,8 @@ export default Ember.Controller.extend({
 
         // First attempt: Check the file out of Bibtex standards (or empty)
         if (this.get('formatter').get('bibtex').get('bibtex')) {
-          this.transitionToRoute('bibtex');
+          // this.transitionToRoute('bibtex');
+          this.transitionToRoute('editor');
         } else {
           swal({
             title: "Your entry may not be on <small>bibtex</small> standard.",
