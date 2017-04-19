@@ -14,9 +14,14 @@ export default Ember.Controller.extend({
     ace.edit("formatter").session.addMarker(range, "auto-formatted-fields", "line");
   },
 
+  addBreakpoint(line) {
+    console.log("adicionando breakpoint");
+    ace.edit("formatter").session.addGutterDecoration(line, "breakpoint");
+  },
+
   // clear all highlighted lines from ace-editor
   clearMarkers() {
-    Ember.$.each(rangeLines, (range) => {
+    Ember.$.each(this.get("rangeLines"), (range) => {
       ace.edit("formatter").session.removeMarker(range);
     });
     this.set('rangeLines', []);
@@ -26,7 +31,7 @@ export default Ember.Controller.extend({
     clear() {
       ace.edit("formatter").setValue("");
       this.get('formatter').get('bibtex').clear();
-      clearMarkers();
+      this.clearMarkers();
     },
 
     normalize() {
@@ -78,13 +83,20 @@ export default Ember.Controller.extend({
         return;
       }
 
+      let annotations = [];
       ace.edit("formatter").setValue(this.get('formatter').get('bibtex').get('bibtex') || '');
       Ember.$.each(this.get('formatter').get('bibtex').get('lines'), (index, line) => {
+        // mark a specific line
         this.addMarker(line);
+        annotations.push({
+          row: (line-1),
+          type: "error", // error|warning|info
+          text: "error"
+        });
       });
+      // add all 'breakpoints' called annotations
+      ace.edit("formatter").session.setAnnotations(annotations);
       ace.edit("formatter").gotoLine(0);
-
-      console.log(this.get('formatter').get('bibtex').get('lines'));
 
       // this.transitionToRoute('bibtex');
     },
