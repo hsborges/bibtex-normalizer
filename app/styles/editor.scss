@@ -16,6 +16,21 @@
     }
   }
 
+  .options-left {
+    @extend .pull-left;
+    padding-top: 15px;
+
+    .btn {
+      width: 125px;
+      font-size: 16px;
+      font-weight: bold;
+      height: 40px;
+      margin-left: 15px;
+
+      i { padding-right: 5px; }
+    }
+  }
+
   pre.ace_editor {
     font-size: 16px;
   }

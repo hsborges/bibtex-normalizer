@@ -1,7 +1,31 @@
 <div class="app-editor container">
   {{ember-ace ready=(action 'buildEditor') id="formatter" mode="ace/mode/latex" lines=30}}
-  <div class="options">
-    <button type="button" class="btn btn-default" name="button" {{action "clear"}}><i class="fa fa-eraser"></i>Clear</button>
-    <button type="button" class="btn btn-primary" name="button" {{action "normalize"}}><i class="fa fa-cog"></i>Normalize</button>
+  <div class="row">
+    <div class="options-left col-lg-4 col-md-4 col-sm-12">
+      <button type="button" class="btn btn-default" name="button" {{action "copyToClipboard"}}><i class="glyphicon glyphicon-copy"></i>Copy</button>
+      <button type="button" class="btn btn-default" name="button" {{action "save"}}><i class="glyphicon glyphicon-download-alt"></i>Download</button>
+    </div>
+
+    <div class="options col-lg-4 col-md-4 col-sm-12">
+      <button type="button" class="btn btn-default" name="button" {{action "clear"}}><i class="fa fa-eraser"></i>Clear</button>
+      <button type="button" class="btn btn-primary" name="button" {{action "normalize"}}><i class="fa fa-cog"></i>Normalize</button>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col col-lg-8">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Summary</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li>
+              <strong>Line 6:</strong> Message
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

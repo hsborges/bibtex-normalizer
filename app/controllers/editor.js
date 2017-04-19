@@ -31,6 +31,7 @@ export default Ember.Controller.extend({
     },
 
     normalize() {
+      this.clearMarkers();
       const input = ace.edit("formatter").getValue();
       // textarea was empty
       if (input === ""){
@@ -101,18 +102,52 @@ export default Ember.Controller.extend({
           text: lineObject.message
         });
       });
+
       // add all 'breakpoints' (officially called annotations)
       ace.edit("formatter").session.setAnnotations(annotations);
-      ace.edit("formatter").gotoLine(0);
+      let firstLineError = 0;
+      if(this.get('formatter').get('bibtex').get('lines')[0]) {
+        firstLineError = this.get('formatter').get('bibtex').get('lines')[0].line;
+      }
+      ace.edit("formatter").gotoLine(firstLineError);
 
-      // this.transitionToRoute('bibtex');
+      if (this.rangeLines.length > 0) {
+        swal({
+          title: 'We found errors in your bibtex file. Please, check that out before use it!',
+        });
+      } else {
+        swal({
+          title: 'Congratulations! We didn\'t find errors in your bibtex file.',
+        });
+      }
     },
+
     buildEditor() {
       const bibtex = this.get('formatter').get('bibtex');
       // editor configuration
       ace.edit("formatter").getSession().setUseWrapMode(true);
       // bibtex content
       ace.edit("formatter").setValue(bibtex.get('bibtex') || '');
-    }
+    },
+
+    copyToClipboard() {
+      const $tmp = Ember.$('<textarea>');
+      Ember.$('body').append($tmp);
+      $tmp.val(this.model.bibtex).select();
+      document.execCommand('copy');
+      $tmp.remove();
+
+      swal({
+      	title: 'Bibtex copied to clipboard!',
+        timer: 2000
+      });
+    },
+
+    save() {
+      if(!!this.get('formatter').get('bibtex').get('bibtex')) {
+        const file = new File([this.model.bibtex], "references-bibtex-normalizer.bib", {type: "text/plain;charset=utf-8"});
+        saveAs(file);
+      }
+    },
   }
 });
