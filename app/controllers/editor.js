@@ -5,6 +5,7 @@ export default Ember.Controller.extend({
   cookie: Ember.inject.service(),
   Range: ace.require('ace/range').Range,
   rangeLines: [],
+  summaryObject: [],
 
   // highlight warning lines from ace-editor
   addMarker(beginLine) {
@@ -15,12 +16,13 @@ export default Ember.Controller.extend({
     this.get('rangeLines').addObject(range);
   },
 
-  // clear all highlighted lines from ace-editor
+  // clear all highlighted lines from ace-editor and clear summary
   clearMarkers() {
     Ember.$.each(this.get("rangeLines"), (range) => {
-      ace.edit("formatter").session.removeMarker(range);
+      ace.edit("formatter").session.removeMarker(range.id);
     });
     this.set('rangeLines', []);
+    this.set('summaryObject', []);
   },
 
   actions: {
@@ -84,6 +86,7 @@ export default Ember.Controller.extend({
       ace.edit("formatter").setValue(this.get('formatter').get('bibtex').get('bibtex') || '');
       Ember.$.each(this.get('formatter').get('bibtex').get('lines'), (index, lineObject) => {
         // define type of annotation by using type of error
+        this.get('summaryObject').addObject(lineObject);
         switch (lineObject.type) {
           case 'invalidField':
             lineObjectType = 'error';
@@ -120,6 +123,7 @@ export default Ember.Controller.extend({
           title: 'Congratulations! We didn\'t find errors in your bibtex file.',
         });
       }
+      let rangeTest = new this.Range(0, 0, 1, 0);
     },
 
     buildEditor() {
@@ -133,7 +137,7 @@ export default Ember.Controller.extend({
     copyToClipboard() {
       const $tmp = Ember.$('<textarea>');
       Ember.$('body').append($tmp);
-      $tmp.val(this.model.bibtex).select();
+      $tmp.val(ace.edit("formatter").getSession().getValue()).select();
       document.execCommand('copy');
       $tmp.remove();
 
