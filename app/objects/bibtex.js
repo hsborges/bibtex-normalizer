@@ -12,10 +12,6 @@ export default Ember.Object.extend({
   citationKeys: null,
   lines: null,
 
-  init() {
-    if (this.get('bibtex')) { this.normalize(); }
-  },
-
   clear() {
     this.set('bibtex', '');
     this.set('invalidFields', []);

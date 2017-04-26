@@ -8,7 +8,7 @@ export default Ember.Service.extend({
     this._super(...arguments);
   },
 
-  normalize(bibtex, config) {
+  create(bibtex, config) {
     this.set('bibtex', Bibtex.create({ bibtex: bibtex, config: config }));
     return this.get('bibtex');
   },

@@ -37,44 +37,8 @@ export default Ember.Controller.extend({
 
     const reader = new FileReader();
     reader.onload = (e) => {
-      try {
-        this.get('formatter').normalize(e.target.result, this.get('cookie').getAllCookie());
-
-        // First attempt: Check the file out of Bibtex standards (or empty)
-        if (this.get('formatter').get('bibtex').get('bibtex')) {
-          // this.transitionToRoute('bibtex');
-          this.transitionToRoute('editor');
-        } else {
-          swal({
-            title: "Your entry may not be on <small>bibtex</small> standard.",
-            html: true
-          });
-        }
-
-      // Second attempt: Bibtex file incorrect
-      } catch (errorMessage) {
-        // Check whether the exception came from duplicated citation key
-        if(errorMessage.name === "DuplicatedKey") {
-          swal({
-            title: "Your <small>.bib</small> file has at least one duplicated citation key!",
-            text: errorMessage.message,
-            html: true
-          });
-        } else {
-          swal({
-          	title: "Your <small>.bib</small> file is incorrect, check one of the following:",
-            text:
-              "<ul>" +
-                "<li>Every entry has been opened and closed with '{' and '}' characters, respectively </li>" +
-                "<li>The content from each attribute is enclosed with '{' and '}' or '\"' and '\"'</li>" +
-                "<li>Assigning values is set by '='</li>" +
-                "<li>Every entry must have an identification (citation key)</li>" +
-              "</ul>",
-            html: true
-          });
-        }
-      }
-
+      this.get('formatter').create(e.target.result, this.get('cookie').getAllCookie());
+      this.transitionToRoute('editor');
     };
 
     reader.readAsText(file);
