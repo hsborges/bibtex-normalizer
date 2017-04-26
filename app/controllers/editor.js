@@ -9,17 +9,17 @@ export default Ember.Controller.extend({
 
   // highlight warning lines from ace-editor
   addMarker(beginLine) {
-    let range = new this.Range(beginLine-1, 0, beginLine, 0);
-    ace.edit("formatter").session.addMarker(range, "auto-formatted-fields", "line");
+    let rangeid = ace.edit("formatter").getSession().addMarker(new this.Range(beginLine-1, 0, beginLine, 0), "auto-formatted-fields", "line");
 
     // stored for cleaning maker purposes
-    this.get('rangeLines').addObject(range);
+    this.get('rangeLines').addObject(rangeid);
   },
 
   // clear all highlighted lines from ace-editor and clear summary
   clearMarkers() {
-    Ember.$.each(this.get("rangeLines"), (range) => {
-      ace.edit("formatter").session.removeMarker(range.id);
+    Ember.$.each(this.get("rangeLines"), (index, range) => {
+      console.log(range);
+      ace.edit("formatter").getSession().removeMarker(range);
     });
     this.set('rangeLines', []);
     this.set('summaryObject', []);
@@ -108,22 +108,23 @@ export default Ember.Controller.extend({
 
       // add all 'breakpoints' (officially called annotations)
       ace.edit("formatter").session.setAnnotations(annotations);
+      // focus on first line with error
       let firstLineError = 0;
       if(this.get('formatter').get('bibtex').get('lines')[0]) {
         firstLineError = this.get('formatter').get('bibtex').get('lines')[0].line;
       }
-      ace.edit("formatter").gotoLine(firstLineError);
+      // ace.edit("formatter").gotoLine(firstLineError);
 
       if (this.rangeLines.length > 0) {
         swal({
-          title: 'We found errors in your bibtex file. Please, check that out before use it!',
+          title: 'We found errors in your bibtex file. Please, check that out before use it!'
         });
       } else {
+        this.clearMarkers();
         swal({
           title: 'Congratulations! We didn\'t find errors in your bibtex file.',
         });
       }
-      let rangeTest = new this.Range(0, 0, 1, 0);
     },
 
     buildEditor() {
