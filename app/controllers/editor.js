@@ -9,8 +9,8 @@ export default Ember.Controller.extend({
 
   // highlight warning lines from ace-editor
   addMarker(beginLine) {
-    let rangeid = ace.edit("formatter").getSession().addMarker(new this.Range(beginLine-1, 0, beginLine, 0), "auto-formatted-fields", "line");
-
+    let rangeid = ace.edit("formatter").getSession().addMarker(
+      new this.Range(beginLine-1, 0, beginLine, 0), "auto-formatted-fields", "line");
     // stored for cleaning maker purposes
     this.get('rangeLines').addObject(rangeid);
   },
@@ -18,7 +18,6 @@ export default Ember.Controller.extend({
   // clear all highlighted lines from ace-editor and clear summary
   clearMarkers() {
     Ember.$.each(this.get("rangeLines"), (index, range) => {
-      console.log(range);
       ace.edit("formatter").getSession().removeMarker(range);
     });
     this.set('rangeLines', []);
@@ -150,7 +149,7 @@ export default Ember.Controller.extend({
 
     save() {
       if(!!this.get('formatter').get('bibtex').get('bibtex')) {
-        const file = new File([this.model.bibtex], "references-bibtex-normalizer.bib", {type: "text/plain;charset=utf-8"});
+        const file = new File([this.get('formatter').get('bibtex').get('bibtex')], "references-bibtex-normalizer.bib", {type: "text/plain;charset=utf-8"});
         saveAs(file);
       }
     },
