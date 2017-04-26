@@ -1,10 +1,10 @@
 <div class="app-editor container">
-  {{#if summaryObject}}
-  <div class="row justify-content-center">
-    <div class="col col-md-6 col-md-offset-3">
+  <div class="row">
+    {{#if summaryObject}}
+    <div class="summary col col-md-12">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Normalization Summary</h3>
+          <h3 class="panel-title">Summary</h3>
         </div>
         <div class="panel-body">
           <ul>
@@ -17,19 +17,22 @@
         </div>
       </div>
     </div>
-  </div>
-  {{/if}}
+    {{/if}}
+    <div class="editor col col-md-12">
+      <div class="row ace">
+        {{ember-ace ready=(action 'buildEditor') id="formatter" mode="ace/mode/latex" lines=30}}
+      </div>
+      <div class="row options options-bottom">
+        <div class="options-left">
+          <button type="button" class="btn btn-default" name="button" {{action "copyToClipboard"}}><i class="fa fa-clipboard"></i>Copy</button>
+          <button type="button" class="btn btn-default" name="button" {{action "save"}}><i class="fa fa-download"></i>Download</button>
+        </div>
 
-  {{ember-ace ready=(action 'buildEditor') id="formatter" mode="ace/mode/latex" lines=30}}
-  <div class="row">
-    <div class="options-left col-lg-4 col-md-4 col-sm-12">
-      <button type="button" class="btn btn-default" name="button" {{action "copyToClipboard"}}><i class="fa fa-clipboard"></i>Copy</button>
-      <button type="button" class="btn btn-default" name="button" {{action "save"}}><i class="fa fa-download"></i>Download</button>
-    </div>
-
-    <div class="options col-lg-4 col-md-4 col-sm-12">
-      <button type="button" class="btn btn-default" name="button" {{action "clear"}}><i class="fa fa-eraser"></i>Clear</button>
-      <button type="button" class="btn btn-primary" name="button" {{action "normalize"}}><i class="fa fa-cog"></i>Normalize</button>
+        <div class="options-right">
+          <button type="button" class="btn btn-default" name="button" {{action "clear"}}><i class="fa fa-eraser"></i>Clear</button>
+          <button type="button" class="btn btn-primary" name="button" {{action "normalize"}}><i class="fa fa-cog"></i>Normalize</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
