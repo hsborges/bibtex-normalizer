@@ -219,8 +219,7 @@
                 var val = this.value();
                 return [ key, val ];
             } else {
-                throw "... = value expected, equals sign missing:"
-                        + this.input.substring(this.pos);
+                throw this.input + "\n" + this.pos;
             };
         };
 

@@ -31,6 +31,10 @@ export default Ember.Controller.extend({
       this.clearMarkers();
     },
 
+    focusLine(line) {
+      ace.edit("formatter").gotoLine(line);
+    },
+
     normalize() {
       this.clearMarkers();
       const input = ace.edit("formatter").getValue();
@@ -66,6 +70,7 @@ export default Ember.Controller.extend({
             html: true
           });
         } else {
+          console.log(errorMessage);
           swal({
           	title: "Your entry is incorrect, check one of the following:",
             text:
@@ -113,7 +118,7 @@ export default Ember.Controller.extend({
       if(this.get('formatter').get('bibtex').get('lines')[0]) {
         firstLineError = this.get('formatter').get('bibtex').get('lines')[0].line;
       }
-      // ace.edit("formatter").gotoLine(firstLineError);
+      ace.edit("formatter").gotoLine(firstLineError);
 
       if (this.rangeLines.length > 0) {
         swal({

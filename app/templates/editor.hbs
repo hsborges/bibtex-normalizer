@@ -9,8 +9,8 @@
         <div class="panel-body">
           <ul>
             {{#each summaryObject as |line|}}
-            <li>
-              Line {{line.line}}: {{line.message}}
+            <li {{action "focusLine" line.line on="click"}}>
+              <b>Line {{line.line}}:</b> {{line.message}}
             </li>
             {{/each}}
           </ul>
