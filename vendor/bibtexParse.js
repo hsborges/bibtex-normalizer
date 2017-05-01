@@ -176,8 +176,9 @@
                 else if (this.months.indexOf(k.toLowerCase()) >= 0)
                     return k.toLowerCase();
                 else
-                    throw "Value expected:" + this.input.substring(start) + ' for key: ' + k;
-
+                    // throw "Value expected:" + this.input.substring(start) + ' for key: ' + k;
+                    // line with irregular bibtex
+                    throw (this.input.substring(0, start).match(new RegExp("\n", "g")) || []).length + 1;
             };
         };
 

@@ -61,18 +61,19 @@ export default Ember.Controller.extend({
 
           return;
         }
-      } catch (errorMessage) {
+      } catch (lineError) {
         // Check whether the exception came from duplicated citation key
-        if(errorMessage.name === "DuplicatedKey") {
+        if(lineError.name === "DuplicatedKey") {
           swal({
             title: "Your <small>.bib</small> file has at least one duplicated citation key!",
-            text: errorMessage.message,
+            text: lineError.message,
             html: true
           });
         } else {
-          console.log(errorMessage);
+          // exception thrown by bibtexParse.js
+          ace.edit("formatter").gotoLine(lineError);
           swal({
-          	title: "Your entry is incorrect, check one of the following:",
+          	title: `Your entry is incorrect, check one of the following at line ${lineError}:`,
             text:
               "<ul>" +
                 "<li>Every entry has been opened and closed with '{' and '}' characters, respectively </li>" +
