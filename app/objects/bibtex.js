@@ -10,6 +10,7 @@ export default Ember.Object.extend({
   formattedFields: null,
 
   citationKeys: null,
+  duplicatedKeys: null,
   lines: null,
 
   clear() {
@@ -18,6 +19,7 @@ export default Ember.Object.extend({
     this.set('missingFields', []);
     this.set('formattedFields', []);
     this.set('citationKeys', []);
+    this.set('duplicatedKeys', []);
     this.set('lines', []);
   },
 
@@ -70,12 +72,21 @@ export default Ember.Object.extend({
       if(this.get('citationKeys').length > citationKeysLength) {
         ++citationKeysLength;
       } else {
-        throw {name: "DuplicatedKey", message: `Duplicated "${entryObject.get('citationKey')}" key.`};
+        this.get('duplicatedKeys').addObject(entryObject.get('citationKey'));
+        // throw {name: "DuplicatedKey", message: `Duplicated "${entryObject.get('citationKey')}" key.`};
       }
 
       output += `${entryObject.get('bibtex')}\n\n`;
       lines = _.split(output, '\n').length - 1;
     });
+
+    // whether there is a duplicated key
+    if(this.get('duplicatedKeys').length > 0) {
+      throw {
+        name: "DuplicatedKey",
+        duplicatedKeys: this.get('duplicatedKeys')
+      };
+    }
 
     this.set('bibtex', _.trim(output));
 

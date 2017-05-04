@@ -62,13 +62,34 @@ export default Ember.Controller.extend({
           return;
         }
       } catch (lineError) {
+        let swalText = "Check: ";
         // Check whether the exception came from duplicated citation key
         if(lineError.name === "DuplicatedKey") {
+
+          Ember.$.each(lineError.duplicatedKeys, (index, dKey) => {
+            swalText += `<strong>${dKey}</strong> <ul>`;
+
+            let duplicatedKey = {
+              quantity: (ace.edit("formatter").getSession().getValue().match(new RegExp(dKey, "g")) || []).length,
+              lastPos: 0
+            };
+
+            for(let i=0; i<duplicatedKey.quantity; i++) {
+              duplicatedKey.lastPos = ace.edit("formatter").getSession().getValue().substring(duplicatedKey.lastPos+1).search(dKey);
+              swalText += `<li>
+                  ${(ace.edit("formatter").getSession().getValue().substring(0, duplicatedKey.lastPos).match(new RegExp("\n", "g")) || []).length + 1)}
+                </li>`;
+            }
+
+            swalText += `</ul>`;
+          });
+
           swal({
             title: "Your <small>.bib</small> file has at least one duplicated citation key!",
-            text: lineError.message,
+            text: `${swalText}`,
             html: true
           });
+
         } else {
           // exception thrown by bibtexParse.js
           ace.edit("formatter").gotoLine(lineError);
