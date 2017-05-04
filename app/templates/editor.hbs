@@ -10,7 +10,7 @@
           <ul>
             {{#each summaryObject as |line|}}
             <li {{action "focusLine" line.line on="click"}}>
-              <b>Line {{line.line}}:</b> {{line.message}}
+              <span class="line-pointer"><b>Line {{line.line}}:</b> {{line.message}}</span>
             </li>
             {{/each}}
           </ul>

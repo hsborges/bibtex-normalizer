@@ -89,14 +89,6 @@ export default Ember.Object.extend({
 
     });
 
-    // whether there is a duplicated key
-    if(this.get('duplicatedKeys').length > 0) {
-      throw {
-        name: "DuplicatedKey",
-        duplicatedKeys: this.get('duplicatedKeys')
-      };
-    }
-
     this.set('bibtex', _.trim(output));
 
     return this;

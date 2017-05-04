@@ -40,12 +40,13 @@ export default Ember.Controller.extend({
       const input = ace.edit("formatter").getValue();
       // textarea was empty
       if (input === ""){
+
         swal({
           title: "Your entry is empty.",
           timer: 2000
         });
-
         return;
+
       }
 
       try {
@@ -62,51 +63,22 @@ export default Ember.Controller.extend({
           return;
         }
       } catch (lineError) {
-        let swalText = "Check: ";
-        // Check whether the exception came from duplicated citation key
-        if(lineError.name === "DuplicatedKey") {
-
-          Ember.$.each(lineError.duplicatedKeys, (index, dKey) => {
-            swalText += `<strong>${dKey}</strong> <ul>`;
-
-            let duplicatedKey = {
-              quantity: (ace.edit("formatter").getSession().getValue().match(new RegExp(dKey, "g")) || []).length,
-              lastPos: 0
-            };
-
-            for(let i=0; i<duplicatedKey.quantity; i++) {
-              duplicatedKey.lastPos = ace.edit("formatter").getSession().getValue().substring(duplicatedKey.lastPos+1).search(dKey);
-              swalText += `<li>
-                  ${(ace.edit("formatter").getSession().getValue().substring(0, duplicatedKey.lastPos).match(new RegExp("\n", "g")) || []).length + 1)}
-                </li>`;
-            }
-
-            swalText += `</ul>`;
-          });
-
-          swal({
-            title: "Your <small>.bib</small> file has at least one duplicated citation key!",
-            text: `${swalText}`,
-            html: true
-          });
-
-        } else {
-          // exception thrown by bibtexParse.js
-          ace.edit("formatter").gotoLine(lineError);
-          swal({
-          	title: `Your entry is incorrect, check one of the following at line ${lineError}:`,
-            text:
-              "<ul>" +
-                "<li>Every entry has been opened and closed with '{' and '}' characters, respectively </li>" +
-                "<li>The content from each attribute is enclosed with '{' and '}' or '\"' and '\"'</li>" +
-                "<li>Assigning values is set by '='</li>" +
-                "<li>Every entry must have an identification (citation key)</li>" +
-              "</ul>",
-            html: true
-          });
-        }
-
+        console.log(lineError);
+        // exception thrown by bibtexParse.js
+        ace.edit("formatter").gotoLine(lineError.line);
+        swal({
+        	title: `Your entry is incorrect, check one of the following at line ${lineError.line}:`,
+          text:
+            "<ul>" +
+              "<li>Every entry has been opened and closed with '{' and '}' characters, respectively </li>" +
+              "<li>The content from each attribute is enclosed with '{' and '}' or '\"' and '\"'</li>" +
+              "<li>Assigning values is set by '='</li>" +
+              "<li>Every entry must have an identification (citation key)</li>" +
+            "</ul>",
+          html: true
+        });
         return;
+
       }
 
       let annotations = [], lineObjectType = "";
@@ -115,6 +87,7 @@ export default Ember.Controller.extend({
         // define type of annotation by using type of error
         this.get('summaryObject').addObject(lineObject);
         switch (lineObject.type) {
+          case 'duplicatedKey':
           case 'invalidField':
             lineObjectType = 'error';
             break;
