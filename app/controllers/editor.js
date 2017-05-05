@@ -69,7 +69,7 @@ export default Ember.Controller.extend({
         // exception thrown by bibtexParse.js
         ace.edit("formatter").gotoLine(parserError.line);
         swal({
-        	title: `Your entry is incorrect, check one of the following at entry ${parserError.key+1}:`,
+        	title: `Your entry is incorrect, check one of the following at entry ${parserError.key}:`,
           text:
             "<ul>" +
               "<li>Every entry has been opened and closed with '{' and '}' characters, respectively </li>" +
