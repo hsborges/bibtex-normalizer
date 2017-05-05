@@ -51,7 +51,9 @@ export default Ember.Controller.extend({
 
       try {
         this.get('formatter').create(input, this.get('cookie').getAllCookie());
+        console.log('BEFORE');
         this.get('formatter').get('bibtex').normalize();
+        console.log('AFTER');
 
         // no bibtex entries were detected
         if (this.get('formatter').get('bibtex').get('bibtex') === ""){
@@ -62,12 +64,12 @@ export default Ember.Controller.extend({
 
           return;
         }
-      } catch (lineError) {
-        console.log(lineError);
+      } catch (parserError) {
+        console.error(parserError);
         // exception thrown by bibtexParse.js
-        ace.edit("formatter").gotoLine(lineError.line);
+        ace.edit("formatter").gotoLine(parserError.line);
         swal({
-        	title: `Your entry is incorrect, check one of the following at line ${lineError.line}:`,
+        	title: `Your entry is incorrect, check one of the following at entry ${parserError.key+1}:`,
           text:
             "<ul>" +
               "<li>Every entry has been opened and closed with '{' and '}' characters, respectively </li>" +

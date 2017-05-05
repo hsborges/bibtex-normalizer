@@ -33,7 +33,7 @@ export default Ember.Object.extend({
     }
 
     // parse bibtex file
-    const json = bibtexParse.toJSON(bibtex);
+    const json = bibtexParse.toJSON(bibtex.replace(/\s+/g, ' '));
     // reset fields
     this.clear();
 
@@ -86,7 +86,6 @@ export default Ember.Object.extend({
         output += `${entryObject.get('bibtex')}\n\n`;
         lines = _.split(output, '\n').length - 1;
       });
-
     });
 
     this.set('bibtex', _.trim(output));

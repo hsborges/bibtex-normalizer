@@ -22,11 +22,17 @@
 //value_quotes -> '"' .*? '"'; // not quite
 //value_braces -> '{' .*? '"'; // not quite
 (function(exports) {
+    function ParserError(message, line, key) {
+      var error = new Error(message);
+      error.line = line;
+      error.key = key;
+      return error;
+    }
 
     function BibtexParser() {
 
         this.months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-        this.notKey = [',','{','}',' ','=', '\n', '\r'];
+        this.notKey = [',','{','}',' ','='];
         this.pos = 0;
         this.input = "";
         this.entries = new Array();
@@ -54,7 +60,7 @@
             if (this.input.substring(this.pos, this.pos + s.length) == s) {
                 this.pos += s.length;
             } else {
-                throw "Token mismatch, expected " + s + ", found sample" + this.input.substring(this.pos);
+                throw ParserError("Token mismatch, expected " + s, this.pos, this.key());
             };
             this.skipWhitespace(canCommentOut);
         };
@@ -113,7 +119,7 @@
                     } else if (this.input[this.pos] == '{') {
                         bracecount++;
                     } else if (this.pos >= this.input.length - 1) {
-                        throw "Unterminated value";
+                        throw ParserError("Unterminated value", this.pos, this.key());
                     };
                 };
                 if (this.input[this.pos] == '\\' && escaped == false)
@@ -134,7 +140,7 @@
                 if (this.input[this.pos] == '}')
                     brcktCnt--;
                 if (this.pos >= this.input.length - 1) {
-                    throw "Unterminated value:" + this.input.substring(start);
+                    throw ParserError("Unterminated value", this.pos, this.key());
                 };
                 this.pos++;
             };
@@ -152,7 +158,7 @@
                         this.match('"', false);
                         return this.input.substring(start, end);
                     } else if (this.pos >= this.input.length - 1) {
-                        throw "Unterminated value:" + this.input.substring(start);
+                        throw ParserError("Unterminated value", this.pos, this.key());
                     };
                 }
                 if (this.input[this.pos] == '\\' && escaped == false)
@@ -176,9 +182,9 @@
                 else if (this.months.indexOf(k.toLowerCase()) >= 0)
                     return k.toLowerCase();
                 else
-                    // throw "Value expected:" + this.input.substring(start) + ' for key: ' + k;
+                    // throw new Error("Value expected:" + this.input.substring(start) + ' for key: ' + k);
                     // line with irregular bibtex
-                    throw '' + ((this.input.substring(0, start).match(new RegExp("\n", "g")) || []).length + 1);
+                    throw ParserError('' + ((this.input.substring(0, start).match(new RegExp("\n", "g")) || []).length + 1), this.pos, this.key());
             };
         };
 
@@ -196,7 +202,7 @@
             var start = this.pos;
             while (true) {
                 if (this.pos >= this.input.length) {
-                    throw "Runaway key";
+                    throw ParserError("Runaway key", this.pos, this.key());
                 };
                                 // а-яА-Я is Cyrillic
                 //console.log(this.input[this.pos]);
@@ -205,6 +211,7 @@
                         this.pos = start;
                         return null;
                     };
+                    // return this.input.substring(start, this.pos);
                     return this.input.substring(start, this.pos);
                 } else {
                     this.pos++;
@@ -220,7 +227,7 @@
                 var val = this.value();
                 return [ key, val ];
             } else {
-                throw this.input + "\n" + this.pos;
+                throw ParserError(this.input + "\n", this.pos, this.key());
             };
         };
 
