@@ -24,7 +24,7 @@
 (function(exports) {
     function ParserError(message, line, key) {
       var error = new Error(message);
-      error.line = line;
+      error.line = ((this.input.substring(0, line).match(new RegExp("\n", "g")) || []).length + 1);
       error.key = key;
       return error;
     }
@@ -227,7 +227,7 @@
                 var val = this.value();
                 return [ key, val ];
             } else {
-                throw ParserError(this.input + "\n", this.pos, this.key());
+                throw ParserError("Inavlid value assignment", this.pos, this.key());
             };
         };
 

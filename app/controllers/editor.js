@@ -51,9 +51,9 @@ export default Ember.Controller.extend({
 
       try {
         this.get('formatter').create(input, this.get('cookie').getAllCookie());
-        console.log('BEFORE');
+        // console.log('BEFORE');
         this.get('formatter').get('bibtex').normalize();
-        console.log('AFTER');
+        // console.log('AFTER');
 
         // no bibtex entries were detected
         if (this.get('formatter').get('bibtex').get('bibtex') === ""){
