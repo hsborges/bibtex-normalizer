@@ -9,7 +9,7 @@ export default Ember.Controller.extend({
 
   // highlight warning lines from ace-editor
   addMarker(beginLine) {
-    let rangeid = ace.edit("formatter").getSession().addMarker(
+    let rangeid = ace.edit("editor").getSession().addMarker(
       new this.Range(beginLine-1, 0, beginLine, 0), "auto-formatted-fields", "line");
     // stored for cleaning maker purposes
     this.get('rangeLines').addObject(rangeid);
@@ -18,7 +18,7 @@ export default Ember.Controller.extend({
   // clear all highlighted lines from ace-editor and clear summary
   clearMarkers() {
     Ember.$.each(this.get("rangeLines"), (index, range) => {
-      ace.edit("formatter").getSession().removeMarker(range);
+      ace.edit("editor").getSession().removeMarker(range);
     });
     this.set('rangeLines', []);
     this.set('summaryObject', []);
@@ -26,18 +26,18 @@ export default Ember.Controller.extend({
 
   actions: {
     clear() {
-      ace.edit("formatter").setValue("");
+      ace.edit("editor").setValue("");
       this.get('formatter').get('bibtex').clear();
       this.clearMarkers();
     },
 
     focusLine(line) {
-      ace.edit("formatter").gotoLine(line);
+      ace.edit("editor").gotoLine(line);
     },
 
     normalize() {
       this.clearMarkers();
-      const input = ace.edit("formatter").getValue();
+      const input = ace.edit("editor").getValue();
       // textarea was empty
       if (input === ""){
 
@@ -67,7 +67,7 @@ export default Ember.Controller.extend({
       } catch (parserError) {
         console.error(parserError);
         // exception thrown by bibtexParse.js
-        ace.edit("formatter").gotoLine(parserError.line);
+        ace.edit("editor").gotoLine(parserError.line);
         swal({
         	title: `Your entry is incorrect, check one of the following at entry ${parserError.key}:`,
           text:
@@ -84,7 +84,7 @@ export default Ember.Controller.extend({
       }
 
       let annotations = [], lineObjectType = "";
-      ace.edit("formatter").setValue(this.get('formatter').get('bibtex').get('bibtex') || '');
+      ace.edit("editor").setValue(this.get('formatter').get('bibtex').get('bibtex') || '');
       Ember.$.each(this.get('formatter').get('bibtex').get('lines'), (index, lineObject) => {
         // define type of annotation by using type of error
         this.get('summaryObject').addObject(lineObject);
@@ -109,13 +109,13 @@ export default Ember.Controller.extend({
       });
 
       // add all 'breakpoints' (officially called annotations)
-      ace.edit("formatter").session.setAnnotations(annotations);
+      ace.edit("editor").session.setAnnotations(annotations);
       // focus on first line with error
       let firstLineError = 0;
       if(this.get('formatter').get('bibtex').get('lines')[0]) {
         firstLineError = this.get('formatter').get('bibtex').get('lines')[0].line;
       }
-      ace.edit("formatter").gotoLine(firstLineError);
+      ace.edit("editor").gotoLine(firstLineError);
 
       if (this.rangeLines.length > 0) {
         swal({
@@ -132,15 +132,15 @@ export default Ember.Controller.extend({
     buildEditor() {
       const bibtex = this.get('formatter').get('bibtex');
       // editor configuration
-      ace.edit("formatter").getSession().setUseWrapMode(true);
+      ace.edit("editor").getSession().setUseWrapMode(true);
       // bibtex content
-      ace.edit("formatter").setValue(bibtex.get('bibtex') || '');
+      ace.edit("editor").setValue(bibtex.get('bibtex') || '');
     },
 
     copyToClipboard() {
       const $tmp = Ember.$('<textarea>');
       Ember.$('body').append($tmp);
-      $tmp.val(ace.edit("formatter").getSession().getValue()).select();
+      $tmp.val(ace.edit("editor").getSession().getValue()).select();
       document.execCommand('copy');
       $tmp.remove();
 
