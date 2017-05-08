@@ -3,7 +3,7 @@ class SeriesValidator {
 
   validate(value) {
     return {
-      isValid: /^\S[^MISSING]/.test(value),
+      isValid: /^((?!MISSING)[\s\S])*$/.test(value),
       message: 'Must consist of literals (a-z, A-Z). Bibtex-normalizer default: MISSING'
     };
   }
