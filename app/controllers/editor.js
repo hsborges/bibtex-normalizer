@@ -24,6 +24,10 @@ export default Ember.Controller.extend({
     this.set('summaryObject', []);
   },
 
+  findLine(posi) {
+    return (this.get('formatter').get('bibtex').get('bibtex').substring(0, posi).match(new RegExp("\n", "g")) || []).length + 1;
+  },
+
   actions: {
     clear() {
       ace.edit("editor").setValue("");
@@ -65,16 +69,16 @@ export default Ember.Controller.extend({
       } catch (parserError) {
         console.error(parserError);
         // exception thrown by bibtexParse.js
-        ace.edit("editor").gotoLine(parserError.line);
+        ace.edit("editor").gotoLine(this.findLine(parserError.line));
+
+        //there is a citationKey
+        if(parserError.key) {
+          parserError.key = `at entry <small>${parserError.key}</small>,`;
+        }
+
         swal({
-        	title: `Your entry is incorrect, check one of the following at entry ${parserError.key}:`,
-          text:
-            "<ul>" +
-              "<li>Every entry has been opened and closed with '{' and '}' characters, respectively </li>" +
-              "<li>The content from each attribute is enclosed with '{' and '}' or '\"' and '\"'</li>" +
-              "<li>Assigning values is set by '='</li>" +
-              "<li>Every entry must have an identification (citation key)</li>" +
-            "</ul>",
+        	title: `Your entry is incorrect, check one of the following, ${parserError.key} line <small>${this.findLine(parserError.line)}</small>:`,
+          text: parserError.message,
           html: true
         });
         return;

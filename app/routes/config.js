@@ -91,8 +91,6 @@ export default Ember.Route.extend({
 
       }
 
-      console.log(this.get('cookie').getAllCookie());
-
       swal({
         title: 'Saved',
         type: 'success'
@@ -103,8 +101,6 @@ export default Ember.Route.extend({
     // didTransition: to set as checked every attribute saved in cookie
     didTransition: function() {
       Ember.run.schedule("afterRender", this, function() {
-
-        console.log(this.get('cookie').getAllCookie());
 
         for(let entry in this.get('entriesObjects')) {
           let attrEntryArray = this.get('cookie').getCookie(entry);

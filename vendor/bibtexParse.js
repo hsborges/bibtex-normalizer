@@ -24,7 +24,7 @@
 (function(exports) {
     function ParserError(message, line, key) {
       var error = new Error(message);
-      error.line = ((this.input.substring(0, line).match(new RegExp("\n", "g")) || []).length + 1);
+      error.line = line;
       error.key = key;
       return error;
     }
@@ -201,11 +201,11 @@
         this.key = function(optional) {
             var start = this.pos;
             while (true) {
-                if (this.pos >= this.input.length) {
-                    throw ParserError("Runaway key", this.pos, this.key());
+                // if (this.pos >= this.input.length) {
+                if (this.pos > this.input.length) {
+                    throw ParserError("There may be a close bracket missing at the end of your file.", 0, "");
                 };
-                                // а-яА-Я is Cyrillic
-                //console.log(this.input[this.pos]);
+
                 if (this.notKey.indexOf(this.input[this.pos]) >= 0) {
                     if (optional && this.input[this.pos] != ',') {
                         this.pos = start;
@@ -227,7 +227,9 @@
                 var val = this.value();
                 return [ key, val ];
             } else {
-                throw ParserError("Inavlid value assignment", this.pos, this.key());
+                if(!this.currentEntry.citationKey)
+                    throw ParserError("There is an entry without citation key through your file.", this.pos, "");
+                throw ParserError("There may be a close bracket missing in the middle of your file.", this.pos, this.currentEntry.citationKey);
             };
         };
 
