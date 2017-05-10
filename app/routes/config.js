@@ -5,72 +5,58 @@ export default Ember.Route.extend({
 
   entriesObjects: {
     "article": {
-      "enabled": true,
       "required": ["author", "title", "journal", "year"],
       "optional": ["volume", "number", "pages", "month", "note", "key"]
     },
     "book": {
-      "enabled": true,
       "required": ["author", "editor", "title", "publisher", "year"],
       "optional": ["volume", "series", "address", "edition", "month", "note", "key"]
     },
     "booklet": {
-      "enabled": true,
       "required": ["title"],
       "optional": ["author", "howpublished", "address", "month", "year", "note", "key"]
     },
     "conference": {
-      "enabled": true,
       "required": ["author", "title", "booktitle", "year"],
       "optional": ["editor", "pages", "organization", "publisher", "address", "month", "note", "key"]
     },
     "inbook": {
-      "enabled": true,
       "required": ["author", "editor", "title", "chapter", "pages", "publisher", "year"],
       "optional": ["volume", "series", "address", "edition", "month", "note", "key"]
     },
     "incollection": {
-      "enabled": true,
       "required": ["author", "title", "booktitle", "year"],
       "optional": ["editor", "pages", "organization", "publisher", "address", "month", "note", "key"]
     },
     "inproceedings": {
-      "enabled": true,
       "required": ["author", "title", "booktitle", "year"],
       "optional": ["editor", "pages", "organization", "publisher", "address", "month", "note", "key"]
     },
     "manual": {
-      "enabled": true,
       "required": ["title"],
       "optional": ["author", "organization", "address", "edition", "month", "year", "note", "key"]
     },
     "masterthesis": {
-      "enabled": true,
       "required": ["author", "title", "school", "year"],
       "optional": ["address", "month", "note", "key"]
     },
     "misc": {
-      "enabled": false,
       "required": [],
       "optional": ["author", "title", "howpublished", "month", "year", "note", "key"]
     },
     "phdthesis": {
-      "enabled": true,
       "required": ["author", "title", "school", "year"],
       "optional": ["address", "month", "note", "key"]
     },
     "proceedings": {
-      "enabled": true,
       "required": ["title", "year"],
       "optional": ["editor", "publisher", "organization", "address", "month", "note", "key"]
     },
     "techreport": {
-      "enabled": true,
       "required": ["author", "title", "institution", "year"],
       "optional": ["type", "number", "address", "month", "note", "key"]
     },
     "unpublished": {
-      "enabled": true,
       "required": ["author", "title", "note"],
       "optional": ["month", "year", "key"]
     }
