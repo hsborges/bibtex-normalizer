@@ -85,7 +85,6 @@ export default Ember.Route.extend({
       for(let entry in this.get('entriesObjects')) {
 
         if(Ember.$(`#normalize-${entry}`).is(':checked')) {
-          console.log(entry);
           let indexEntry = this.get('entriesObjects')[entry];
           let attrEntryArray = [];
 
@@ -101,10 +100,12 @@ export default Ember.Route.extend({
 
           this.get('cookie').setCookie(entry, attrEntryArray.concat(indexEntry.required));
         }else {
-          this.get('entriesObjects')[entry].enabled = false;
+          this.get('cookie').removeCookie(entry);
         }
 
       }
+
+      console.log(this.get('cookie').getAllCookie());
 
       swal({
         title: 'Saved',
@@ -116,11 +117,13 @@ export default Ember.Route.extend({
     // didTransition: to set as checked every attribute saved in cookie
     didTransition: function() {
       Ember.run.schedule("afterRender", this, function() {
+
+        console.log(this.get('cookie').getAllCookie());
+
         for(let entry in this.get('entriesObjects')) {
           let attrEntryArray = this.get('cookie').getCookie(entry);
 
-          console.log(this.get('entriesObjects')[entry].enabled);
-          if(this.get('entriesObjects')[entry].enabled) {
+          if(attrEntryArray) {
             Ember.$(`#normalize-${entry}`).attr('checked', true);
           }
 
