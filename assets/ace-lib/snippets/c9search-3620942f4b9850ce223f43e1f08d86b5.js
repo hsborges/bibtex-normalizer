@@ -1,0 +1,1 @@
+ace.define("ace/snippets/c9search",["require","exports","module"],function(e,c,s){"use strict";c.snippetText=void 0,c.scope="c9search"});

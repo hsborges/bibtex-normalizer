@@ -1,0 +1,1 @@
+ace.define("ace/snippets/mysql",["require","exports","module"],function(e,s,i){"use strict";s.snippetText=void 0,s.scope="mysql"});
