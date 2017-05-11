@@ -9,7 +9,7 @@ export default Ember.Controller.extend({
 
   // highlight warning lines from ace-editor
   addMarker(beginLine) {
-    let rangeid = ace.edit("editor").getSession().addMarker(
+    let rangeid = ace.edit("editor").session.addMarker(
       new this.Range(beginLine-1, 0, beginLine, 0), "auto-formatted-fields", "line");
     // stored for cleaning maker purposes
     this.get('rangeLines').addObject(rangeid);
@@ -18,7 +18,7 @@ export default Ember.Controller.extend({
   // clear all highlighted lines from ace-editor and clear summary
   clearMarkers() {
     Ember.$.each(this.get("rangeLines"), (index, range) => {
-      ace.edit("editor").getSession().removeMarker(range);
+      ace.edit("editor").session.removeMarker(range);
     });
     this.set('rangeLines', []);
     this.set('summaryObject', []);
@@ -133,16 +133,13 @@ export default Ember.Controller.extend({
 
     buildEditor() {
       const bibtex = this.get('formatter').get('bibtex');
-      // editor configuration
-      ace.edit("editor").getSession().setUseWrapMode(true);
-      // bibtex content
       ace.edit("editor").setValue(bibtex.get('bibtex') || '');
     },
 
     copyToClipboard() {
       const $tmp = Ember.$('<textarea>');
       Ember.$('body').append($tmp);
-      $tmp.val(ace.edit("editor").getSession().getValue()).select();
+      $tmp.val(ace.edit("editor").session.getValue()).select();
       document.execCommand('copy');
       $tmp.remove();
 
