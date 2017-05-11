@@ -14,9 +14,10 @@ export default Ember.Route.extend({
         editor.setTheme("ace/theme/textmate");
         editor.session.setMode("ace/mode/latex");
         editor.setOptions({ minLines: 30, maxLines: 50 });
-        editor.getSession().setTabSize(2);
-        editor.getSession().setUseSoftTabs(true);
         editor.setHighlightActiveLine(false);
+        editor.session.setTabSize(2);
+        editor.session.setUseSoftTabs(true);
+        editor.session.setUseWrapMode(false);
 
         if(!!this.get('formatter').get('bibtex').get('bibtex')) {
           this.controllerFor('editor').send('buildEditor');
