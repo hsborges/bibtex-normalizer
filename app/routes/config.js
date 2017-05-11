@@ -105,8 +105,10 @@ export default Ember.Route.extend({
         for(let entry in this.get('entriesObjects')) {
           let attrEntryArray = this.get('cookie').getCookie(entry);
 
-          if(attrEntryArray) {
-            Ember.$(`#normalize-${entry}`).attr('checked', true);
+          Ember.$(`#normalize-${entry}`).attr('checked', true);
+
+          if(!attrEntryArray) {
+            Ember.$(`#normalize-${entry}`).removeAttr('checked');
           }
 
           if(attrEntryArray) {
