@@ -102,6 +102,16 @@ export default Ember.Route.extend({
     didTransition: function() {
       Ember.run.schedule("afterRender", this, function() {
 
+        // default config - 'normalize it' from entries
+        if(_.isEmpty(this.get('cookie').getAllCookie())) {
+          for(let entry in this.get('entriesObjects')) {
+            if(entry !== "misc") {
+              this.get('cookie').setCookie(entry);
+              Ember.$(`#normalize-${entry}`).attr('checked', true);
+            }
+          }
+        }
+
         for(let entry in this.get('entriesObjects')) {
           let attrEntryArray = this.get('cookie').getCookie(entry);
 
