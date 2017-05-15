@@ -108,7 +108,6 @@ export default Ember.Route.extend({
 
             if(entry !== "misc") {
               this.get('cookie').setCookie(entry, indexEntry.required);
-              console.log(this.get('cookie').getCookie(entry));
               Ember.$(`#normalize-${entry}`).attr('checked', true);
             }
 
