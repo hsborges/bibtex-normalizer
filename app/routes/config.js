@@ -101,14 +101,17 @@ export default Ember.Route.extend({
     // didTransition: to set as checked every attribute saved in cookie
     didTransition: function() {
       Ember.run.schedule("afterRender", this, function() {
-
         // default config - 'normalize it' from entries
-        if(_.isEmpty(this.get('cookie').getAllCookie())) {
+        if(!!this.get('cookie').getAllCookie()) {
           for(let entry in this.get('entriesObjects')) {
+            let indexEntry = this.get('entriesObjects')[entry];
+
             if(entry !== "misc") {
-              this.get('cookie').setCookie(entry);
+              this.get('cookie').setCookie(entry, indexEntry.required);
+              console.log(this.get('cookie').getCookie(entry));
               Ember.$(`#normalize-${entry}`).attr('checked', true);
             }
+
           }
         }
 
