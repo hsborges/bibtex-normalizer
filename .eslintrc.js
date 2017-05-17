@@ -12,6 +12,10 @@ module.exports = {
   },
   globals: {
     Cookies: true,
-    _: true
+    _: true,
+    swal: true,
+    ace: true,
+    bibtexParse: true,
+    saveAs: true
   }
 };
