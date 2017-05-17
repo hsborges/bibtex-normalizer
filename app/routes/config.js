@@ -101,8 +101,8 @@ export default Ember.Route.extend({
     // didTransition: to set as checked every attribute saved in cookie
     didTransition: function() {
       Ember.run.schedule("afterRender", this, function() {
+        
         // default config - 'normalize it' from entries
-        console.log(this.get('cookie').getAllCookie());
         if(!Object.keys(this.get('cookie').getAllCookie()).length) {
           for(let entry in this.get('entriesObjects')) {
             let indexEntry = this.get('entriesObjects')[entry];
@@ -116,6 +116,9 @@ export default Ember.Route.extend({
               // if(entry === "article") {
               //   attrEntryArray = attrEntryArray.concat(["volume", "number"]);
               // }
+              // if(entry === "inproceedings") {
+              //   attrEntryArray = attrEntryArray.concat(["pages"]);
+              // }
 
               this.get('cookie').setCookie(entry, attrEntryArray);
               Ember.$(`#normalize-${entry}`).attr('checked', true);
@@ -123,8 +126,6 @@ export default Ember.Route.extend({
 
           }
         }
-
-        console.log(this.get('cookie').getAllCookie());
 
         for(let entry in this.get('entriesObjects')) {
           let attrEntryArray = this.get('cookie').getCookie(entry);
