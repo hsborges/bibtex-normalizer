@@ -2,13 +2,12 @@ import Ember from 'ember';
 import { Bibtex } from '../objects';
 
 export default Ember.Service.extend({
+  configuration: Ember.inject.service(),
+
   bibtex: Bibtex.create({}),
 
-  init() {
-    this._super(...arguments);
-  },
-
-  create(bibtex, config) {
+  create(bibtex) {
+    const config = _.mapValues(this.get('configuration').bibtexEntries, 'normalize');
     this.set('bibtex', Bibtex.create({ bibtex: bibtex, config: config }));
     return this.get('bibtex');
   },

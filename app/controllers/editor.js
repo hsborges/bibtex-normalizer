@@ -2,7 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   formatter: Ember.inject.service(),
-  cookie: Ember.inject.service(),
   Range: ace.require('ace/range').Range,
   rangeLines: [],
   summaryObject: [],
@@ -54,7 +53,7 @@ export default Ember.Controller.extend({
       }
 
       try {
-        this.get('formatter').create(input, this.get('cookie').getAllCookie());
+        this.get('formatter').create(input);
         this.get('formatter').get('bibtex').normalize();
 
         // no bibtex entries were detected

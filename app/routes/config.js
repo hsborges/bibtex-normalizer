@@ -1,148 +1,58 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  cookie: Ember.inject.service(),
-
-  entriesObjects: {
-    "article": {
-      "required": ["author", "title", "journal", "year"],
-      "optional": ["volume", "number", "pages", "month", "note", "key"]
-    },
-    "book": {
-      "required": ["author", "editor", "title", "publisher", "year"],
-      "optional": ["volume", "series", "address", "edition", "month", "note", "key"]
-    },
-    "booklet": {
-      "required": ["title"],
-      "optional": ["author", "howpublished", "address", "month", "year", "note", "key"]
-    },
-    "conference": {
-      "required": ["author", "title", "booktitle", "year"],
-      "optional": ["editor", "pages", "organization", "publisher", "address", "month", "note", "key"]
-    },
-    "inbook": {
-      "required": ["author", "editor", "title", "chapter", "pages", "publisher", "year"],
-      "optional": ["volume", "series", "address", "edition", "month", "note", "key"]
-    },
-    "incollection": {
-      "required": ["author", "title", "booktitle", "year"],
-      "optional": ["editor", "pages", "organization", "publisher", "address", "month", "note", "key"]
-    },
-    "inproceedings": {
-      "required": ["author", "title", "booktitle", "year"],
-      "optional": ["editor", "pages", "organization", "publisher", "address", "month", "note", "key"]
-    },
-    "manual": {
-      "required": ["title"],
-      "optional": ["author", "organization", "address", "edition", "month", "year", "note", "key"]
-    },
-    "masterthesis": {
-      "required": ["author", "title", "school", "year"],
-      "optional": ["address", "month", "note", "key"]
-    },
-    "misc": {
-      "required": [],
-      "optional": ["author", "title", "howpublished", "month", "year", "note", "key"]
-    },
-    "phdthesis": {
-      "required": ["author", "title", "school", "year"],
-      "optional": ["address", "month", "note", "key"]
-    },
-    "proceedings": {
-      "required": ["title", "year"],
-      "optional": ["editor", "publisher", "organization", "address", "month", "note", "key"]
-    },
-    "techreport": {
-      "required": ["author", "title", "institution", "year"],
-      "optional": ["type", "number", "address", "month", "note", "key"]
-    },
-    "unpublished": {
-      "required": ["author", "title", "note"],
-      "optional": ["month", "year", "key"]
-    }
-  },
+  formatter: Ember.inject.service(),
+  configuration: Ember.inject.service(),
 
   model() {
-    return this.get('entriesObjects');
+    return this.get('configuration').bibtexEntries;
   },
 
   actions: {
     configure() {
-      for(let entry in this.get('entriesObjects')) {
+      const config = this.get('configuration');
+      const entries = config.bibtexEntries;
 
-        if(Ember.$(`#normalize-${entry}`).is(':checked')) {
-          let indexEntry = this.get('entriesObjects')[entry];
-          let attrEntryArray = [];
+      for(let entry in entries) {
+        const attributes = [].concat(entries[entry].required).concat(entries[entry].optional);
 
-          for(let i=0; i < indexEntry.optional.length; i++) {
-            let idOptional = `${entry}-${indexEntry.optional[i]}`;
+        const enabled = Ember.$(`#normalize-${entry}`).is(':checked');
+        const normalize = [];
 
-            if(Ember.$(`#input-${idOptional}`).is(':checked')) {
-              attrEntryArray.push(indexEntry.optional[i]);
-            } else {
-              this.get('cookie').removeCookie(idOptional);
-            }
+        for(let i = 0; i < attributes.length; i++) {
+          let idOptional = `${entry}-${attributes[i]}`;
+
+          if(Ember.$(`#input-${idOptional}`).is(':checked')) {
+            normalize.push(attributes[i]);
           }
-
-          this.get('cookie').setCookie(entry, attrEntryArray.concat(indexEntry.required));
-        }else {
-          this.get('cookie').removeCookie(entry);
         }
 
+        config.update(entry, enabled, normalize);
       }
 
       swal({
         title: 'Saved',
         type: 'success'
       });
-
     },
 
     // didTransition: to set as checked every attribute saved in cookie
     didTransition: function() {
-      Ember.run.schedule("afterRender", this, function() {
-        
+      const config = this.get('configuration');
+
+      Ember.run.schedule('afterRender', this, function() {
         // default config - 'normalize it' from entries
-        if(!Object.keys(this.get('cookie').getAllCookie()).length) {
-          for(let entry in this.get('entriesObjects')) {
-            let indexEntry = this.get('entriesObjects')[entry];
-            let attrEntryArray = [];
-
-
-            if(entry !== "misc") {
-              attrEntryArray = indexEntry.required;
-
-              //Marco Tulio's standard
-              // if(entry === "article") {
-              //   attrEntryArray = attrEntryArray.concat(["volume", "number"]);
-              // }
-              // if(entry === "inproceedings") {
-              //   attrEntryArray = attrEntryArray.concat(["pages"]);
-              // }
-
-              this.get('cookie').setCookie(entry, attrEntryArray);
-              Ember.$(`#normalize-${entry}`).attr('checked', true);
-            }
-
-          }
-        }
-
-        for(let entry in this.get('entriesObjects')) {
-          let attrEntryArray = this.get('cookie').getCookie(entry);
-
-          Ember.$(`#normalize-${entry}`).attr('checked', true);
-
-          if(!attrEntryArray) {
-            Ember.$(`#normalize-${entry}`).removeAttr('checked');
+        _.forIn(config.bibtexEntries, (value, key) => {
+          if(value.enabled) {
+            Ember.$(`#normalize-${key}`).attr('checked', true);
+          } else {
+            Ember.$(`#normalize-${key}`).removeAttr('checked');
           }
 
-          if(attrEntryArray) {
-            for(let i=0; i<attrEntryArray.length; i++) {
-              Ember.$(`#input-${entry}-${attrEntryArray[i]}`).attr('checked', true);
-            }
+          for(let i = 0; i < value.normalize.length; i++) {
+            Ember.$(`#input-${key}-${value.normalize[i]}`).attr('checked', true);
           }
-
-        }
+        });
       });
     }
   }

@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   formatter: Ember.inject.service(),
+  configuration: Ember.inject.service(),
 
   index: Ember.computed('currentPath', function() {
     return this.get('currentPath') === 'index';
@@ -11,9 +12,8 @@ export default Ember.Controller.extend({
   about: Ember.computed.equal('currentPath', 'about'),
   config: Ember.computed.equal('currentPath', 'config'),
 
-  actions: {
-    clear() {
-      this.get('formatter').get('bibtex').clear();
-    },
+  init(){
+    this._super(...arguments);
+    this.get('configuration').setup();
   }
 });
