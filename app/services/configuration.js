@@ -30,12 +30,12 @@ export default Ember.Service.extend({
     'incollection': {
       'required': ['author', 'title', 'booktitle', 'year'],
       'optional': ['editor', 'pages', 'organization', 'publisher', 'address', 'month', 'note', 'key'],
-      'default' : ['author', 'title', 'booktitle', 'year']
+      'default' : ['author', 'title', 'booktitle', 'year', 'pages']
     },
     'inproceedings': {
       'required': ['author', 'title', 'booktitle', 'year'],
       'optional': ['editor', 'pages', 'organization', 'publisher', 'address', 'month', 'note', 'key'],
-      'default' : ['author', 'title', 'booktitle', 'year']
+      'default' : ['author', 'title', 'booktitle', 'year', 'pages']
     },
     'manual': {
       'required': ['title'],
@@ -78,6 +78,8 @@ export default Ember.Service.extend({
     const entries = this.get('bibtexEntries');
     const cookies = Cookies.getJSON();
 
+    console.log(cookies);
+
     if (!cookies.config) {
       _.forIn(entries, (value, key) => {
         value.enabled = (key !== 'misc');
@@ -87,8 +89,6 @@ export default Ember.Service.extend({
 
       Cookies.set('config', { created_at: new Date(), version: '0.0.1' });
     }
-
-    const config = { };
 
     Object.keys(entries)
       .map((entry) => {
