@@ -2,7 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   formatter: Ember.inject.service(),
-  cookie: Ember.inject.service(),
 
   init() {
     const prevent = function(event) {
@@ -37,7 +36,7 @@ export default Ember.Controller.extend({
 
     const reader = new FileReader();
     reader.onload = (e) => {
-      this.get('formatter').create(e.target.result, this.get('cookie').getAllCookie());
+      this.get('formatter').create(e.target.result);
       this.transitionToRoute('editor');
     };
 
