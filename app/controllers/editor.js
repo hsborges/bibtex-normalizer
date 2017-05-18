@@ -24,7 +24,7 @@ export default Ember.Controller.extend({
   },
 
   findLine(posi) {
-    return (this.get('formatter').get('bibtex').get('bibtex').substring(0, posi).match(new RegExp("\n", "g")) || []).length + 1;
+    return (this.get('formatter').get('bibtex').get('bibtex').substring(0, posi).match(/\n/g) || []).length + 1;
   },
 
   actions: {
@@ -66,7 +66,6 @@ export default Ember.Controller.extend({
           return;
         }
       } catch (parserError) {
-        console.error(parserError);
         // exception thrown by bibtexParse.js
         ace.edit("editor").gotoLine(this.findLine(parserError.line));
 
@@ -76,7 +75,7 @@ export default Ember.Controller.extend({
         }
 
         swal({
-        	title: `Your entry is incorrect, check one of the following, ${parserError.key} line <small>${this.findLine(parserError.line)}</small>:`,
+          title: `Your entry is incorrect, check one of the following, ${parserError.key} line <small>${this.findLine(parserError.line)}</small>:`,
           text: parserError.message,
           html: true
         });
@@ -143,13 +142,13 @@ export default Ember.Controller.extend({
       $tmp.remove();
 
       swal({
-      	title: 'Bibtex copied to clipboard!',
+        title: 'Bibtex copied to clipboard!',
         timer: 2000
       });
     },
 
     save() {
-      if(!!this.get('formatter').get('bibtex').get('bibtex')) {
+      if(this.get('formatter').get('bibtex').get('bibtex')) {
         const file = new File([this.get('formatter').get('bibtex').get('bibtex')], "references-bibtex-normalizer.bib", {type: "text/plain;charset=utf-8"});
         saveAs(file);
       }

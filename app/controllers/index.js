@@ -27,7 +27,7 @@ export default Ember.Controller.extend({
 
     if (!_.endsWith(file.name, '.bib')) {
       swal({
-      	title: 'Must be a .bib file',
+        title: 'Must be a .bib file',
         timer: 2000
       });
 

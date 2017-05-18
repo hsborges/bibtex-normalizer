@@ -19,7 +19,7 @@ export default Ember.Route.extend({
         editor.session.setUseSoftTabs(true);
         editor.session.setUseWrapMode(false);
 
-        if(!!this.get('formatter').get('bibtex').get('bibtex')) {
+        if(this.get('formatter').get('bibtex').get('bibtex')) {
           this.controllerFor('editor').send('buildEditor');
           this.controllerFor('editor').send('normalize');
         }

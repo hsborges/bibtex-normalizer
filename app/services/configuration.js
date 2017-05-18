@@ -78,8 +78,6 @@ export default Ember.Service.extend({
     const entries = this.get('bibtexEntries');
     const cookies = Cookies.getJSON();
 
-    console.log(cookies);
-
     if (!cookies.config) {
       _.forIn(entries, (value, key) => {
         value.enabled = (key !== 'misc');
