@@ -42,15 +42,15 @@ export default Ember.Route.extend({
 
       Ember.run.schedule('afterRender', this, function() {
         // default config - 'normalize it' from entries
-        _.forIn(config.bibtexEntries, (value, key) => {
+        _.forIn(config.userConfig, (value, key) => {
           if(value.enabled) {
             Ember.$(`#normalize-${key}`).attr('checked', true);
           } else {
             Ember.$(`#normalize-${key}`).removeAttr('checked');
           }
 
-          for(let i = 0; i < value.normalize.length; i++) {
-            Ember.$(`#input-${key}-${value.normalize[i]}`).attr('checked', true);
+          for(let i = 0; i < value.attributes.length; i++) {
+            Ember.$(`#input-${key}-${value.attributes[i]}`).attr('checked', true);
           }
         });
       });

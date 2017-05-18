@@ -23,6 +23,8 @@ export default Ember.Object.extend({
 
   normalize() {
     let bibtex = this.get('bibtex');
+
+    const config = this.get('config');
     const missingFields = this.get('missingFields');
 
     if (missingFields && missingFields.length) {
@@ -48,10 +50,18 @@ export default Ember.Object.extend({
       const isDuplicated = (keyEntries.length > 1);
 
       _.each(keyEntries, (entry) => {
+        // if not enabled, append and return
+        if(!config[entry.entryType].enabled) {
+          output += `${bibtexParse.toBibtex([entry]).trim()}\n\n`;
+          lines = _.split(output, '\n').length - 1;
+          return;
+        }
+
+        // if enabled, normalize
         const entryObject = Entry.create({ bibtex: bibtexParse.toBibtex([entry]) });
 
         entryObject.set('citationKey', entry.citationKey);
-        entryObject.set('requiredFields', this.get('config')[_.toLower(entry.entryType)]);
+        entryObject.set('requiredFields', config[entry.entryType].attributes);
         entryObject.normalize();
 
         const errors = _.concat(entryObject.get('invalidFields'), entryObject.get('missingFields'), entryObject.get('formattedFields'));

@@ -74,46 +74,27 @@ export default Ember.Service.extend({
     }
   },
 
-  setup() {
+  userConfig: null,
+
+  setup(restore = false) {
     const entries = this.get('bibtexEntries');
     const cookies = Cookies.getJSON();
 
-    if (!cookies.config) {
-      _.forIn(entries, (value, key) => {
-        value.enabled = (key !== 'misc');
-        value.normalize = value.default;
-        Cookies.set(`bibtex.${key}`, value);
-      });
-
+    if (!cookies.config || restore) {
+      _.forIn(entries, (value, key) => Cookies.set(`bibtex.${key}`, { enabled: (key !== 'misc'), attributes: value.default }));
       Cookies.set('config', { created_at: new Date(), version: '0.0.1' });
     }
 
-    Object.keys(entries)
-      .map((entry) => {
-        const cookie = Cookies.getJSON(`bibtex.${entry}`);
-        entries[entry].enabled = cookie.enabled;
-        entries[entry].normalize = cookie.normalize;
-      });
+    const config = Object.keys(entries)
+      .reduce((memo, entry) => {
+        memo[entry] = Cookies.getJSON(`bibtex.${entry}`);
+        return memo;
+      },  {});
+
+    this.set('userConfig', config);
   },
 
-  restore() {
-    const entries = this.get('bibtexEntries');
-
-    _.forIn(entries, (value, key) => {
-      delete value.enabled;
-      delete value.normalize;
-      Cookies.remove(`bibtex.${key}`);
-    });
-
-    Cookies.remove('config');
-
-    this.setup();
-  },
-
-  update(entry, enabled, normalize) {
-    const entries = this.get('bibtexEntries');
-    entries[entry].enabled = enabled;
-    entries[entry].normalize = normalize;
-    Cookies.set(`bibtex.${entry}`, entries[entry]);
+  update(entry, enabled, attributes) {
+    Cookies.set(`bibtex.${entry}`, (this.get('userConfig')[entry] = { enabled, attributes }));
   }
 });

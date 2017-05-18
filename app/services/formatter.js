@@ -7,7 +7,7 @@ export default Ember.Service.extend({
   bibtex: Bibtex.create({}),
 
   create(bibtex) {
-    const config = _.mapValues(this.get('configuration').bibtexEntries, 'normalize');
+    const config = this.get('configuration').userConfig;
     this.set('bibtex', Bibtex.create({ bibtex: bibtex, config: config }));
     return this.get('bibtex');
   },
