@@ -15,12 +15,12 @@ export default Ember.Service.extend({
     'booklet': {
       'required': ['title'],
       'optional': ['author', 'howpublished', 'address', 'month', 'year', 'note', 'key'],
-      'default' : ['title']
+      'default' : ['title', 'author', 'howpublished', 'year']
     },
     'conference': {
       'required': ['author', 'title', 'booktitle', 'year'],
       'optional': ['editor', 'pages', 'organization', 'publisher', 'address', 'month', 'note', 'key'],
-      'default' : ['author', 'title', 'booktitle', 'year']
+      'default' : ['author', 'title', 'booktitle', 'year', 'pages']
     },
     'inbook': {
       'required': ['author', 'editor', 'title', 'chapter', 'pages', 'publisher', 'year'],
@@ -30,17 +30,17 @@ export default Ember.Service.extend({
     'incollection': {
       'required': ['author', 'title', 'booktitle', 'year'],
       'optional': ['editor', 'pages', 'organization', 'publisher', 'address', 'month', 'note', 'key'],
-      'default' : ['author', 'title', 'booktitle', 'year', 'pages']
+      'default' : ['author', 'title', 'booktitle', 'year', 'pages', 'pages']
     },
     'inproceedings': {
       'required': ['author', 'title', 'booktitle', 'year'],
       'optional': ['editor', 'pages', 'organization', 'publisher', 'address', 'month', 'note', 'key'],
-      'default' : ['author', 'title', 'booktitle', 'year', 'pages']
+      'default' : ['author', 'title', 'booktitle', 'year', 'pages', 'pages']
     },
     'manual': {
       'required': ['title'],
       'optional': ['author', 'organization', 'address', 'edition', 'month', 'year', 'note', 'key'],
-      'default' : ['title']
+      'default' : ['title', 'author', 'year']
     },
     'masterthesis': {
       'required': ['author', 'title', 'school', 'year'],
@@ -70,7 +70,7 @@ export default Ember.Service.extend({
     'unpublished': {
       'required': ['author', 'title', 'note'],
       'optional': ['month', 'year', 'key'],
-      'default' : ['author', 'title', 'note']
+      'default' : ['author', 'title', 'note', 'year']
     }
   },
 
