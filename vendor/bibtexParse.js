@@ -298,11 +298,11 @@
             while (this.matchAt()) {
                 var d = this.directive();
                 this.match("{");
-                if (d == "@STRING") {
+                if (d.toUpperCase() == "@STRING") {
                     this.string();
-                } else if (d == "@PREAMBLE") {
+                } else if (d.toUpperCase() == "@PREAMBLE") {
                     this.preamble();
-                } else if (d == "@COMMENT") {
+                } else if (d.toUpperCase() == "@COMMENT") {
                     this.comment();
                 } else {
                     this.entry(d);

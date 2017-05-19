@@ -66,6 +66,7 @@ export default Ember.Controller.extend({
           return;
         }
       } catch (parserError) {
+        console.error(parserError);
         // exception thrown by bibtexParse.js
         ace.edit("editor").gotoLine(this.findLine(parserError.line));
 

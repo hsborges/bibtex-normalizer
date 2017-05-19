@@ -16,6 +16,7 @@ module.exports = {
     swal: true,
     ace: true,
     bibtexParse: true,
-    saveAs: true
+    saveAs: true,
+    validator: true
   }
 };

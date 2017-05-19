@@ -52,6 +52,11 @@ export default Ember.Service.extend({
       'optional': ['author', 'title', 'howpublished', 'month', 'year', 'note', 'key'],
       'default' : []
     },
+    'online': {
+      'required': ['author', 'title', 'url'],
+      'optional': ['editor', 'data', 'subtitle', 'titleaddon', 'language', 'version', 'note', 'organization', 'date', 'month', 'year', 'addendum', 'pubstate', 'urldate'],
+      'default' : ['author', 'title', 'url', 'urldate']
+    },
     'phdthesis': {
       'required': ['author', 'title', 'school', 'year'],
       'optional': ['address', 'month', 'note', 'key'],

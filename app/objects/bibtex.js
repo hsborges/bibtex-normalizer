@@ -56,7 +56,7 @@ export default Ember.Object.extend({
 
       _.each(keyEntries, (entry) => {
         // if not enabled, append and return
-        if(!config[entry.entryType].enabled) {
+        if(!config[entry.entryType] || !config[entry.entryType].enabled) {
           output += `${bibtexParse.toBibtex([entry]).trim()}\n\n`;
           lines = _.split(output, '\n').length - 1;
           return;
