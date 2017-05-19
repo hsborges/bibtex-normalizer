@@ -35,7 +35,14 @@ export default Ember.Object.extend({
     }
 
     // parse bibtex file
-    const json = bibtexParse.toJSON(bibtex.replace(/\s+/g, ' '));
+    const json = bibtexParse.toJSON(bibtex.replace(/\s+/g, ' '))
+      .map((e) => {
+        e.entryType = e.entryType.toLowerCase();
+        return e;
+      });
+
+    console.log(json);
+
     // reset fields
     this.clear();
 
