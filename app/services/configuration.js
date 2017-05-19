@@ -82,14 +82,40 @@ export default Ember.Service.extend({
   userConfig: null,
 
   setup(restore = false) {
+    const currentVersion = '0.0.1';
     const entries = this.get('bibtexEntries');
+
+    if (restore || !Cookies.getJSON('config')) {
+      _.forIn(entries, (value, key) => {
+          Cookies.set(`bibtex.${key}`, { enabled: (key !== 'misc'), attributes: value.default }, { expires: 365 });
+      });
+
+      Cookies.set('config', { created_at: new Date(), version: currentVersion }, { expires: 365 });
+    }
+
     const cookies = Cookies.getJSON();
 
-    if (!cookies.config || restore) {
+    if (compareVersions(currentVersion, cookies.config.version)) {
+      const keys = ['config'];
+
       _.forIn(entries, (value, key) => {
-        Cookies.set(`bibtex.${key}`, { enabled: (key !== 'misc'), attributes: value.default }, { expires: 365 });
+        const entryKey = keys[keys.length] = `bibtex.${key}`;
+        const currentConfig = cookies[entryKey];
+
+        if (!currentConfig) {
+          Cookies.set(entryKey, { enabled: (key !== 'misc'), attributes: value.default }, { expires: 365 });
+        } else {
+          const enabled = currentConfig.enabled;
+          const attributes = _.uniq(currentConfig.attributes.concat(value.required));
+          Cookies.set(entryKey, { enabled, attributes }, { expires: 365 });
+        }
       });
-      Cookies.set('config', { created_at: new Date(), version: '0.0.1' });
+
+      Cookies.set('config', { created_at: new Date(), version: currentVersion }, { expires: 365 });
+
+      _.each(_.keys(cookies), (cookieKey) => {
+        if (keys.indexOf(cookieKey) < 0) { Cookies.remove(cookieKey); }
+      });
     }
 
     const config = Object.keys(entries)
