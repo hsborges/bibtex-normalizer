@@ -81,7 +81,9 @@ export default Ember.Service.extend({
     const cookies = Cookies.getJSON();
 
     if (!cookies.config || restore) {
-      _.forIn(entries, (value, key) => Cookies.set(`bibtex.${key}`, { enabled: (key !== 'misc'), attributes: value.default }));
+      _.forIn(entries, (value, key) => {
+        Cookies.set(`bibtex.${key}`, { enabled: (key !== 'misc'), attributes: value.default }, { expires: 365 });
+      });
       Cookies.set('config', { created_at: new Date(), version: '0.0.1' });
     }
 
