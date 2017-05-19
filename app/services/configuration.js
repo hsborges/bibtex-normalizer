@@ -82,10 +82,11 @@ export default Ember.Service.extend({
   userConfig: null,
 
   setup(restore = false) {
-    const currentVersion = '0.0.1';
+    const currentVersion = '0.1.0';
     const entries = this.get('bibtexEntries');
+    const currentConfig = Cookies.getJSON('config');
 
-    if (restore || !Cookies.getJSON('config')) {
+    if (restore || !currentConfig || compareVersions('0.1.0', cookies.config.version)) {
       _.forIn(entries, (value, key) => {
           Cookies.set(`bibtex.${key}`, { enabled: (key !== 'misc'), attributes: value.default }, { expires: 365 });
       });
@@ -112,10 +113,6 @@ export default Ember.Service.extend({
       });
 
       Cookies.set('config', { created_at: new Date(), version: currentVersion }, { expires: 365 });
-
-      _.each(_.keys(cookies), (cookieKey) => {
-        if (keys.indexOf(cookieKey) < 0) { Cookies.remove(cookieKey); }
-      });
     }
 
     const config = Object.keys(entries)
