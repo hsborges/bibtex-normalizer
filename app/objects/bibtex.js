@@ -41,8 +41,6 @@ export default Ember.Object.extend({
         return e;
       });
 
-    console.log(json);
-
     // reset fields
     this.clear();
 
