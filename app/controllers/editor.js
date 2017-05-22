@@ -66,7 +66,7 @@ export default Ember.Controller.extend({
           return;
         }
       } catch (parserError) {
-        console.error(parserError);
+
         // exception thrown by bibtexParse.js
         ace.edit("editor").gotoLine(this.findLine(parserError.line));
 
@@ -120,12 +120,16 @@ export default Ember.Controller.extend({
 
       if (this.rangeLines.length > 0) {
         swal({
-          title: 'We found errors in your bibtex file. Please, check that out before use it!'
+          text: 'We found errors in your BibTeX file!',
+          title: 'Warning',
+          type: 'warning'
         });
       } else {
         this.clearMarkers();
         swal({
-          title: 'Congratulations! We didn\'t find errors in your bibtex file.',
+          text: 'We didn\'t find errors in your bibtex file.',
+          title: 'Congratulations',
+          type: 'success'
         });
       }
     },
