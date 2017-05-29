@@ -4,7 +4,7 @@ class BooktitleValidator {
   validate(value) {
     return {
       isValid: /^(\d+)(st|nd|rd|th) (.*?) \((.+)\)?$/i.test(_.trim(value)),
-      message: 'Must follow the format [number]th [conference name] ([abbreviation]).'
+      message: 'Layout must follow: [number][st|nd|rd|th] [conference name] ([abbreviation]).'
     };
   }
 }

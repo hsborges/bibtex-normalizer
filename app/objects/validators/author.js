@@ -8,7 +8,7 @@ class AuthorValidator {
 
     return {
       isValid,
-      message: 'Prefer names as "First Middle Last" instead of "Last, First Middle".',
+      message: 'Autocorrection from "Last, First Middle" to "First Middle Last"',
       alternative: isValid ? null : this.fix(value)
     };
   }

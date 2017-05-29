@@ -4,7 +4,7 @@ class MonthValidator {
   validate(value) {
     return {
       isValid: /^((?!MISSING)[\s\S])*$/.test(value),
-      message: 'Must consist of literals (a-z, A-Z). Bibtex-normalizer default: MISSING'
+      message: 'Must consist of literals (december|dec). Bibtex-normalizer default: MISSING'
     };
   }
 }

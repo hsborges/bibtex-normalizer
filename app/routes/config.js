@@ -13,11 +13,11 @@ export default Ember.Route.extend({
       const bibtex = config.bibtexEntries[key];
       const attrs = []
         .concat(bibtex.required.map(a => ({ name: a, required: true, checked: true })))
-        .concat(bibtex.optional.map(a => ({ name: a, required: false, checked: value.attributes.indexOf(a) >= 0 })));
+        .concat(bibtex.optional.map(a => ({ name: a, required: false, checked: value ? value.attributes.indexOf(a) >= 0 : '' })));
 
       return {
         name: key,
-        enabled: value.enabled,
+        enabled: value ? value.enabled : (key !== 'misc'),
         attributes: attrs
       };
     });

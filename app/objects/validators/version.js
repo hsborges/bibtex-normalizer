@@ -4,7 +4,7 @@ class VersionValidator {
   validate(value) {
     return {
       isValid: /^\d+(\.\d+(\.\d+)?)?$/.test(value.trim()),
-      message: 'Must consist of version standards (e.g., 9 or 9.9 or 9.9.9).'
+      message: 'Layout must follow version standards (e.g., 9 or 9.9 or 9.9.9).'
     };
   }
 }
