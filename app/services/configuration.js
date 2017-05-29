@@ -8,9 +8,9 @@ export default Ember.Service.extend({
       'default' : ['author', 'title', 'journal', 'year', 'volume', 'number', 'pages']
     },
     'book': {
-      'required': ['author', 'editor', 'title', 'publisher', 'year'],
-      'optional': ['volume', 'series', 'address', 'edition', 'month', 'note', 'key'],
-      'default' : ['author', 'editor', 'title', 'publisher', 'year']
+      'required': ['author', 'title', 'publisher', 'year'],
+      'optional': ['editor', 'volume', 'series', 'address', 'edition', 'month', 'note', 'key'],
+      'default' : ['author', 'title', 'publisher', 'year']
     },
     'booklet': {
       'required': ['title'],
@@ -23,9 +23,9 @@ export default Ember.Service.extend({
       'default' : ['author', 'title', 'booktitle', 'year', 'pages']
     },
     'inbook': {
-      'required': ['author', 'editor', 'title', 'chapter', 'pages', 'publisher', 'year'],
-      'optional': ['volume', 'series', 'address', 'edition', 'month', 'note', 'key'],
-      'default' : ['author', 'editor', 'title', 'chapter', 'pages', 'publisher', 'year']
+      'required': ['author', 'title', 'chapter', 'publisher', 'year'],
+      'optional': ['editor', 'pages', 'volume', 'series', 'address', 'edition', 'month', 'note', 'key'],
+      'default' : ['author', 'title', 'pages', 'publisher', 'year']
     },
     'incollection': {
       'required': ['author', 'title', 'booktitle', 'year'],
