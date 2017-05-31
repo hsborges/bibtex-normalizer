@@ -72,7 +72,7 @@ export default Ember.Object.extend({
 
     _.each(missingFields, (field) => {
       bibtex += `  ${field} = { MISSING },\n`;
-      this.get('missingFields').addObject({ field: field, line: ++line, message: `required field for @${json.entryType}.`, type: 'missingField' });
+      this.get('missingFields').addObject({ field: field, line: ++line, message: `missed field in @${json.entryType}.`, type: 'missingField' });
     });
 
     //remove last comma from last attribute

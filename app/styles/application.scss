@@ -29,6 +29,18 @@ $menu-color: rgb(255, 255, 255);
       i { margin-right: 10px; }
     }
 
+    .logo {
+      height: $menu-height;
+      font-size: 25px;
+      font-weight: bold;
+      line-height: $menu-line-height;
+      padding: 10px 15px;
+      color: rgb(75, 75, 75);
+      text-decoration: none;
+
+      img { margin-right: 10px; }
+    }
+
     .left { float: left; }
 
     .right {
