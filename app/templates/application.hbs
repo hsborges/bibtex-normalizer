@@ -2,11 +2,11 @@
 <div class="app-header container">
   <div class="menu row">
     <div class="left">
-      <a href="/"><span class="logo"><img src="../assets/images/logo.png" width="32px" />Bibtex-normalizer</span></a>
+      {{#link-to "index"}}<span class="logo"><img src="assets/images/logo.png" width="40px" />Bibtex-normalizer</span>{{/link-to}}
     </div>
     <div class="right">
       {{#link-to "index" class="option home text-center"}}<i class="fa fa-home"></i>Home{{/link-to}}
-      {{#link-to "config" class="option result text-center"}}<i class="fa fa-gear"></i>Settings{{/link-to}}
+      {{#link-to "config" class="option config text-center"}}<i class="fa fa-gear"></i>Settings{{/link-to}}
       {{#link-to "editor" class="option editor text-center"}}<i class="fa fa-pencil"></i>Editor{{/link-to}}
       {{#link-to "about" class="option about text-center"}}<i class="fa fa-info-circle"></i>About{{/link-to}}
     </div>

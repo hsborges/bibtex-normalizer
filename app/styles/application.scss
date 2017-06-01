@@ -6,7 +6,8 @@ $menu-color: rgb(255, 255, 255);
 
 .app-header {
   height: $menu-height;
-  padding: 10px 15% 10px 15%;
+  margin: 30px 0 15px 0;
+  padding: 0 15% 0 15%;
   width: 100%;
 
   background-color: $menu-color;
@@ -31,21 +32,27 @@ $menu-color: rgb(255, 255, 255);
 
     .logo {
       height: $menu-height;
-      font-size: 25px;
+      font-size: 30px;
       font-weight: bold;
       line-height: $menu-line-height;
       padding: 10px 15px;
       color: rgb(75, 75, 75);
       text-decoration: none;
+      background-color: white;
 
       img { margin-right: 10px; }
     }
 
-    .left { float: left; }
+    .left {
+      @extend .hidden-xs;
+      @extend .hidden-sm;
+      float: left;
+      a:hover { text-decoration: none; }
+    }
 
     .right {
       float: right;
-      .editor { @extend .hidden-xs; }
+      .editor, .config { @extend .hidden-xs; }
       .option {
         font-size: 20px;
         line-height: $menu-line-height;
@@ -55,12 +62,14 @@ $menu-color: rgb(255, 255, 255);
     .active {
       background-color: $brand-primary;
       color: white;
+
+      &:hover {
+        text-decoration: none;
+        cursor: default;
+      }
     }
 
-    .active:hover {
-      text-decoration: none;
-      cursor: default;
-    }
+    .left > .active:hover { cursor: pointer }
   }
 }
 
