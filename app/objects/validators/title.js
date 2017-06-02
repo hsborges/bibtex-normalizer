@@ -14,7 +14,7 @@ class TitleValidator {
 
     return {
       isValid: isValid,
-      message: 'Proper names must be between braces (e.g., {YouTube}, {Twitter}, and {Facebook})',
+      message: 'Autocorrection of proper names (e.g., {YouTube}, {Twitter}, and {Facebook})',
       alternative: isValid ? null : this.fix(value)
     };
   }

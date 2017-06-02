@@ -8,7 +8,7 @@ class AuthorValidator {
 
     return {
       isValid,
-      message: 'Autocorrection from "Last, First Middle" to "First Middle Last"',
+      message: 'Autocorrection from "Last, First Middle" to "First M. Last"',
       alternative: isValid ? null : this.fix(value)
     };
   }
@@ -17,7 +17,13 @@ class AuthorValidator {
     const authors = value.split(' and ').map(_.trim);
 
     const authors2 = _.map(authors, (author) => {
-      const match = author.match(/(\w+),([\w\s]+)/i);
+      let match = author.match(/(\w+),([\w\s]+)/i);
+
+      let firstName = _.trim(match[2]).split(' ');
+      if(firstName[1]) {
+        match[2] = `${firstName[0]} ${firstName[1][0]}.`;
+      }
+
       if (match) { return `${_.trim(match[2])} ${_.trim(match[1])}`; }
       return author;
     });
