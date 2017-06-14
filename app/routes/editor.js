@@ -23,6 +23,8 @@ export default Ember.Route.extend({
           this.controllerFor('editor').send('buildEditor');
           this.controllerFor('editor').send('normalize');
         }
+
+        Ember.$(".footer").hide();
       });
     }
   }

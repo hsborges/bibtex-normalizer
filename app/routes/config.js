@@ -26,6 +26,12 @@ export default Ember.Route.extend({
   actions: {
     refreshModel() {
       this.refresh();
+    },
+
+    didTransition: function() {
+      Ember.run.schedule("afterRender", this, function() {
+        Ember.$(".footer").hide();
+      });
     }
   }
 });
