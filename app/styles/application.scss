@@ -2,8 +2,9 @@ $menu-height: 80px;
 $menu-line-height: 60px;
 $menu-color: rgb(255, 255, 255);
 
-body {
+html, body {
   overflow-x: hidden;
+  height: 100%;
 }
 
 .border-bottom { box-shadow: 0px 1px 1px #e9e9e9; }
@@ -15,7 +16,6 @@ body {
   width: 100%;
 
   background-color: $menu-color;
-
 
   .menu {
     .option:hover { text-decoration: underline; }
@@ -77,8 +77,12 @@ body {
   }
 }
 
-.footer {
-  margin: 50px;
+.app-body {
+  min-height: 70vh;
+}
+
+footer {
+  padding: 50px 0;
 }
 
 @media(max-width: $screen-sm) {
