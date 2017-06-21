@@ -13,7 +13,7 @@ export default Ember.Route.extend({
         var editor = ace.edit("editor");
         editor.setTheme("ace/theme/textmate");
         editor.session.setMode("ace/mode/latex");
-        editor.setOptions({ minLines: 30, maxLines: 50 });
+        editor.setOptions({ minLines: 30, maxLines: 30 });
         editor.setHighlightActiveLine(false);
         editor.session.setTabSize(2);
         editor.session.setUseSoftTabs(true);
