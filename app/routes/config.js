@@ -30,7 +30,7 @@ export default Ember.Route.extend({
 
     didTransition: function() {
       Ember.run.schedule("afterRender", this, function() {
-        Ember.$(".footer").hide();
+        Ember.$("footer").hide();
       });
     }
   }

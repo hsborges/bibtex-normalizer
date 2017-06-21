@@ -24,7 +24,7 @@ export default Ember.Route.extend({
           this.controllerFor('editor').send('normalize');
         }
 
-        Ember.$(".footer").hide();
+        Ember.$("footer").hide();
       });
     }
   }

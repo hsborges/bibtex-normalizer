@@ -2,7 +2,7 @@
   .header {
     min-height: 300px;
     position: relative;
-    transform: translateY(55%);
+    transform: translateY(45%);
 
     .slogan {
       font-size: 40px;
@@ -20,7 +20,7 @@
   .body {
     min-height: 300px;
     position: relative;
-    transform: translateY(45%);
+    transform: translateY(35%);
     padding: 15px 0 0 0;
 
     .open-file {
@@ -63,7 +63,7 @@
   }
 }
 
-@media(max-width: $screen-sm) {
+@media(max-width: $screen-md) {
   .app-index {
     .header, .body { transform: translateY(25%); }
     .header { min-height: 200px; }
