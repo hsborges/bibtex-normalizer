@@ -7,32 +7,53 @@ Bibtex-normalizer is an open source project to validate and normalize Bibtex ent
 This tool uses a defined standard to organize your references in a single way, making it
 easier to read.
 
+
 ![Main page](public/assets/images/homepage.png)
+
 
 ## How it works
 
 We normalize your references.bib in a simple way! If this is your first time here, you may need to follow these steps:
 
-*Step 1*: access the main page via https://hsborges.github.io/bibtex-normalizer/:
+**Step 1**: access the main page via https://hsborges.github.io/bibtex-normalizer/:
 
-*Step 2*: you can either
+![Step 1](public/assets/images/homepage.png)
+
+**Step 2**: you can either:
 
 * drag your references file at "Home" tab
+
+![Step 2, file alternative](public/assets/images/steps/step2.gif)
+
+
 * edit your references from scratch on "Editor" tab
 
-*Step 3*: after an automatic normalization process, Bibtex-normalizer lists all of potential issues regarding Bibtex standards. Those issues may be one of the following:
+![Step 2, editor alternative](public/assets/images/steps/step2a.png)
+
+**Step 3**: after an automatic normalization process, Bibtex-normalizer lists all of potential issues regarding Bibtex standards. Those issues may be one of the following:
+
 
 * unnecesary fields
 * missing fields from Bibtex entries
 * unformatted fields regarding Bibtex standards
 
-*Step 4*: edit your file online to fix those issues and click on "Normalize".
 
-*Step 5*: you can adjust those issues in "Settings" tab, check or uncheck your attributes and/or entries that your file needs to be normalized. Don't forget to Save your changes.
+![Step 3](public/assets/images/steps/step3.png)
+
+
+**Step 4**: edit your file online to fix those issues and click on "Normalize".
+
+
+
+
+
+**Step 5**: you can adjust those issues in "Settings" tab, check or uncheck your attributes and/or entries that your file needs to be normalized. Don't forget to Save your changes.
 
 ## Developing
 
-This project uses Ember.js as framework
+This project uses Ember.js as framework for web applications. More information about Ember.js, we suggest you to [check Ember website](https://www.emberjs.com/).
+
+###
 
 ### Building
 
