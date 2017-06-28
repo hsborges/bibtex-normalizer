@@ -43,17 +43,25 @@ We normalize your references.bib in a simple way! If this is your first time her
 
 **Step 4**: edit your file online to fix those issues and click on "Normalize".
 
+![Step 4](public/assets/images/steps/step4.png)
 
 
+**Step 5**: with your normalized file, you can copy to your clipboard or save as a new Bibtex file (.bib).
+
+![Step 5, alternative copy](public/assets/images/steps/step5.gif)
 
 
-**Step 5**: you can adjust those issues in "Settings" tab, check or uncheck your attributes and/or entries that your file needs to be normalized. Don't forget to Save your changes.
+![Step 5, alternative download](public/assets/images/steps/step5a.gif)
+
+
+**Step 6**: you can adjust those issues in "Settings" tab, check or uncheck your attributes and/or entries that your file needs to be normalized. Don't forget to Save your changes.
+
+![Step 6](public/assets/images/steps/step6.png)
+
 
 ## Developing
 
 This project uses Ember.js as framework for web applications. More information about Ember.js, we suggest you to [check Ember website](https://www.emberjs.com/).
-
-###
 
 ### Building
 
