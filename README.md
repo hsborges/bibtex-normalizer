@@ -1,4 +1,4 @@
-![Bibtex-normalizer](https://raw.githubusercontent.com/hsborges/bibtex-normalizer/public/assets/images/book.png)
+![Bibtex-normalizer](bibtex-normalizer/public/assets/images/book.png)
 
 # Bibtex-normalizer
 > Normalizing BibTeX entries to a common format
@@ -7,7 +7,7 @@ Bibtex-normalizer is an open source project to validate and normalize Bibtex ent
 This tool uses a defined standard to organize your references in a single way, making it
 easier to read.
 
-![Main page](https://raw.githubusercontent.com/hsborges/bibtex-normalizer/public/assets/images/homepage.png)
+![Main page](bibtex-normalizer/public/assets/images/homepage.png)
 
 ## How it works
 
