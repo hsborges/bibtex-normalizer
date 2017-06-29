@@ -39,5 +39,12 @@ module.exports = function(defaults) {
   app.import('bower_components/compare-versions/index.js');
   app.import('vendor/FileSaver.min.js');
   app.import('vendor/bibtexParse.js');
+  // local scripts
+  app.import({
+    development: 'vendor/logging.development.js',
+    production: 'vendor/logging.production.js',
+  });
+  app.import('vendor/config.js');
+
   return app.toTree();
 };
