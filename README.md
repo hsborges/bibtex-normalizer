@@ -37,6 +37,10 @@ We normalize your references.bib in a simple way! If this is your first time her
 
 ## Define your own configuration
 
+
+![Configuration](public/assets/images/steps/configuration.png)
+
+
 Make adjustments on your normalization process accessing "Settings" tab, checking entries and attributes that your file needs to be normalized. Don't forget to Save your changes.
 
 Configuration requires permission to use cookies.
