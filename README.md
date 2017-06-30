@@ -24,7 +24,7 @@ We normalize your references.bib in a simple way! If this is your first time her
 
   *Note*: Fields not configured as mandatory on "Settings" are automatically removed from the formatted bibtex.
 
-**Step 4**: Verify the listed issues and click on "Normalize" button to check the references again.
+**Step 4**: Verify the issues list and click on "Normalize" button to check the references again.
 
 **Step 5**: Copy the the normalized references to the clipboard or download it.
 
