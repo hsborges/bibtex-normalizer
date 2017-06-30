@@ -1,13 +1,12 @@
 ![Bibtex-normalizer](public/assets/images/steps/bibtex-normalizer.png)
-> Normalizing BibTeX entries to a common format
 
 Bibtex-normalizer is an open source project to validate and normalize Bibtex entries online.
 This tool uses a defined standard to organize your references in a single way, making it
 easier to read.
 
-
-![Main page](public/assets/images/steps/mainpage.gif)
-
+<p align="center">
+  <img src="public/assets/images/steps/mainpage.gif">
+</p>
 
 ## How it works
 
