@@ -3,7 +3,7 @@ class PagesValidator {
 
   validate(value) {
     const pages = value.split(',').map(_.trim);
-    const validPages = _.map(pages, page => /^(\d+|\d+-{1,2}\d+|\d+\+)$/.test(page));
+    const validPages = _.map(pages, page => /^(\d+|\d+(\s*)-{1,2}(\s*)\d+|\d+\+)$/.test(page));
     const isValid = _.reduce(validPages, (memo, curr) => (memo && curr), true);
 
     return {
@@ -22,7 +22,7 @@ class PagesValidator {
     const validPages = _.map(pages, (page) => {
       const index = page.indexOf(' ');
       if (index >= 0) { page = page.replace(/\s/g, ''); formatted = true; }
-      if (/^(\d+|\d+-{1,2}\d+|\d+\+)$/.test(page)) { return page; }
+      if (/^(\d+|\d+(\s*)-{1,2}(\s*)\d+|\d+\+)$/.test(page)) { return page; }
       else { valid = false; }
     });
 

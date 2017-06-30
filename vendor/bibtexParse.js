@@ -22,6 +22,12 @@
 //value_quotes -> '"' .*? '"'; // not quite
 //value_braces -> '{' .*? '"'; // not quite
 (function(exports) {
+    function ParserError(message, line, key) {
+      var error = new Error(message);
+      error.line = line;
+      error.key = key;
+      return error;
+    }
 
     function BibtexParser() {
 
@@ -30,6 +36,8 @@
         this.pos = 0;
         this.input = "";
         this.entries = new Array();
+
+        this.citationKeys = new Array();
 
         this.currentEntry = "";
 
@@ -52,8 +60,7 @@
             if (this.input.substring(this.pos, this.pos + s.length) == s) {
                 this.pos += s.length;
             } else {
-                throw "Token mismatch, expected " + s + ", found "
-                        + this.input.substring(this.pos);
+                throw ParserError("Token mismatch, expected " + s, this.pos, this.key());
             };
             this.skipWhitespace(canCommentOut);
         };
@@ -112,7 +119,7 @@
                     } else if (this.input[this.pos] == '{') {
                         bracecount++;
                     } else if (this.pos >= this.input.length - 1) {
-                        throw "Unterminated value";
+                        throw ParserError("Unterminated value", this.pos, this.key());
                     };
                 };
                 if (this.input[this.pos] == '\\' && escaped == false)
@@ -133,7 +140,7 @@
                 if (this.input[this.pos] == '}')
                     brcktCnt--;
                 if (this.pos >= this.input.length - 1) {
-                    throw "Unterminated value:" + this.input.substring(start);
+                    throw ParserError("Unterminated value", this.pos, this.key());
                 };
                 this.pos++;
             };
@@ -151,7 +158,7 @@
                         this.match('"', false);
                         return this.input.substring(start, end);
                     } else if (this.pos >= this.input.length - 1) {
-                        throw "Unterminated value:" + this.input.substring(start);
+                        throw ParserError("Unterminated value", this.pos, this.key());
                     };
                 }
                 if (this.input[this.pos] == '\\' && escaped == false)
@@ -175,8 +182,9 @@
                 else if (this.months.indexOf(k.toLowerCase()) >= 0)
                     return k.toLowerCase();
                 else
-                    throw "Value expected:" + this.input.substring(start) + ' for key: ' + k;
-
+                    // throw new Error("Value expected:" + this.input.substring(start) + ' for key: ' + k);
+                    // line with irregular bibtex
+                    throw ParserError('' + ((this.input.substring(0, start).match(new RegExp("\n", "g")) || []).length + 1), this.pos, this.key());
             };
         };
 
@@ -193,16 +201,17 @@
         this.key = function(optional) {
             var start = this.pos;
             while (true) {
-                if (this.pos >= this.input.length) {
-                    throw "Runaway key";
+                // if (this.pos >= this.input.length) {
+                if (this.pos > this.input.length) {
+                    throw ParserError("There may be a close bracket missing at the end of your file.", 0, "");
                 };
-                                // а-яА-Я is Cyrillic
-                //console.log(this.input[this.pos]);
+
                 if (this.notKey.indexOf(this.input[this.pos]) >= 0) {
                     if (optional && this.input[this.pos] != ',') {
                         this.pos = start;
                         return null;
                     };
+                    // return this.input.substring(start, this.pos);
                     return this.input.substring(start, this.pos);
                 } else {
                     this.pos++;
@@ -218,8 +227,9 @@
                 var val = this.value();
                 return [ key, val ];
             } else {
-                throw "... = value expected, equals sign missing:"
-                        + this.input.substring(this.pos);
+                if(!this.currentEntry.citationKey)
+                    throw ParserError("There is an entry without citation key through your file.", this.pos, "");
+                throw ParserError("There may be a close bracket missing in the middle of your file.", this.pos, this.currentEntry.citationKey);
             };
         };
 
@@ -277,9 +287,8 @@
             this.entries.forEach(function (entry) {
                 if (!entry.citationKey && entry.entryTags) {
                     entry.citationKey = '';
-                    if (entry.entryTags.author) {
+                    if (entry.entryTags.author)
                         entry.citationKey += entry.entryTags.author.split(',')[0] += ', ';
-                    }
                     entry.citationKey += entry.entryTags.year;
                 }
             });
@@ -289,11 +298,11 @@
             while (this.matchAt()) {
                 var d = this.directive();
                 this.match("{");
-                if (d == "@STRING") {
+                if (d.toUpperCase() == "@STRING") {
                     this.string();
-                } else if (d == "@PREAMBLE") {
+                } else if (d.toUpperCase() == "@PREAMBLE") {
                     this.preamble();
-                } else if (d == "@COMMENT") {
+                } else if (d.toUpperCase() == "@COMMENT") {
                     this.comment();
                 } else {
                     this.entry(d);
@@ -318,9 +327,9 @@
         for (var i = 0; i < json.length; i++) {
             out += "@" + json[i].entryType;
             out += '{';
-            if (json[i].citationKey)
+            if (json[i].citationKey) {
                 out += json[i].citationKey + ', \n';
-            if (json[i].entry)
+            } if (json[i].entry)
                 out += json[i].entry ;
             if (json[i].entryTags) {
                 var tags = '';

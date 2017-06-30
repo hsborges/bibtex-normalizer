@@ -1,7 +1,38 @@
 <div class="app-editor container">
-  {{textarea value=model.bibtex class="form-control" rows="25" placeholder="Put your bibtex content here" autofocus=true}}
-  <div class="options">
-    <button type="button" class="btn btn-default" name="button" {{action "clear"}}><i class="fa fa-eraser"></i>Clear</button>
-    <button type="button" class="btn btn-primary" name="button" {{action "normalize"}}><i class="fa fa-cog"></i>Normalize</button>
+  <div class="row">
+    {{#if summaryObject}}
+    <div class="summary col col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Summary</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            {{#each summaryObject as |line|}}
+            <li {{action "focusLine" line.line on="click"}} class={{line.type}} >
+              <span class="line-pointer"><b>Line {{line.line}}:</b> {{line.message}}</span>
+            </li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+    </div>
+    {{/if}}
+    <div class="editor col col-md-12">
+      <div class="row ace">
+        <pre id="editor"></pre>
+      </div>
+      <div class="row options options-bottom">
+        <div class="options-left">
+          <button type="button" class="btn btn-default" name="button" {{action "copyToClipboard"}}><i class="fa fa-clipboard"></i>Copy</button>
+          <button type="button" class="btn btn-default" name="button" {{action "save"}}><i class="fa fa-download"></i>Download</button>
+        </div>
+
+        <div class="options-right">
+          <button type="button" class="btn btn-default" name="button" {{action "clear"}}><i class="fa fa-eraser"></i>Clear</button>
+          <button type="button" class="btn btn-primary" name="button" {{action "normalize"}}><i class="fa fa-cog"></i>Normalize</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

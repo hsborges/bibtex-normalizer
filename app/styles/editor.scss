@@ -1,19 +1,81 @@
 .app-editor {
   padding-top: 25px;
 
-  .options {
-    @extend .pull-right;
-    padding-top: 15px;
+  .ace_gutter-cell.ace_info {
+    background-image: url("../assets/images/check.png");
+    background-position: 2px center;
+  }
 
-    .btn {
-      width: 125px;
-      font-size: 16px;
-      font-weight: bold;
-      height: 40px;
-      margin-left: 15px;
+  .summary {
+    h3.panel-title { font-weight: bold; }
 
-      i { padding-right: 5px; }
+    .panel-body {
+      max-height: 115px;
+      overflow-y: auto;
+      padding: 0px;
+      margin: 15px;
     }
+
+    ul li.missingField {
+      list-style-image: url("../assets/images/warning.png");
+    }
+
+    ul li.invalidField {
+      list-style-image: url("../assets/images/error.png");
+    }
+  }
+
+  .editor {
+    .row.ace {  margin: 0px; }
+
+    .options {
+      margin-right: 0px;
+      padding-bottom: 50px;
+
+      .options-right {
+        @extend .pull-right;
+        padding-top: 15px;
+
+        .btn {
+          width: 125px;
+          font-size: 16px;
+          font-weight: bold;
+          height: 40px;
+          margin-left: 15px;
+
+          i { padding-right: 5px; }
+        }
+      }
+
+      .options-left {
+        @extend .pull-left;
+        padding-top: 15px;
+
+        .btn {
+          width: 125px;
+          font-size: 16px;
+          font-weight: bold;
+          height: 40px;
+          margin-left: 15px;
+
+          i { padding-right: 5px; }
+        }
+      }
+    }
+  }
+
+  pre.ace_editor {
+    font-size: 16px;
+  }
+
+  .auto-formatted-fields{
+    position:absolute;
+    background:rgba(200,200,200, 0.5);
+    z-index:40;
+  }
+
+  .line-pointer {
+    cursor: pointer;
   }
 
 }

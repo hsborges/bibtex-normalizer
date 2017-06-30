@@ -3,23 +3,28 @@ import { Entry } from './index';
 
 export default Ember.Object.extend({
   bibtex: null,
+  config: null,
+
   invalidFields: null,
   missingFields: null,
   formattedFields: null,
 
-  init() {
-    if (this.get('bibtex')) { this.normalize(); }
-  },
+  duplicatedKeys: null,
+  lines: null,
 
   clear() {
     this.set('bibtex', '');
     this.set('invalidFields', []);
     this.set('missingFields', []);
     this.set('formattedFields', []);
+    this.set('duplicatedKeys', []);
+    this.set('lines', []);
   },
 
   normalize() {
     let bibtex = this.get('bibtex');
+
+    const config = this.get('config');
     const missingFields = this.get('missingFields');
 
     if (missingFields && missingFields.length) {
@@ -30,49 +35,72 @@ export default Ember.Object.extend({
     }
 
     // parse bibtex file
-    const json = bibtexParse.toJSON(bibtex);
+    const json = bibtexParse.toJSON(bibtex.replace(/\s+/g, ' '))
+      .map((e) => {
+        e.entryType = e.entryType.toLowerCase();
+        return e;
+      });
+
     // reset fields
     this.clear();
 
     let lines = 0;
     let output = '';
 
-    _.each(json, (entry) => {
-      const entryObject = Entry.create({ bibtex: bibtexParse.toBibtex([entry]) });
+    const entries = _.groupBy(json, 'citationKey');
+    const citationKeys = _.keys(entries);
 
-      switch (_.toLower(entry.entryType)) {
-        case 'article':
-          entryObject.set('requiredFields', ['author', 'title', 'journal', 'volume', 'number', 'pages', 'year']);
-          break;
-        case 'inproceedings':
-        case 'conference':
-          entryObject.set('requiredFields', ['author', 'title', 'booktitle', 'pages', 'year']);
-          break;
-        case 'book':
-          entryObject.set('requiredFields', ['author', 'editor', 'title', 'publisher', 'year']);
-          break;
-        case 'phdthesis':
-          entryObject.set('requiredFields', ['author', 'title', 'school', 'year']);
-          break;
-        default:
-          console.log('Unknown entry type: ', entry.entryType);
-      }
+    _.each(citationKeys, (key) => {
+      const keyEntries = entries[key];
+      const isDuplicated = (keyEntries.length > 1);
 
-      entryObject.normalize();
+      _.each(keyEntries, (entry) => {
+        // if not enabled, append and return
+        if(!config[entry.entryType] || !config[entry.entryType].enabled) {
+          output += `${bibtexParse.toBibtex([entry]).trim()}\n\n`;
+          lines = _.split(output, '\n').length - 1;
+          return;
+        }
 
-      const errors = _.concat(entryObject.get('invalidFields'), entryObject.get('missingFields'), entryObject.get('formattedFields'));
+        // if enabled, normalize
+        const entryObject = Entry.create({ bibtex: bibtexParse.toBibtex([entry]) });
 
-      _.each(errors, (err) => {
-        err.citationKey = entry.citationKey;
-        err.line += lines;
+        entryObject.set('citationKey', entry.citationKey);
+        entryObject.set('requiredFields', config[entry.entryType].attributes);
+        entryObject.normalize();
+
+        const errors = _.concat(entryObject.get('invalidFields'), entryObject.get('missingFields'), entryObject.get('formattedFields'));
+
+        // for each missing field in each entry, an error is added
+        _.each(errors, (err) => {
+          err.citationKey = entry.citationKey;
+          err.line += lines;
+
+          this.get('lines').addObject({
+            line: err.line,
+            type: err.type,
+            message: `"${err.field}": ${err.message}`
+          });
+        });
+
+        if (isDuplicated) {
+          const duplicatedKeyError = {
+            line: (lines + 1),
+            type: 'duplicatedKey',
+            message: `Duplicated citation key: ${key}`
+          };
+
+          this.get('lines').addObject(duplicatedKeyError);
+          this.get('duplicatedKeys').addObject(duplicatedKeyError);
+        }
+
+        this.get('invalidFields').addObjects(entryObject.get('invalidFields'));
+        this.get('missingFields').addObjects(entryObject.get('missingFields'));
+        this.get('formattedFields').addObjects(entryObject.get('formattedFields'));
+
+        output += `${entryObject.get('bibtex')}\n\n`;
+        lines = _.split(output, '\n').length - 1;
       });
-
-      this.get('invalidFields').addObjects(entryObject.get('invalidFields'));
-      this.get('missingFields').addObjects(entryObject.get('missingFields'));
-      this.get('formattedFields').addObjects(entryObject.get('formattedFields'));
-
-      output += `${entryObject.get('bibtex')}\n\n`;
-      lines = _.split(output, '\n').length - 1;
     });
 
     this.set('bibtex', _.trim(output));

@@ -21,12 +21,13 @@ export default Ember.Controller.extend({
     // Ember.$('html').on('dragenter', prevent);
   },
 
-  readAndRedirect() {
+  // firefox requires event as a parameter to get uploaded file
+  readAndRedirect(event) {
     const file = _.first(event.target.files || event.dataTransfer.files);
 
     if (!_.endsWith(file.name, '.bib')) {
       swal({
-      	title: 'Must be a .bib file',
+        title: 'Must be a .bib file',
         timer: 2000
       });
 
@@ -34,10 +35,9 @@ export default Ember.Controller.extend({
     }
 
     const reader = new FileReader();
-
     reader.onload = (e) => {
-      this.get('formatter').normalize(e.target.result);
-      this.transitionToRoute('bibtex');
+      this.get('formatter').create(e.target.result);
+      this.transitionToRoute('editor');
     };
 
     reader.readAsText(file);
@@ -49,6 +49,8 @@ export default Ember.Controller.extend({
     },
     select(event) {
       this.readAndRedirect(event);
+      // slow and deprecated for Ember 1.x
+      Ember.$('.app-index .body .file-input').val("");
     },
     drop(event) {
       event.preventDefault();

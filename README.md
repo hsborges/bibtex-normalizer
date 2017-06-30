@@ -1,52 +1,44 @@
-# bibtex-ember
+![Bibtex-normalizer](public/assets/images/steps/bibtex-normalizer.png)
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+Bibtex-normalizer is an open source project to validate and normalize Bibtex entries online.
+This tool uses a defined standard to organize your references in a single way, making it
+easier to read.
 
-## Prerequisites
+<p align="center">
+  <img src="public/assets/images/steps/mainpage.gif">
+</p>
 
-You will need the following things properly installed on your computer.
+## Usage
 
-* [Git](https://git-scm.com/)
-* [Node.js](https://nodejs.org/) (with NPM)
-* [Bower](https://bower.io/)
-* [Ember CLI](https://ember-cli.com/)
-* [PhantomJS](http://phantomjs.org/)
+We normalize your references.bib in a simple way! If this is your first time here, you may need to follow these steps:
 
-## Installation
+**Step 1**: Access the [website](https://hsborges.github.io/bibtex-normalizer)
 
-* `git clone <repository-url>` this repository
-* `cd bibtex-ember`
-* `npm install`
-* `bower install`
+**Step 2**: Select or drag and drop your bibtex file. You can also click on tab "Editor" to use the web editor.
 
-## Running / Development
+**Step 3**: After the normalization process, a lists of potential issues is presented.
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
+* *Auto-formatted fields:* Fields automatically formmated by the tool (details below).
+* *Missing fields:* Mandatory fields that are not present (see "Settings").
+* *Unformatted fields:* Fields not following Bibtex standards.
 
-### Code Generators
+  *Note*: Fields not configured as mandatory on "Settings" are automatically removed from the formatted bibtex.
 
-Make use of the many generators for code, try `ember help generate` for more details
+**Step 4**: Verify the issues list and click on "Normalize" button to check the references again.
 
-### Running Tests
+**Step 5**: Copy the the normalized references to the clipboard or download it.
 
-* `ember test`
-* `ember test --server`
 
-### Building
+## Define your own configuration
 
-* `ember build` (development)
-* `ember build --environment production` (production)
 
-### Deploying
+![Configuration](public/assets/images/steps/configuration.png)
 
-Specify what it takes to deploy your app.
 
-## Further Reading / Useful Links
+Make adjustments on your normalization process accessing "Settings" tab, checking entries and attributes that your file needs to be normalized. Don't forget to save your changes.
 
-* [ember.js](http://emberjs.com/)
-* [ember-cli](https://ember-cli.com/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+*Note*: Configuration requires permission to use cookies.
+
+## Developing
+
+This project uses Ember.js as framework for web applications. More information about Ember.js, we suggest you to [check Ember website](https://www.emberjs.com/).

@@ -8,9 +8,9 @@ const Router = Ember.Router.extend(googlePageview, {
 });
 
 Router.map(function() {
-  this.route('bibtex');
   this.route('about');
   this.route('editor');
+  this.route('config');
 });
 
 export default Router;

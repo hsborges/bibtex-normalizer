@@ -1,0 +1,49 @@
+<div class="app-config container">
+  <div class="row">
+    <div class="header col-lg-8 col-lg-offset-2 text-center">
+      <h3>Choose the BibTeX entries you want to normalize and the mandatory fields in each entry</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col text-center">
+      <button class="btn btn-primary btn-save btn-lg" {{action "configure"}}><i class="fa fa-floppy-o"></i>Save</button>
+      <button class="btn btn-default btn-restore btn-lg" {{action "restore"}}><i class="fa fa-eraser"></i>Default</button>
+    </div>
+  </div>
+
+  <div class="row">
+    {{#each model as |entry|}}
+      <div class="col-lg-4 col-md-4 col-sm-12">
+        <div class="panel panel-default list-group" style="min-height: 335px;">
+
+          <div class="panel-heading clearfix">
+            <h3 class="panel-title pull-left text-capitalize"><strong>{{entry.name}}</strong></h3>
+
+            {{input class="pull-right" type="checkbox" checked=entry.enabled}}
+            <span class="pull-right">Normalize &nbsp;</span>
+          </div>
+
+          <div class="panel-body">
+            <div class="row">
+              {{#each entry.attributes as |attribute|}}
+                <div class="col-lg-6 col-md-6 text-capitalize">
+                  {{input type="checkbox" checked=attribute.checked disabled=attribute.required}} {{attribute.name}}
+                </div>
+              {{/each}}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    {{/each}}
+  </div>
+
+  <div class="row">
+    <div class="col text-center">
+      <button class="btn btn-primary btn-save btn-lg" {{action "configure"}}><i class="fa fa-floppy-o"></i>Save</button>
+      <button class="btn btn-default btn-restore btn-lg" {{action "restore"}}><i class="fa fa-eraser"></i>Default</button>
+    </div>
+  </div>
+
+</div>

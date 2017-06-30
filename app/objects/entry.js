@@ -8,6 +8,7 @@ export default Ember.Object.extend({
   formattedFields: null,
 
   requiredFields: null,
+  citationKeys: null,
 
   validate(field, value) {
     const validator = validators.getValidator(_.toLower(field));
@@ -34,6 +35,7 @@ export default Ember.Object.extend({
     this.set('invalidFields', []);
     this.set('missingFields', []);
     this.set('formattedFields', []);
+    this.set('citationKeys', []);
 
     const json = _.first(bibtexParse.toJSON(this.get('bibtex')));
 
@@ -54,12 +56,14 @@ export default Ember.Object.extend({
       line += 1;
 
       if (!validation.isValid && !validation.alternative) {
-        this.get('invalidFields').addObject({ field: validation.field, line: line, message: validation.message });
+        this.get('invalidFields').addObject({ field: validation.field, line: line, message: validation.message, type: 'invalidField' });
       }
 
       if (validation.alternative) {
-        this.get('formattedFields').addObject({ field: validation.field, line: line, message: validation.message });
+        this.get('formattedFields').addObject({ field: validation.field, line: line, message: validation.message, type: 'formattedField' });
       }
+      // Adding entry name in Entry object
+      this.get('citationKeys').addObject(json.citationKey);
 
       bibtex += `  ${key} = { ${_.trim(validation.alternative || value)} },\n`;
     });
@@ -67,11 +71,12 @@ export default Ember.Object.extend({
     const missingFields = _.differenceWith(requiredFields, _.chain(json.entryTags).keys().map(_.toLower).value());
 
     _.each(missingFields, (field) => {
-      bibtex += `  ${field} = { XX },\n`;
-      this.get('missingFields').addObject({ field: field, line: ++line, message: `"${field}" is a required field for @${json.entryType}.` });
+      bibtex += `  ${field} = { MISSING },\n`;
+      this.get('missingFields').addObject({ field: field, line: ++line, message: `missed field in @${json.entryType}.`, type: 'missingField' });
     });
 
-    bibtex += '}';
+    //remove last comma from last attribute
+    bibtex = `${bibtex.substr(0, bibtex.length-2)}\n}`;
 
     this.set('bibtex', bibtex);
 

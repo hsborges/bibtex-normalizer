@@ -1,34 +1,53 @@
 class TitleValidator {
   constructor() {
     this.properNames = ['Android', 'GitHub', 'YouTube', 'Twitter', 'Facebook', 'API', 'Java', 'JavaScript', 'Ruby'];
+    //regex (RegExp object) to identify multiple properNames in attribute
+    this.properNamesRegex = new RegExp(`\\W(${this.properNames.join(")(\\W|$)|\\W(")})(\\W|$)`, 'gi');
+    this.correctRegex = new RegExp(`\\{${this.properNames.join("\\}|\\{")}\\}`, 'g');
   }
 
   validate(value) {
-    let isValid = true;
-
-    _.each(this.properNames, (word) => {
-      // find word
-      const found = value.toLowerCase().indexOf(_.toLower(word));
-      // test if it is equals
-      if (found >= 0 && value.substr(found, word.length) !== word) { isValid = false; return; }
-      // test if it is between braces
-      if (found >= 0 && value.indexOf(`{${word}}`) < 0) { isValid = false; return; }
-    });
+    let a = this.properNamesRegex.test(value),
+      b = this.correctRegex.test(value);
+    // XNOR: valid content when both regex return same boolean
+    let isValid = !((a && !b) || (!a && b));
 
     return {
-      isValid,
-      message: 'Proper names must be between braces (e.g., {YouTube}, {Twitter}, and {Facebook})',
+      isValid: isValid,
+      message: 'Autocorrection of proper names (e.g., {YouTube}, {Twitter}, and {Facebook})',
       alternative: isValid ? null : this.fix(value)
     };
   }
 
   fix(value) {
-    _.each(this.properNames, (word) => {
-      const found = value.toLowerCase().indexOf(_.toLower(word));
-      if (found >= 0) { value = `${value.substr(0, found)}{${word}}${value.substr(found + word.length)}`; }
+    // filter: unique values in array
+    let occurrences = value.match(this.properNamesRegex).filter(function (value, index, self) {
+      return self.indexOf(value) === index;
     });
 
-    return value.replace(/\{+/, '{').replace(/\}+/, '}');
+    // for each invalid proper name, find all occurrences from term
+    for(let j=0; j<occurrences.length; j++) {
+      _.each(this.properNames, (word) => {
+        let index = -1;
+
+        // stringFixed allows to fetch any brackets found in regex and put it with the correct word
+        let stringFixed = "";
+        if(occurrences[j][0] === '{') {
+          stringFixed = "{";
+        }
+        stringFixed += word;
+
+        if(occurrences[j].trim().replace('{', '').replace('}','').toLowerCase() === word.toLowerCase()) {
+          stringFixed += (occurrences[j][occurrences[j].length-1] === '}') ? '}' : '';
+          while ((index = value.indexOf(occurrences[j], index+1)) !== -1){
+            value = value.replace(occurrences[j], ` {${stringFixed}} `);
+          }
+        }
+      });
+    }
+
+    // return value.replace(/\{+/, '{').replace(/\}+/, '}');
+    return value.replace(/ +(?= )/g,'');
   }
 }
 

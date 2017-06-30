@@ -1,17 +1,21 @@
 .app-about {
-  @extend .text-center;
+  font-size: 16px;
+  padding-top: 25px;
 
-  img {
-    transform: translateY(65%);
-    max-height: 250px;
-  }
-}
+  .member {
+    .thumbnail {
+      max-width: 125px;
+      margin: auto;
 
-@media(max-width: $screen-sm) {
-  .app-about {
-    img {
-      transform: translateY(85%);
-      width: 80%
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+
+    .name {
+      padding-top: 15px;
+      font-weight: bold;
     }
   }
 }

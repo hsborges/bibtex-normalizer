@@ -1,0 +1,18 @@
+.app-config {
+  .row {
+    margin-bottom: 30px;
+  }
+
+  .btn-save,
+  .btn-restore {
+    font-weight: bold;
+    width: 125px;
+    margin: 0 10px;
+    .fa { padding-right: 10px;}
+  }
+
+  .panel-over-body {
+    z-index: 2;
+    background-color: #ddd;
+  }
+}
