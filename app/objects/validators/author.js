@@ -17,7 +17,9 @@ class AuthorValidator {
     const authors = value.split(' and ').map(_.trim);
 
     const authors2 = _.map(authors, (author) => {
-      let match = author.match(/(\S+),([\S\s]+)/i);
+      let match = author.match(/(.+),(.+)/i);
+
+      if (!match) { return author; }
 
       let firstName = _.trim(match[2]).split(' ');
       if(firstName[1] && !firstName[1][1]) {
