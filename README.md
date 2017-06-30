@@ -8,27 +8,25 @@ easier to read.
   <img src="public/assets/images/steps/mainpage.gif">
 </p>
 
-## How it works
+## Usage
 
 We normalize your references.bib in a simple way! If this is your first time here, you may need to follow these steps:
 
-**Step 1**: access Bibtex-normalizer via https://hsborges.github.io/bibtex-normalizer/
+**Step 1**: Access the [website](https://hsborges.github.io/bibtex-normalizer)
 
+**Step 2**: Select or drag and drop your bibtex file. You can also click on tab "Editor" to use the web editor.
 
-**Step 2**: you can normalize your references by loading your file at "Home" tab or paste your content on "Editor" tab.
+**Step 3**: After the normalization process, a lists of potential issues is presented.
 
+* *Auto-formatted fields:* Fields automatically formmated by the tool (details below).
+* *Missing fields:* Mandatory fields that are not present (see "Settings").
+* *Unformatted fields:* Fields not following Bibtex standards.
 
-**Step 3**: after an automatic normalization process, Bibtex-normalizer lists all of potential issues regarding Bibtex standards. Those issues may be one of the following:
+  *Note*: Fields not configured as mandatory on "Settings" are automatically removed from the formatted bibtex.
 
-* unnecesary fields
-* missing fields from Bibtex entries
-* unformatted fields regarding Bibtex standards
+**Step 4**: Verify the listed issues and click on "Normalize" button to check the references again.
 
-
-**Step 4**: edit your file online to fix those issues and click on "Normalize".
-
-
-**Step 5**: with your normalized file, you can copy to your clipboard or save as a new Bibtex file (.bib).
+**Step 5**: Copy the the normalized references to the clipboard or download it.
 
 
 ## Define your own configuration
@@ -37,9 +35,9 @@ We normalize your references.bib in a simple way! If this is your first time her
 ![Configuration](public/assets/images/steps/configuration.png)
 
 
-Make adjustments on your normalization process accessing "Settings" tab, checking entries and attributes that your file needs to be normalized. Don't forget to Save your changes.
+Make adjustments on your normalization process accessing "Settings" tab, checking entries and attributes that your file needs to be normalized. Don't forget to save your changes.
 
-Configuration requires permission to use cookies.
+*Note*: Configuration requires permission to use cookies.
 
 ## Developing
 
