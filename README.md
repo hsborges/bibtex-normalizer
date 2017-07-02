@@ -18,7 +18,7 @@ We normalize your references.bib in a simple way! If this is your first time her
 
 **Step 3**: After the normalization process, a lists of potential issues is presented.
 
-* *Auto-formatted fields:* Fields automatically formmated by the tool (details below).
+* *Auto-formatted fields:* Fields automatically formated by the tool (details below).
 * *Missing fields:* Mandatory fields that are not present (see "Settings").
 * *Unformatted fields:* Fields not following Bibtex standards.
 
@@ -26,7 +26,7 @@ We normalize your references.bib in a simple way! If this is your first time her
 
 **Step 4**: Verify the issues list and click on "Normalize" button to check the references again.
 
-**Step 5**: Copy the the normalized references to the clipboard or download it.
+**Step 5**: Copy the normalized references to the clipboard or download them.
 
 
 ## Define your own configuration
