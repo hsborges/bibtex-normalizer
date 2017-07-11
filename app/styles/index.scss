@@ -1,8 +1,6 @@
 .app-index {
   .header {
-    min-height: 300px;
     position: relative;
-    transform: translateY(45%);
 
     .slogan {
       font-size: 40px;
@@ -18,9 +16,7 @@
   }
 
   .body {
-    min-height: 300px;
     position: relative;
-    transform: translateY(35%);
     padding: 15px 0 0 0;
 
     .open-file {
@@ -60,12 +56,36 @@
     .drop-file-area:hover {
       background-color: #f0f0f0;
     }
+
+  }
+
+  .verbatim {
+    font-family: monospace;
+    background: #ebebeb;
+    border: #cccccc 2px dotted;
+    margin: 0px 0px 20px 0px;
+    padding: 10px 20px;
+    white-space: pre-wrap;
+  }
+
+  .options-right {
+    @extend .pull-right;
+    padding-top: 15px;
+
+    .btn {
+      width: 125px;
+      font-size: 16px;
+      font-weight: bold;
+      height: 40px;
+      margin-left: 15px;
+
+      i { padding-right: 5px; }
+    }
   }
 }
 
 @media(max-width: $screen-md) {
   .app-index {
-    .header, .body { transform: translateY(25%); }
     .header { min-height: 200px; }
     .body .separator { padding: 5px 0 5px 0; }
   }

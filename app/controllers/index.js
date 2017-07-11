@@ -2,6 +2,26 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   formatter: Ember.inject.service(),
+  sampleEntry: `@article{DBLP:journals/sosym/QueirozPVHAC17,
+    author    = {Rodrigo Queiroz and
+                 Leonardo Teixeira Passos and
+                 Marco Tulio Valente and
+                 Claus Hunsen and
+                 Sven Apel and
+                 Krzysztof Czarnecki},
+    title     = {The shape of feature code: an analysis of twenty C-preprocessor-based
+                 systems},
+    journal   = {Software and System Modeling},
+    volume    = {16},
+    number    = {1},
+    pages     = {77--96},
+    year      = {2017},
+    url       = {https://doi.org/10.1007/s10270-015-0483-z},
+    doi       = {10.1007/s10270-015-0483-z},
+    timestamp = {Fri, 26 May 2017 22:52:21 +0200},
+    biburl    = {http://dblp.uni-trier.de/rec/bib/journals/sosym/QueirozPVHAC17},
+    bibsource = {dblp computer science bibliography, http://dblp.org}
+  }`,
 
   init() {
     const prevent = function(event) {
@@ -57,5 +77,12 @@ export default Ember.Controller.extend({
       event.stopPropagation();
       this.readAndRedirect(event);
     },
+    normalizeSample() {
+      if(Ember.$('#sample-entry').val().length > 1000) {
+        swal({ title: '', type: 'warning', text: 'limit reached' });
+      } else {
+        this.get('formatter').create(this.get('sampleEntry'));
+      }
+    }
   }
 });
