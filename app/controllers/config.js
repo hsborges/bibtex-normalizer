@@ -7,12 +7,17 @@ export default Ember.Controller.extend({
     configure() {
       const config = this.get('configuration');
       const model = this.get('model');
-      // iterate over the entries and save new config 
+      // log payload
+      const payload = [];
+      // iterate over the entries and save new config
       _.each(model, (entry) => {
         const enabled = entry.enabled;
         const attributes = entry.attributes.filter(a => a.checked).map(a => a.name);
         config.update(entry.name, enabled, attributes);
+        payload.push({ name: entry.name, enabled, attributes });
       });
+      // log action
+      bnLogger.send({ version: bnConfig.version, route: 'settings', action: 'save', date: new Date(), payload });
       // show alert
       swal({ title: 'Saved', type: 'success' });
     },
@@ -32,9 +37,12 @@ export default Ember.Controller.extend({
         config.setup(true);
         // force route to refresh model
         this.send('refreshModel');
+        // log action
+        bnLogger.send({ version: bnConfig.version, route: 'settings', action: 'restore', date: new Date() });
         // show alert
         swal({ title: 'Saved', type: 'success' });
-      });
+      })
+      .catch(() => null);
     },
   }
 });

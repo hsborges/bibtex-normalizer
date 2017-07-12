@@ -29,6 +29,7 @@ export default Ember.Controller.extend({
 
   actions: {
     clear() {
+      bnLogger.send({ version: bnConfig.version, route: 'editor', action: 'clear', date: new Date() });
       ace.edit("editor").setValue("");
       this.get('formatter').get('bibtex').clear();
       this.clearMarkers();
@@ -39,6 +40,7 @@ export default Ember.Controller.extend({
     },
 
     normalize() {
+      bnLogger.send({ version: bnConfig.version, route: 'editor', action: 'normalize', date: new Date() });
       this.clearMarkers();
       const input = ace.edit("editor").getValue();
       // textarea was empty
@@ -140,6 +142,7 @@ export default Ember.Controller.extend({
     },
 
     copyToClipboard() {
+      bnLogger.send({ version: bnConfig.version, route: 'editor', action: 'copy', date: new Date() });
       const $tmp = Ember.$('<textarea>');
       Ember.$('body').append($tmp);
       $tmp.val(ace.edit("editor").session.getValue()).select();
@@ -153,6 +156,7 @@ export default Ember.Controller.extend({
     },
 
     save() {
+      bnLogger.send({ version: bnConfig.version, route: 'editor', action: 'download', date: new Date() });
       if(this.get('formatter').get('bibtex').get('bibtex')) {
         const file = new File([this.get('formatter').get('bibtex').get('bibtex')], "references-bibtex-normalizer.bib", {type: "text/plain;charset=utf-8"});
         saveAs(file);

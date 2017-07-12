@@ -48,11 +48,13 @@ export default Ember.Controller.extend({
       Ember.$('.app-index .body .file-input').trigger('click');
     },
     select(event) {
+      bnLogger.send({ version: bnConfig.version, route: 'index', action: 'select', date: new Date() });
       this.readAndRedirect(event);
       // slow and deprecated for Ember 1.x
       Ember.$('.app-index .body .file-input').val("");
     },
     drop(event) {
+      bnLogger.send({ version: bnConfig.version, route: 'index', action: 'drop', date: new Date() });
       event.preventDefault();
       event.stopPropagation();
       this.readAndRedirect(event);
