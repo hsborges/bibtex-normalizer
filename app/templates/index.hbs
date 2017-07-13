@@ -1,9 +1,7 @@
-<div class="app-index container" ondrop={{action "drop"}}>
+<div class="app-index container-fluid" ondrop={{action "drop"}}>
 
-  <div style="margin: 100px;"></div>
-
-  <div class="row">
-    <div class="header col-md-6">
+  <div class="row message">
+    <div class="text col-md-6">
       <h1 class="slogan text-center">Normalize your .bib</h1>
       <div class="features row">
         <div class="feature text-center"><i class="fa fa-check" aria-hidden="true"></i> Remove unnecessary fields</div>
@@ -13,7 +11,7 @@
       </div>
     </div>
 
-    <div class="body col-md-6">
+    <div class="drop col-md-6">
       <div class="open-file text-center">
         <div class="btn btn-primary" onclick={{action "choose"}}>Choose a bibtex file</div>
       </div>
@@ -27,34 +25,22 @@
     </div>
   </div>
 
-  <div style="margin: 100px;"></div>
-
-  <div class="row">
-    <div class="col-md-6 col-xs-12">
-      <h3><strong>Original Entry</strong></h3>
-      <textarea id="sample-entry" rows="11" class="col-md-12">
-        {{sampleEntry}}
-      </textarea>
-    </div>
-
-    <div class="col-md-6 col-xs-12">
-        <h3><strong>Normalized Entry</strong></h3>
-        <pre class="verbatim">
-@article{DBLP:journals/sosym/QueirozPVHAC17,
-  author = { Rodrigo Queiroz and Leonardo Teixeira Passos and Marco Tulio Valente and Claus Hunsen and Sven Apel and Krzysztof Czarnecki },
-  title = { The shape of feature code: an analysis of twenty C-preprocessor-based systems },
-  journal = { Software and System Modeling },
-  year = { 2017 }
-}
-        </pre>
-    </div>
+  <div class="scroll text-center">
+    <div class="text"><i class="fa fa-angle-double-down" aria-hidden="true"></i> See an example <i class="fa fa-angle-double-down" aria-hidden="true"></i></div>
   </div>
 
-  <div class="row">
-    <div class="col col-md-6">
+  <div class="row example">
+    <div class="col-md-6 col-xs-12">
+      <h3><strong>Original</strong></h3>
+      <textarea id="sample-entry" rows="11" class="col-md-12">{{sampleEntry}}</textarea>
       <div class="options-right">
-        {{#link-to "editor"}}<button type="button" class="btn btn-primary" name="button" {{action "normalizeSample"}}><i class="fa fa-cog"></i>Normalize</button>{{/link-to}}
+        {{#link-to "editor"}}<button type="button" class="btn btn-primary btn-sm" name="button" {{action "normalizeSample"}}><i class="fa fa-cog"></i>Normalize</button>{{/link-to}}
       </div>
+    </div>
+
+    <div class="col-md-6 col-xs-12">
+        <h3><strong>Normalized</strong></h3>
+        <pre class="verbatim">{{normalizedSampleEntry}}</pre>
     </div>
   </div>
 

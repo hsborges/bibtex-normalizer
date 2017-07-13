@@ -1,85 +1,109 @@
 .app-index {
-  .header {
-    position: relative;
+  .message {
+    padding: 20vh 20vw 15vh 20vw;
 
-    .slogan {
-      font-size: 40px;
-      font-weight: bold;
-      margin: 0 0 15px 0;
+    .text {
+      .slogan {
+        font-size: 40px;
+        font-weight: bold;
+        margin: 0 0 15px 0;
+      }
+
+      .features {
+        font-size: 20px;
+        .fa-check { color: green; }
+      }
     }
 
-    .features {
-      font-size: 20px;
-      .fa-check { color: green; }
-    }
+    .drop {
+      padding: 0 0 0 0;
 
+      .open-file {
+        margin: 0 auto;
+
+        .btn {
+          font-weight: bold;
+          font-size: 16px;
+          height: 40px;
+          width: 200px;
+          line-height: 25px;
+        }
+      }
+
+      .separator {
+        padding: 15px 0 15px 0;
+        margin: 0 auto;
+
+        span {
+          font-size: 20px;
+          line-height: 40px;
+          font-weight: bold;
+        }
+      }
+
+      .drop-file-area {
+        width: 300px;
+        height: 100px;
+        margin: 0 auto;
+        line-height: 91px;
+        font-size: 16px;
+        color: gray;
+        border-style: dashed;
+        cursor: pointer;
+      }
+
+      .drop-file-area:hover {
+        background-color: #f0f0f0;
+      }
+    }
   }
 
-  .body {
-    position: relative;
-    padding: 15px 0 0 0;
+  .scroll {
+    position: absolute;
+    left: 50%;
+    margin-left: -130px;
+    color: #888888;
+    font-size: 25px;
 
-    .open-file {
-      margin: 0 auto;
+    .text {
+      font-weight: bold;
+      margin-bottom: -10px;
+      border-radius: 15px;
+      border: 2px solid #aaaaaa;
+      padding: 15px;
+    }
+  }
+
+  .example {
+    background-color: #ffffff;
+    padding: 20vh 15vw 10vh 15vw;
+
+    textarea {
+      white-space: nowrap;
+    }
+
+    .verbatim {
+      font-family: monospace;
+      background: #ebebeb;
+      border: #cccccc 2px dotted;
+      margin: 0px 0px 20px 0px;
+      padding: 10px 20px;
+      white-space: pre;
+    }
+
+    .options-right {
+      @extend .pull-right;
+      padding-top: 15px;
 
       .btn {
-        font-weight: bold;
+        width: 125px;
         font-size: 16px;
-        height: 40px;
-        width: 200px;
-        line-height: 25px;
-      }
-    }
-
-    .separator {
-      padding: 15px 0 15px 0;
-      margin: 0 auto;
-
-      span {
-        font-size: 20px;
-        line-height: 40px;
         font-weight: bold;
+        height: 40px;
+        margin-left: 15px;
+
+        i { padding-right: 5px; }
       }
-    }
-
-    .drop-file-area {
-      width: 300px;
-      height: 100px;
-      margin: 0 auto;
-      line-height: 91px;
-      font-size: 16px;
-      color: gray;
-      border-style: dashed;
-      cursor: pointer;
-    }
-
-    .drop-file-area:hover {
-      background-color: #f0f0f0;
-    }
-
-  }
-
-  .verbatim {
-    font-family: monospace;
-    background: #ebebeb;
-    border: #cccccc 2px dotted;
-    margin: 0px 0px 20px 0px;
-    padding: 10px 20px;
-    white-space: pre-wrap;
-  }
-
-  .options-right {
-    @extend .pull-right;
-    padding-top: 15px;
-
-    .btn {
-      width: 125px;
-      font-size: 16px;
-      font-weight: bold;
-      height: 40px;
-      margin-left: 15px;
-
-      i { padding-right: 5px; }
     }
   }
 }
