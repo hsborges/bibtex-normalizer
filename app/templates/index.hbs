@@ -32,30 +32,23 @@
   <div class="row">
     <div class="col-md-6 col-xs-12">
       <h3><strong>Original Entry</strong></h3>
-      <textarea id="sample-entry" rows="11" class="col-md-12">
-        {{sampleEntry}}
-      </textarea>
+      <textarea id="sample-entry" rows="15" class="col-md-12">{{sampleInput}}</textarea>
     </div>
 
     <div class="col-md-6 col-xs-12">
         <h3><strong>Normalized Entry</strong></h3>
-        <pre class="verbatim">
-@article{DBLP:journals/sosym/QueirozPVHAC17,
-  author = { Rodrigo Queiroz and Leonardo Teixeira Passos and Marco Tulio Valente and Claus Hunsen and Sven Apel and Krzysztof Czarnecki },
-  title = { The shape of feature code: an analysis of twenty C-preprocessor-based systems },
-  journal = { Software and System Modeling },
-  year = { 2017 }
-}
-        </pre>
+        <pre class="verbatim">{{sampleOutput}}</pre>
     </div>
   </div>
 
   <div class="row">
     <div class="col col-md-6">
       <div class="options-right">
-        {{#link-to "editor"}}<button type="button" class="btn btn-primary" name="button" {{action "normalizeSample"}}><i class="fa fa-cog"></i>Normalize</button>{{/link-to}}
+        {{#link-to "editor"}}<button type="button" class="btn btn-primary" name="button" {{action "normalizeSample"}}><i class="fa fa-cog"></i>Normalize >></button>{{/link-to}}
       </div>
     </div>
   </div>
+
+  {{highlight-js code=file lang=language hasLineNumbers=hasLineNumbers}}
 
 </div>

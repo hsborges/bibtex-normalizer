@@ -68,15 +68,17 @@
     white-space: pre-wrap;
   }
 
+  #sample-entry {
+    white-space: nowrap;
+  }
+
   .options-right {
     @extend .pull-right;
     padding-top: 15px;
 
     .btn {
-      width: 125px;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: bold;
-      height: 40px;
       margin-left: 15px;
 
       i { padding-right: 5px; }
