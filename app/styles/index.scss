@@ -1,6 +1,6 @@
 .app-index {
   .message {
-    padding: 20vh 20vw 15vh 20vw;
+    padding: 20vh 15vw 25vh 15vw;
 
     .text {
       .slogan {
@@ -16,7 +16,8 @@
     }
 
     .drop {
-      padding: 0 0 0 0;
+      margin-top: -10px;
+      padding: 0 0 0 25px;
 
       .open-file {
         margin: 0 auto;
@@ -108,9 +109,20 @@
   }
 }
 
-@media(max-width: $screen-md) {
+@media(max-width: $screen-lg) {
   .app-index {
-    .header { min-height: 200px; }
-    .body .separator { padding: 5px 0 5px 0; }
+    .message {
+      padding: 20vh 5vw 25vh 5vw;
+    }
+  }
+}
+
+@media(max-width: $screen-sm) {
+  .app-index {
+    .message {
+      padding: 10vh 5vw 15vh 5vw;
+
+      .drop { margin-top: 75px; }
+    }
   }
 }

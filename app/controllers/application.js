@@ -15,7 +15,8 @@ export default Ember.Controller.extend({
     Ember.run.schedule("afterRender", this, function() {
       const self = this;
       Ember.$(window).on('scroll', function () {
-        if(!self.get('index') && Ember.$(window).scrollTop()) {
+        const enabled = self.get('index') || self.get('editor') || self.get('config');
+        if(enabled && Ember.$(window).scrollTop()) {
           Ember.$('.app-header').addClass('app-header-fixed')
         } else {
           Ember.$('.app-header').removeClass('app-header-fixed')

@@ -5,7 +5,7 @@ export default Ember.Controller.extend({
   sampleEntry: `@inproceedings{Borges2016,
     author = { Borges, Hudson and Hora, André C. and Valente, Marco Tulio },
     title = { Understanding the Factors That Impact the Popularity of GitHub Repositories},
-    booktitle = { 2016 {IEEE} International Conference on Software Maintenance and Evolution (ICSME) },
+    booktitle = { International Conference on Software Maintenance and Evolution (ICSME) },
     pages = { 334--344 },
     year = { 2016 },
     url = { https://doi.org/10.1109/ICSME.2016.31 },
@@ -16,7 +16,7 @@ export default Ember.Controller.extend({
   normalizedSampleEntry: `@inproceedings{Borges2016,
     author = { Hudson Borges and André C. Hora and Marco Tulio Valente },
     title = { Understanding the Factors That Impact the Popularity of {GitHub} Repositories },
-    booktitle = { 2016 {IEEE} International Conference on Software Maintenance and Evolution (ICSME) },
+    booktitle = { International Conference on Software Maintenance and Evolution (ICSME) },
     pages = { 334--344 },
     year = { 2016 }
   }`,
@@ -76,15 +76,7 @@ export default Ember.Controller.extend({
       this.readAndRedirect(event);
     },
     normalizeSample() {
-      if (Ember.$('#sample-entry').val().length > 1000) {
-        swal({
-          title: '',
-          type: 'warning',
-          text: 'limit reached'
-        });
-      } else {
-        this.get('formatter').create(this.get('sampleEntry'));
-      }
+      this.get('formatter').create(Ember.$('#sample-entry').val());
     }
   }
 });

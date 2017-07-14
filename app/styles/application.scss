@@ -7,7 +7,7 @@ html, body { overflow-x: hidden; }
 .app-header {
   height: $menu-height;
   margin: 0px;
-  padding: 15px 15% 15px 15%;
+  padding: 25px 15% 15px 15%;
   width: 100%;
   transition: all 0.1s ease;
   background-color: $menu-color;
@@ -16,9 +16,6 @@ html, body { overflow-x: hidden; }
     .option:hover { text-decoration: underline; }
 
     .left {
-      @extend .hidden-xs;
-      @extend .hidden-sm;
-
       float: left;
       a:hover { text-decoration: none; }
 
@@ -94,9 +91,8 @@ footer {
   padding: 50px 0 0 0;
 }
 
-@media(max-width: $screen-sm) {
-  .app-header .menu .right {
-    padding-left: 15px;
-    float: left;
+@media(max-width: $screen-lg) {
+  .app-header {
+    padding: 25px 10% 15px 10%;
   }
 }
