@@ -3,22 +3,22 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   formatter: Ember.inject.service(),
   sampleEntry: `@inproceedings{Borges2016,
-    author = { Borges, Hudson and Hora, André C. and Valente, Marco Tulio },
-    title = { Understanding the Factors That Impact the Popularity of GitHub Repositories},
-    booktitle = { International Conference on Software Maintenance and Evolution (ICSME) },
-    pages = { 334--344 },
-    year = { 2016 },
-    url = { https://doi.org/10.1109/ICSME.2016.31 },
-    doi = { 10.1109/ICSME.2016.31 },
-    timestamp = { Mon, 22 May 2017 17:11:00 +0200 }
+  author = { Borges, Hudson and Hora, André C. and Valente, Marco Tulio },
+  title = { Understanding the Factors That Impact the Popularity of GitHub Repositories},
+  booktitle = { International Conference on Software Maintenance and Evolution (ICSME) },
+  pages = { 334--344 },
+  year = { 2016 },
+  url = { https://doi.org/10.1109/ICSME.2016.31 },
+  doi = { 10.1109/ICSME.2016.31 },
+  timestamp = { Mon, 22 May 2017 17:11:00 +0200 }
 }`,
 
   normalizedSampleEntry: `@inproceedings{Borges2016,
-    author = { Hudson Borges and André C. Hora and Marco Tulio Valente },
-    title = { Understanding the Factors That Impact the Popularity of {GitHub} Repositories },
-    booktitle = { International Conference on Software Maintenance and Evolution (ICSME) },
-    pages = { 334--344 },
-    year = { 2016 }
+  author = { Hudson Borges and André C. Hora and Marco Tulio Valente },
+  title = { Understanding the Factors That Impact the Popularity of {GitHub} Repositories },
+  booktitle = { International Conference on Software Maintenance and Evolution (ICSME) },
+  pages = { 334--344 },
+  year = { 2016 }
 }`,
 
   init() {
@@ -37,6 +37,12 @@ export default Ember.Controller.extend({
       Ember.$('.drop-file-area').css('background-color', 'white');
     });
     // Ember.$('html').on('dragenter', prevent);
+    Ember.run.schedule("afterRender", this, function() {
+      SyntaxHighlighter.defaults['gutter'] = false;
+      SyntaxHighlighter.defaults['toolbar'] = false;
+      SyntaxHighlighter.defaults['highlight'] = [2, 3];
+      SyntaxHighlighter.all();
+    });
   },
 
   // firefox requires event as a parameter to get uploaded file
@@ -76,15 +82,7 @@ export default Ember.Controller.extend({
       this.readAndRedirect(event);
     },
     normalizeSample() {
-<<<<<<< HEAD
-      if(Ember.$('#sample-entry').val().length > 1000) {
-        swal({ title: '', type: 'warning', text: 'limit reached' });
-      } else {
-        this.get('formatter').create(this.get('sampleInput'));
-      }
-=======
       this.get('formatter').create(Ember.$('#sample-entry').val());
->>>>>>> 9361111f18347db8adb9fc6af5d4836eb8132ec8
     }
   }
 });

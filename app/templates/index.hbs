@@ -30,35 +30,19 @@
   </div>
 
   <div class="row example">
-    <div class="col-md-6 col-xs-12">
-<<<<<<< HEAD
-      <h3><strong>Original Entry</strong></h3>
-      <textarea id="sample-entry" rows="15" class="col-md-12">{{sampleInput}}</textarea>
-    </div>
-
-    <div class="col-md-6 col-xs-12">
-        <h3><strong>Normalized Entry</strong></h3>
-        <pre class="verbatim">{{sampleOutput}}</pre>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col col-md-6">
-      <div class="options-right">
-        {{#link-to "editor"}}<button type="button" class="btn btn-primary" name="button" {{action "normalizeSample"}}><i class="fa fa-cog"></i>Normalize >></button>{{/link-to}}
-      </div>
-=======
-      <h3><strong>Original</strong></h3>
-      <textarea id="sample-entry" rows="11" class="col-md-12">{{sampleEntry}}</textarea>
-      <div class="options-right">
+    <div class="col-xs-12">
+      <h3><strong>Original Bibtex</strong></h3>
+      <textarea id="sample-entry" rows="11" class="col-xs-12">{{sampleEntry}}</textarea>
+      <div class="options-right hidden-xs">
         {{#link-to "editor"}}<button type="button" class="btn btn-primary btn-sm" name="button" {{action "normalizeSample"}}><i class="fa fa-cog"></i>Normalize</button>{{/link-to}}
       </div>
     </div>
 
-    <div class="col-md-6 col-xs-12">
-        <h3><strong>Normalized</strong></h3>
-        <pre class="verbatim">{{normalizedSampleEntry}}</pre>
->>>>>>> 9361111f18347db8adb9fc6af5d4836eb8132ec8
+    <div class="col-xs-12">
+        <h3><strong>Normalized Bibtex</strong></h3>
+        <div class="bibtex-content">
+          <pre class="brush: bibtex">{{normalizedSampleEntry}}</pre>
+        </div>
     </div>
   </div>
 
