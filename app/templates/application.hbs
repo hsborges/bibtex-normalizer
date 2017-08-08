@@ -2,7 +2,12 @@
 <div class="app-header container">
   <div class="menu row">
     <div class="left">
-      {{#link-to "index"}}<span class="logo"><img src="assets/images/logo.png" width="40px" />Bibtex-normalizer</span>{{/link-to}}
+      {{#link-to "index"}}
+      <span class="logo"><img src="assets/images/logo.png" width="40px" />
+        <span class="hidden-xs hidden-sm hidden-md">Bibtex Normalizer</span>
+        <span class="hidden-xs hidden-sm hidden-lg">Normalizer</span>
+      </span>
+      {{/link-to}}
     </div>
     <div class="right">
       {{#link-to "index" class="option home text-center"}}<i class="fa fa-home"></i>Home{{/link-to}}

@@ -39,7 +39,10 @@ export default Ember.Controller.extend({
     },
 
     normalize() {
+      Ember.$(window).scrollTop(0);
+
       this.clearMarkers();
+
       const input = ace.edit("editor").getValue();
       // textarea was empty
       if (input === ""){
@@ -123,14 +126,16 @@ export default Ember.Controller.extend({
           text: 'We found errors in your BibTeX file!',
           title: 'Warning',
           type: 'warning'
-        });
+        })
+        .then(() => Ember.$(window).scrollTop(0));
       } else {
         this.clearMarkers();
         swal({
           text: 'We didn\'t find errors in your bibtex file.',
           title: 'Congratulations',
           type: 'success'
-        });
+        })
+        .then(() => Ember.$(window).scrollTop(0));
       }
     },
 

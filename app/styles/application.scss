@@ -1,79 +1,85 @@
-$menu-height: 80px;
-$menu-line-height: 60px;
-$menu-color: rgb(255, 255, 255);
+$menu-height: 110px;
+$menu-line-height: 80px;
+$menu-color: #ffffff;
 
-html, body {
-  overflow-x: hidden;
-  height: 100%;
-}
-
-.border-bottom { box-shadow: 0px 1px 1px #e9e9e9; }
+html, body { overflow-x: hidden; }
 
 .app-header {
   height: $menu-height;
-  margin: 30px 0 15px 0;
-  padding: 0 15% 0 15%;
+  margin: 0px;
+  padding: 25px 15% 15px 15%;
   width: 100%;
-
+  transition: all 0.1s ease;
   background-color: $menu-color;
 
   .menu {
     .option:hover { text-decoration: underline; }
 
-    .option {
-      height: $menu-height;
-      font-size: 25px;
-      font-weight: bold;
-      line-height: $menu-line-height;
-      border-radius: 10px;
-      padding: 10px 15px 10px 15px;
-      color: rgb(75, 75, 75);
-      cursor: pointer;
-      text-decoration: none;
-
-      i { margin-right: 10px; }
-    }
-
-    .logo {
-      height: $menu-height;
-      font-size: 30px;
-      font-weight: bold;
-      line-height: $menu-line-height;
-      padding: 10px 15px;
-      color: rgb(75, 75, 75);
-      text-decoration: none;
-      background-color: white;
-
-      img { margin-right: 10px; }
-    }
-
     .left {
-      @extend .hidden-xs;
-      @extend .hidden-sm;
       float: left;
       a:hover { text-decoration: none; }
+
+      .logo {
+        height: $menu-height;
+        font-size: 30px;
+        font-weight: bold;
+        line-height: $menu-line-height;
+        padding: 10px 15px;
+        color: rgb(75, 75, 75);
+        text-decoration: none;
+        background-color: white;
+
+        img { margin-right: 10px; }
+      }
     }
 
     .right {
       float: right;
       .editor, .config { @extend .hidden-xs; }
+
       .option {
+        height: $menu-height;
         font-size: 20px;
+        font-weight: bold;
         line-height: $menu-line-height;
-      }
-    }
-
-    .active {
-      background-color: $brand-primary;
-      color: white;
-
-      &:hover {
+        border-radius: 10px;
+        padding: 10px 15px 10px 15px;
+        color: rgb(75, 75, 75);
+        cursor: pointer;
         text-decoration: none;
-        cursor: default;
+
+        i { margin-right: 10px; }
+      }
+
+      .active {
+        background-color: $brand-primary;
+        color: white;
+
+        &:hover {
+          text-decoration: none;
+          cursor: pointer;
+        }
       }
     }
+  }
+}
 
-    .left > .active:hover { cursor: pointer }
+.app-header-fixed {
+  position: fixed;
+  top: 0px;
+  z-index: 9999;
+  margin: 0px;
+  padding: 10px 5% 0 5%;
+  transition: all 0.1s ease;
+  -webkit-box-shadow:0px 1px 1px #adadad;
+  -moz-box-shadow:0px 1px 1px #adadad;
+  box-shadow:0px 1px 1px #adadad;
+
+  height: 80px;
+
+  .menu {
+    .left .logo { line-height: 60px; }
+    .right .option { line-height: 60px; }
   }
 }
 
@@ -85,9 +91,8 @@ footer {
   padding: 50px 0 0 0;
 }
 
-@media(max-width: $screen-sm) {
-  .app-header .menu .right {
-    padding-left: 15px;
-    float: left;
+@media(max-width: $screen-lg) {
+  .app-header {
+    padding: 10px 10% 15px 10%;
   }
 }
