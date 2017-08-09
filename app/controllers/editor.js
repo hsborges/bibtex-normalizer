@@ -75,13 +75,11 @@ export default Ember.Controller.extend({
 
         //there is a citationKey
         if(parserError.key) {
-          parserError.key = `at entry <small>${parserError.key}</small>,`;
+          parserError.key = `entry <small>${parserError.key}</small>,`;
         }
 
         swal({
-          title: `Your entry is incorrect, check one of the following, ${parserError.key} line <small>${this.findLine(parserError.line)}</small>:`,
-          text: parserError.message,
-          html: true
+          title: `Your entry is incorrect, check ${parserError.key} line <small>${this.findLine(parserError.line)}</small>.`
         });
         return;
 
