@@ -40,7 +40,7 @@ export default Ember.Controller.extend({
     Ember.run.schedule("afterRender", this, function() {
       SyntaxHighlighter.defaults['gutter'] = false;
       SyntaxHighlighter.defaults['toolbar'] = false;
-      SyntaxHighlighter.defaults['highlight'] = [2, 3];
+      SyntaxHighlighter.defaults['highlight'] = [];
       SyntaxHighlighter.all();
     });
   },

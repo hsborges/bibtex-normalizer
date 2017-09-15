@@ -62,8 +62,7 @@ export default Ember.Controller.extend({
         // no bibtex entries were detected
         if (this.get('formatter').get('bibtex').get('bibtex') === ""){
           swal({
-            title: "Your entry may not be on <small>bibtex</small> standard.",
-            html: true
+            title: "Your entry may not be on <small>bibtex</small> standard."
           });
 
           return;
