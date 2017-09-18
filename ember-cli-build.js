@@ -28,7 +28,6 @@ module.exports = function(defaults) {
   // styles
   app.import('bower_components/font-awesome/scss/font-awesome.scss');
   app.import('bower_components/sweetalert2/dist/sweetalert2.css');
-  // app.import('bower_components/font-awesome/css/font-awesome.min.css');
   // scripts
   app.import('bower_components/bootstrap-sass/assets/javascripts/bootstrap.js');
   app.import('bower_components/sweetalert2/dist/sweetalert2.min.js');
@@ -39,5 +38,12 @@ module.exports = function(defaults) {
   app.import('bower_components/compare-versions/index.js');
   app.import('vendor/FileSaver.min.js');
   app.import('vendor/bibtexParse.js');
+  // local scripts
+  app.import({
+    development: 'vendor/log/logging.development.js',
+    production: 'vendor/log/logging.production.js',
+  });
+  app.import('vendor/log/config.js');
+
   return app.toTree();
 };
