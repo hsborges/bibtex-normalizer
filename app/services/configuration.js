@@ -78,6 +78,16 @@ export default Ember.Service.extend({
       'default' : ['author', 'title', 'note', 'year']
     }
   },
+  bibtexAttributesValidator: {
+    'author': {
+      'regex': /(.+),(.+)/i,
+      'enabled': true
+    },
+    'number': {
+      'regex': /^\d+$/,
+      'enabled': true
+    }
+  },
 
   userConfig: null,
 
