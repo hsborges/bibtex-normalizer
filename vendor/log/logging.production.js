@@ -6,6 +6,8 @@ import Ember from 'ember';
       url: exports.logging_url,
       data: data,
       dataType: 'json'
+    }).then((response) => {
+      console.log(response);
     });
   };
 })(typeof exports === 'undefined' ? this['bnLogger'] = {} : exports);

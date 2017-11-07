@@ -17,6 +17,11 @@ export default Ember.Controller.extend({
         payload.push({ name: entry.name, enabled, attributes });
       });
       // log action
+      Ember.$.ajax({
+        data: { version: bnConfig.version, route: 'settings', action: 'save', date: new Date(), payload: payload },
+        method: 'POST',
+        url: bnConfig.logging_url
+      });
       bnLogger.send({ version: bnConfig.version, route: 'settings', action: 'save', date: new Date(), payload });
       // show alert
       swal({ title: 'Saved', type: 'success' });
