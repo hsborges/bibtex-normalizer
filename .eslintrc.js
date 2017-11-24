@@ -18,6 +18,8 @@ module.exports = {
     bibtexParse: true,
     saveAs: true,
     validator: true,
-    compareVersions: true
+    compareVersions: true,
+    bnLogger: true,
+    bnConfig: true
   }
 };
