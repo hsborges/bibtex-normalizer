@@ -36,13 +36,6 @@ export default Ember.Controller.extend({
       prevent(event);
       Ember.$('.drop-file-area').css('background-color', 'white');
     });
-    // Ember.$('html').on('dragenter', prevent);
-    Ember.run.schedule("afterRender", this, function() {
-      SyntaxHighlighter.defaults['gutter'] = false;
-      SyntaxHighlighter.defaults['toolbar'] = false;
-      SyntaxHighlighter.defaults['highlight'] = [];
-      SyntaxHighlighter.all();
-    });
   },
 
   // firefox requires event as a parameter to get uploaded file
@@ -69,7 +62,7 @@ export default Ember.Controller.extend({
 
   actions: {
     choose() {
-      Ember.$('.app-index .body .file-input').trigger('click');
+      Ember.$('.app-index .drop .file-input').trigger('click');
     },
     select(event) {
       this.readAndRedirect(event);
