@@ -18,10 +18,10 @@ export default Ember.Controller.extend({
         const enabled = self.get('index') || self.get('editor') || self.get('config');
         if(enabled && Ember.$(window).scrollTop()) {
           Ember.$('.app-header').addClass('app-header-fixed');
-            Ember.$('.app-body').addClass('app-body-spacing');
+          Ember.$('.app-body').addClass('app-body-spacing');
         } else {
           Ember.$('.app-header').removeClass('app-header-fixed');
-            Ember.$('.app-body').addClass('app-body-spacing');
+          Ember.$('.app-body').addClass('app-body-spacing');
         }
       });
     });
