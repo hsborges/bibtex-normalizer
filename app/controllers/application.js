@@ -11,5 +11,19 @@ export default Ember.Controller.extend({
   init(){
     this._super(...arguments);
     this.get('configuration').setup();
+
+    Ember.run.schedule("afterRender", this, function() {
+      const self = this;
+      Ember.$(window).on('scroll', function () {
+        const enabled = self.get('index') || self.get('editor') || self.get('config');
+        if(enabled && Ember.$(window).scrollTop()) {
+          Ember.$('.app-header').addClass('app-header-fixed');
+          Ember.$('.app-body').addClass('app-body-spacing');
+        } else {
+          Ember.$('.app-header').removeClass('app-header-fixed');
+          Ember.$('.app-body').addClass('app-body-spacing');
+        }
+      });
+    });
   }
 });

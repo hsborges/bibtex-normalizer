@@ -15,6 +15,7 @@ export default Ember.Object.extend({
 
     if (validator) {
       const result = validator.validate(value);
+      console.log(result);
       return {
         field,
         isValid: result.isValid,

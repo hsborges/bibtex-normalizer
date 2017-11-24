@@ -42,7 +42,9 @@ export default Ember.Controller.extend({
 
     normalize() {
       bnLogger.send({ version: bnConfig.version, route: 'editor', action: 'normalize', date: new Date() });
+      Ember.$(window).scrollTop(0);
       this.clearMarkers();
+
       const input = ace.edit("editor").getValue();
       // textarea was empty
       if (input === ""){
@@ -62,8 +64,7 @@ export default Ember.Controller.extend({
         // no bibtex entries were detected
         if (this.get('formatter').get('bibtex').get('bibtex') === ""){
           swal({
-            title: "Your entry may not be on <small>bibtex</small> standard.",
-            html: true
+            title: "Your entry may not be on <small>bibtex</small> standard."
           });
 
           return;
@@ -75,13 +76,11 @@ export default Ember.Controller.extend({
 
         //there is a citationKey
         if(parserError.key) {
-          parserError.key = `at entry <small>${parserError.key}</small>,`;
+          parserError.key = `entry <small>${parserError.key}</small>,`;
         }
 
         swal({
-          title: `Your entry is incorrect, check one of the following, ${parserError.key} line <small>${this.findLine(parserError.line)}</small>:`,
-          text: parserError.message,
-          html: true
+          title: `Your entry is incorrect, check ${parserError.key} line <small>${this.findLine(parserError.line)}</small>.`
         });
         return;
 
@@ -126,14 +125,16 @@ export default Ember.Controller.extend({
           text: 'We found errors in your BibTeX file!',
           title: 'Warning',
           type: 'warning'
-        });
+        })
+        .then(() => Ember.$(window).scrollTop(0));
       } else {
         this.clearMarkers();
         swal({
           text: 'We didn\'t find errors in your bibtex file.',
           title: 'Congratulations',
           type: 'success'
-        });
+        })
+        .then(() => Ember.$(window).scrollTop(0));
       }
     },
 

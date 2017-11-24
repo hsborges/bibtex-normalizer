@@ -36,6 +36,7 @@ module.exports = function(defaults) {
   app.import('bower_components/validator-js/validator.min.js');
   app.import('bower_components/js-cookie/src/js.cookie.js');
   app.import('bower_components/compare-versions/index.js');
+
   app.import('vendor/FileSaver.min.js');
   app.import('vendor/bibtexParse.js');
   // local scripts
