@@ -33,7 +33,11 @@ export default Ember.Controller.extend({
       this.get('formatter').get('bibtex').clear();
       this.clearMarkers();
 
-      bnLogger.send({ version: bnConfig.version, route: 'editor', action: 'clear', date: new Date() });
+      Ember.$.ajax({
+        data: { version: bnConfig.version, route: 'editor', action: 'clear'},
+        method: 'POST',
+        url: bnConfig.logging_url
+      });
     },
 
     focusLine(line) {
@@ -41,7 +45,11 @@ export default Ember.Controller.extend({
     },
 
     normalize() {
-      bnLogger.send({ version: bnConfig.version, route: 'editor', action: 'normalize', date: new Date() });
+      Ember.$.ajax({
+        data: { version: bnConfig.version, route: 'editor', action: 'normalize' },
+        method: 'POST',
+        url: bnConfig.logging_url
+      });
       Ember.$(window).scrollTop(0);
       this.clearMarkers();
 
@@ -150,7 +158,11 @@ export default Ember.Controller.extend({
       document.execCommand('copy');
       $tmp.remove();
 
-      bnLogger.send({ version: bnConfig.version, route: 'editor', action: 'copy', date: new Date() });
+      Ember.$.ajax({
+        data: { version: bnConfig.version, route: 'editor', action: 'copy'},
+        method: 'POST',
+        url: bnConfig.logging_url
+      });
 
       swal({
         title: 'Bibtex copied to clipboard!',
@@ -163,7 +175,11 @@ export default Ember.Controller.extend({
         const file = new File([this.get('formatter').get('bibtex').get('bibtex')], "references-bibtex-normalizer.bib", {type: "text/plain;charset=utf-8"});
         saveAs(file);
 
-        bnLogger.send({ version: bnConfig.version, route: 'editor', action: 'download', date: new Date() });
+        Ember.$.ajax({
+          data: { version: bnConfig.version, route: 'editor', action: 'download'},
+          method: 'POST',
+          url: bnConfig.logging_url
+        });
       }
     },
   }

@@ -62,18 +62,30 @@ export default Ember.Controller.extend({
 
   actions: {
     choose() {
-      bnLogger.send({ version: bnConfig.version, route: 'index', action: 'choose', date: new Date() });
+      Ember.$.ajax({
+        data: { version: bnConfig.version, route: 'index', action: 'choose'},
+        method: 'POST',
+        url: bnConfig.logging_url
+      });
       Ember.$('.app-index .drop .file-input').trigger('click');
     },
     select(event) {
-      bnLogger.send({ version: bnConfig.version, route: 'index', action: 'select', date: new Date() });
+      Ember.$.ajax({
+        data: { version: bnConfig.version, route: 'index', action: 'select'},
+        method: 'POST',
+        url: bnConfig.logging_url
+      });
 
       this.readAndRedirect(event);
       // slow and deprecated for Ember 1.x
       Ember.$('.app-index .body .file-input').val("");
     },
     drop(event) {
-      bnLogger.send({ version: bnConfig.version, route: 'index', action: 'drop', date: new Date() });
+      Ember.$.ajax({
+        data: { version: bnConfig.version, route: 'index', action: 'drop'},
+        method: 'POST',
+        url: bnConfig.logging_url
+      });
       event.preventDefault();
       event.stopPropagation();
 

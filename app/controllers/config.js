@@ -22,7 +22,6 @@ export default Ember.Controller.extend({
         method: 'POST',
         url: bnConfig.logging_url
       });
-      bnLogger.send({ version: bnConfig.version, route: 'settings', action: 'save', date: new Date(), payload });
       // show alert
       swal({ title: 'Saved', type: 'success' });
     },
@@ -43,7 +42,11 @@ export default Ember.Controller.extend({
         // force route to refresh model
         this.send('refreshModel');
         // log action
-        bnLogger.send({ version: bnConfig.version, route: 'settings', action: 'restore', date: new Date() });
+        Ember.$.ajax({
+          data: { version: bnConfig.version, route: 'settings', action: 'restore' },
+          method: 'POST',
+          url: bnConfig.logging_url
+        });
         // show alert
         swal({ title: 'Saved', type: 'success' });
       })
