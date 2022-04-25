@@ -1,3 +1,6 @@
+/**
+ * @author Hudson Silva Borges
+ */
 import { FunctionComponent, HTMLAttributes } from 'react';
 
 import * as Checkbox from '@radix-ui/react-checkbox';

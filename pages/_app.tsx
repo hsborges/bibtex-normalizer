@@ -1,3 +1,6 @@
+/**
+ * @author Hudson Silva Borges
+ */
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 

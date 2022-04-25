@@ -1,4 +1,7 @@
-import { capitalize, find, flatten, isEqual, omit } from 'lodash';
+/**
+ * @author Hudson Silva Borges
+ */
+import { capitalize, flatten, isEqual, omit } from 'lodash';
 import { HTMLProps, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import { styled } from '@stitches/react';
@@ -8,17 +11,20 @@ import Checkbox from '../components/checkbox';
 import Switch from '../components/switch';
 import { BibtexEntryDefinition, BibtexEntryType, BibtexFieldType } from '../lib/bibtex-definitions';
 import * as BibtexEntries from '../lib/bibtex-entries';
-import ConfigContext, {
-  BibtexEntryConfig,
-  BibtexNormalizerConfig,
-} from '../providers/ConfigProvider';
+import ConfigContext, { BibtexEntryConfig, NormalizerCofig } from '../providers/ConfigProvider';
 
 const Grid = styled('div', {
   width: '80%',
   display: 'flex',
   flexFlow: 'column',
-  rowGap: 15,
-  margin: '50px auto',
+  margin: '15px auto 50px',
+  rowGap: 10,
+
+  '& > h2': {
+    color: '$violet9',
+    textDecoration: 'underline',
+    '&:after': { content: ':' },
+  },
 });
 
 const EntriesConfigComponentRoot = styled('div', {
@@ -333,11 +339,129 @@ const StyledEntriesConfigComponent = styled(function (props: {
   );
 });
 
+const NormalizerSettings = styled(
+  function (
+    props: HTMLProps<HTMLTableElement> & {
+      config?: NormalizerCofig;
+      onConfigUpdate?: (data: NormalizerCofig) => void;
+    }
+  ) {
+    const { config, onConfigUpdate, ...tableProps } = props;
+
+    return (
+      <table {...tableProps}>
+        <tbody>
+          <tr>
+            <td>
+              <label htmlFor="replace-quotes">Replace quotes with brackets</label>
+            </td>
+            <td>
+              <Switch
+                id="replace-quotes"
+                checked={config?.awaysUseBraces}
+                onCheckedChange={(v) => onConfigUpdate({ ...config, awaysUseBraces: v })}
+              />
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <label htmlFor="remove-fields">Remove unnecessary fields</label>
+            </td>
+            <td>
+              <Switch
+                id="remove-fields"
+                checked={config?.removeNotRequiredFields}
+                onCheckedChange={(v) => onConfigUpdate({ ...config, removeNotRequiredFields: v })}
+              />
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <label htmlFor="format-author">Format &quot;author&quot; field</label>
+            </td>
+            <td>
+              <Switch
+                id="format-author"
+                checked={config?.formatAuthorField}
+                onCheckedChange={(v) => onConfigUpdate({ ...config, formatAuthorField: v })}
+              />
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <label htmlFor="escape-proper-names">Escape proper names on title</label>
+            </td>
+            <td>
+              <Switch
+                id="escape-proper-names"
+                checked={config?.escapeProperNames.enabled}
+                onCheckedChange={(v) =>
+                  onConfigUpdate({
+                    ...config,
+                    escapeProperNames: { ...config?.escapeProperNames, enabled: v },
+                  })
+                }
+              />
+            </td>
+            <td>
+              <textarea
+                cols={50}
+                rows={3}
+                disabled={!config?.escapeProperNames.enabled}
+                value={config?.escapeProperNames.names.join(' ')}
+                onChange={(event) =>
+                  onConfigUpdate({
+                    ...config,
+                    escapeProperNames: {
+                      ...config?.escapeProperNames,
+                      names: event.target.value.split(' ').map((v) => v.trim()),
+                    },
+                  })
+                }
+              ></textarea>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    );
+  },
+  {
+    '& > tbody > tr': {
+      backgroundColor: '$violet3',
+
+      '& > td': {
+        padding: '0.5em',
+        '&:nth-child(1)': {
+          textAlign: 'right',
+          verticalAlign: 'middle',
+        },
+        '&:nth-child(2)': {
+          width: 50,
+          verticalAlign: 'middle',
+          padding: '0 15px',
+        },
+        '&:nth-child(3)': {
+          margin: 'auto',
+        },
+      },
+    },
+  }
+);
+
 export default function SettingComponent() {
-  const { config, updateEntryConfig } = useContext(ConfigContext);
+  const { config, updateEntryConfig, updateNormalizerConfig } = useContext(ConfigContext);
 
   return (
     <Grid>
+      <h2>Normalizer settings</h2>
+      <NormalizerSettings
+        config={config?.normalizer}
+        onConfigUpdate={(data) => updateNormalizerConfig(data)}
+      />
+      <h2>Entries settings</h2>
       <StyledEntriesConfigComponent
         config={config.entries}
         onConfigUpdate={(data) => updateEntryConfig(data)}

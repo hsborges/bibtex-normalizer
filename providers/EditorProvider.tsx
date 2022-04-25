@@ -1,4 +1,7 @@
-import { createContext, useEffect, useState } from 'react';
+/**
+ * @author Hudson Silva Borges
+ */
+import { createContext, useState } from 'react';
 
 type EditorContextType = { content: string; updateContent?: (content: string) => void };
 const EditorContext = createContext<EditorContextType>({ content: '' });

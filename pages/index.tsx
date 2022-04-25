@@ -1,3 +1,6 @@
+/**
+ * @author Hudson Silva Borges
+ */
 import { useRouter } from 'next/router';
 import { HTMLProps, useContext, useRef } from 'react';
 

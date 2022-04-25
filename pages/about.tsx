@@ -1,9 +1,10 @@
+/**
+ * @author Hudson Silva Borges
+ */
 import { HTMLAttributes } from 'react';
 
 import * as Avatar from '@radix-ui/react-avatar';
 import { styled } from '@stitches/react';
-
-import { Author } from '../lib/bibtex-fields';
 
 const MemberComponent = styled(
   ({ member, ...props }: HTMLAttributes<HTMLDivElement> & { member: MemberInfoType }) => (
@@ -31,6 +32,7 @@ const Grid = styled('div', {
   alignItems: 'center',
   justifyContent: 'center',
   rowGap: '4em',
+  lineHeight: '1.5em',
 
   '& > .section': {
     textAlign: 'center',
@@ -84,7 +86,9 @@ export default function SettingComponent() {
   return (
     <Grid>
       <div className="section">
-        Bibtex Normalizer is maintained by the{' '}
+        Bibtex Normalizer is maintained by <br />
+        <abbr title="Laboratório de Desenvolvimento de Software">LEDES</abbr>, from Federal
+        University of Mato Grosso do Sul, and <br />
         <Link href="http://aserg.labsoft.dcc.ufmg.br/" target="_blank" rel="noreferrer">
           Applied Software Engineering Research Group
         </Link>

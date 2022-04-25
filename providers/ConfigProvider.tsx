@@ -1,3 +1,6 @@
+/**
+ * @author Hudson Silva Borges
+ */
 import { createContext, useEffect, useState } from 'react';
 import regexParser from 'regex-parser';
 
@@ -12,17 +15,38 @@ export type BibtexEntryConfig = {
   validators: Record<BibtexFieldType, RegExp>;
 };
 
+export type NormalizerCofig = {
+  awaysUseBraces: boolean;
+  removeNotRequiredFields: boolean;
+  formatAuthorField: boolean;
+  escapeProperNames: {
+    enabled: boolean;
+    names: string[];
+  };
+};
+
 export type BibtexNormalizerConfig = {
+  normalizer: NormalizerCofig;
   entries: BibtexEntryConfig[];
 };
 
 const ConfigContext = createContext<{
   config?: BibtexNormalizerConfig;
   updateEntryConfig?: (data: BibtexEntryConfig) => void;
+  updateNormalizerConfig?: (data: NormalizerCofig) => void;
 }>({});
 
 export const ConfigProvider = ({ children }) => {
   const [config, setConfig] = useState<BibtexNormalizerConfig>({
+    normalizer: {
+      awaysUseBraces: true,
+      removeNotRequiredFields: false,
+      formatAuthorField: true,
+      escapeProperNames: {
+        enabled: true,
+        names: ['YouTube', 'Facebook', 'Instagram', 'Twitter', 'GitHub'],
+      },
+    },
     entries: Object.values(BibtexEntries).map((entry) => ({
       entry: entry.name,
       normalize: true,
@@ -51,6 +75,11 @@ export const ConfigProvider = ({ children }) => {
     );
   };
 
+  const updateNormalizerConfig = (data: NormalizerCofig) => {
+    setConfig({ ...config, normalizer: data });
+    localStorage.setItem(`normalizer`, JSON.stringify(data));
+  };
+
   useEffect(() => {
     const updatedConfig = Object.values(BibtexEntries).map<BibtexEntryConfig>((be) => {
       const lsConfig = localStorage.getItem(`entries.${be.name}`);
@@ -61,11 +90,17 @@ export const ConfigProvider = ({ children }) => {
         ) as BibtexEntryConfig;
     }, {});
 
-    setConfig({ ...config, entries: updatedConfig });
+    const normalizerConf = Object.assign(
+      {},
+      config.normalizer,
+      JSON.parse(localStorage.getItem('normalizer') || '{}')
+    );
+
+    setConfig({ ...config, normalizer: normalizerConf, entries: updatedConfig });
   }, []);
 
   return (
-    <ConfigContext.Provider value={{ config, updateEntryConfig }}>
+    <ConfigContext.Provider value={{ config, updateEntryConfig, updateNormalizerConfig }}>
       {children}
     </ConfigContext.Provider>
   );

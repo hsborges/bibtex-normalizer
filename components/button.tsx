@@ -1,3 +1,6 @@
+/**
+ * @author Hudson Silva Borges
+ */
 import { styled } from '@stitches/react';
 
 export default styled('button', {

@@ -1,3 +1,6 @@
+/**
+ * @author Hudson Silva Borges
+ */
 import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import { styled } from '@stitches/react';
 

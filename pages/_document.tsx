@@ -1,3 +1,6 @@
+/**
+ * @author Hudson Silva Borges
+ */
 import { Head, Html, Main, NextScript } from 'next/document';
 
 import { getCssText } from '../stitches.config';

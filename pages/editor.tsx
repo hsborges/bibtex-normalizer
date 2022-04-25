@@ -1,4 +1,7 @@
-import { RefAttributes, useContext, useEffect, useRef, useState } from 'react';
+/**
+ * @author Hudson Silva Borges
+ */
+import { useContext, useEffect, useRef, useState } from 'react';
 
 import { simpleMode } from '@codemirror/legacy-modes/mode/simple-mode';
 import { lintGutter, linter } from '@codemirror/lint';
@@ -66,7 +69,7 @@ const bibtexSyntaxHighlight = {
     },
     {
       regex: /(\s*)(@[^=#,{}()[\] \t\n\r]+)(\s*\{\s*)([^=#,{}()[\] \t\n\r]+)(\s*,)/,
-      token: ['', 'variable-2', '', 'variable-3'],
+      token: ['', 'variable-2'],
       push: 'entry',
     },
     { regex: /.*/, token: 'comment' },
@@ -118,7 +121,7 @@ export default function SettingComponent() {
     setTimeout(() => setToast(status), 250);
   };
 
-  useEffect(() => setHeight(ref.current?.editor?.clientHeight));
+  useEffect(() => setHeight(ref.current?.editor?.clientHeight), []);
 
   return (
     <Toast.Provider swipeDirection="right">
@@ -145,7 +148,10 @@ export default function SettingComponent() {
             size="normal"
             onClick={() => {
               const currentBibtex = ref.current.view.state.doc.toString();
-              const normalizedBibtex = toString(generateAST(currentBibtex, config.entries)[0]);
+              const normalizedBibtex = toString(
+                generateAST(currentBibtex, config.entries)[0],
+                config
+              );
               ref.current.view.update([
                 ref.current.view.state.update({
                   changes: {

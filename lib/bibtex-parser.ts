@@ -1,8 +1,11 @@
-import { camelCase, capitalize, flatten, isNil } from 'lodash';
+/**
+ * @author Hudson Silva Borges
+ */
+import { capitalize, flatten } from 'lodash';
 
 import { Diagnostic } from '@codemirror/lint';
 
-import { BibtexEntryConfig } from '../providers/ConfigProvider';
+import { BibtexEntryConfig, BibtexNormalizerConfig } from '../providers/ConfigProvider';
 import { BibtexEntryType, BibtexFieldType } from './bibtex-definitions';
 import * as BibtexEntries from './bibtex-entries';
 import * as BibtexFields from './bibtex-fields';
@@ -561,20 +564,44 @@ function fieldSorter(entry: string, a: string, b: string): number {
   return (ai >= 0 ? ai : Number.MAX_VALUE) - (bi >= 0 ? bi : Number.MAX_VALUE);
 }
 
-export function toString(node: Node): string {
-  if (node instanceof RootNode) return node.children.map(toString).join('\n');
+export function toString(node: Node, config?: BibtexNormalizerConfig): string {
+  function valueFormater(value: string, type: 'literal' | 'braced' | 'quoted'): string {
+    if (type === 'braced') return `{ ${value} }`;
+    if (type === 'quoted') return `"${value}"`;
+    return value;
+  }
+
+  if (node instanceof RootNode) return node.children.map((c) => toString(c, config)).join('\n');
   else if (node instanceof TextNode) return node.text.trim();
   else if (node instanceof BlockNode)
-    return `@${node.command.toLowerCase()} {${toString(node.block)}}`;
+    return `@${node.command.toLowerCase()} {${toString(node.block, config)}}`;
   else if (node instanceof CommentNode) return node.raw.trim();
   else if (node instanceof PreambleNode) return node.raw.trim();
   else if (node instanceof StringNode) return node.raw.trim();
   else if (node instanceof EntryNode) {
     return `${node.key},\n  ${node.fields
       .sort((a, b) => fieldSorter(node.parent.command as BibtexEntryType, a.name, b.name))
+      .filter((field) => {
+        if (!config?.normalizer.removeNotRequiredFields) return true;
+        const entryConfig = config?.entries.find(
+          (ce) => ce.entry === field.parent.parent.command.trim().toLowerCase()
+        );
+
+        return flatten(entryConfig?.requiredFields || []).includes(
+          field.name.trim().toLowerCase() as BibtexFieldType
+        );
+      })
       .map((field) => {
-        let value = field.value.toString();
-        if (!['month', 'year'].includes(field.name.trim().toLowerCase())) value = `{ ${value} }`;
+        let value = ['month', 'year'].includes(field.name.trim().toLowerCase())
+          ? field.value.concat.map((cv) => valueFormater(cv.value.trim(), 'literal')).join('')
+          : field.value.concat
+              .map((cv) =>
+                valueFormater(
+                  cv.value.trim(),
+                  config?.normalizer.awaysUseBraces ? 'braced' : cv.type
+                )
+              )
+              .join('');
         return `${padEndBibtexField(field.name.toLowerCase())} = ${value}`;
       })
       .join(',\n  ')}\n`;

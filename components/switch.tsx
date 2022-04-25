@@ -1,3 +1,6 @@
+/**
+ * @author Hudson Silva Borges
+ */
 import { RefAttributes } from 'react';
 
 import * as ReactSwitch from '@radix-ui/react-switch';
@@ -15,6 +18,7 @@ const StyledSwitch = styled(ReactSwitch.Root, {
   WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
   '&:focus': { boxShadow: `0 0 0 2px transparent` },
   '&[data-state="checked"]': { backgroundColor: 'White', border: '1px solid $violet9' },
+  '&[data-disabled]': { border: '1px solid $violet6' },
 });
 
 const StyledThumb = styled(ReactSwitch.Thumb, {
@@ -31,6 +35,7 @@ const StyledThumb = styled(ReactSwitch.Thumb, {
     transform: 'translateX(20px)',
     backgroundColor: '$violet9',
   },
+  '&[data-disabled]': { backgroundColor: '$violet6' },
 });
 
 export default function Switch(props: ReactSwitch.SwitchProps & RefAttributes<HTMLButtonElement>) {

@@ -1,3 +1,6 @@
+/**
+ * @author Hudson Silva Borges
+ */
 import * as ToastPrimitive from '@radix-ui/react-toast';
 import { keyframes, styled } from '@stitches/react';
 
