@@ -2,26 +2,26 @@
  * @author Hudson Silva Borges
  */
 import { FunctionComponent, HTMLAttributes } from 'react';
+import { IoCheckmarkSharp } from 'react-icons/io5';
 
 import * as Checkbox from '@radix-ui/react-checkbox';
-import { CheckIcon } from '@radix-ui/react-icons';
 import { styled } from '@stitches/react';
 
 const CheckboxRoot = styled(Checkbox.Root, {
   all: 'unset',
-  color: '$violet9',
+  color: '$teal9',
   backgroundColor: 'white',
   width: 16,
   height: 16,
-  border: '1px solid $violet9',
+  border: '1px solid $teal9',
   marginRight: 5,
   borderRadius: 2,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  boxShadow: '0 2px 10px $violet9',
-  '&:hover': { backgroundColor: '$violet2' },
-  '&[disabled]': { backgroundColor: '$violet3', color: '$violet8', borderColor: '$violet8' },
+  boxShadow: '0 2px 10px $teal9',
+  '&:hover': { backgroundColor: '$teal2' },
+  '&[disabled]': { backgroundColor: '$teal3', color: '$teal8', borderColor: '$teal8' },
 });
 const CheckboxIndicator = styled(Checkbox.Indicator, { display: 'flex', alignItems: 'center' });
 const CheckboxLabel = styled('label', { lineHeight: 1.25 });
@@ -47,7 +47,7 @@ const CheckboxComponent: FunctionComponent<
         onCheckedChange={onCheckedChange}
       >
         <CheckboxIndicator>
-          <CheckIcon />
+          <IoCheckmarkSharp />
         </CheckboxIndicator>
       </CheckboxRoot>
       <CheckboxLabel hidden={!defaultLabel} htmlFor={defaultLabel}>

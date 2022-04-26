@@ -3,8 +3,8 @@
  */
 import { useRouter } from 'next/router';
 import { HTMLProps, useContext, useRef } from 'react';
+import { IoCheckmarkSharp, IoCloudUploadOutline } from 'react-icons/io5';
 
-import { CheckIcon } from '@radix-ui/react-icons';
 import { styled } from '@stitches/react';
 
 import Button from '../components/button';
@@ -34,11 +34,12 @@ const PanelTitle = styled('h1', {
   fontSize: '2em',
   margin: 0,
   marginBottom: 15,
+  color: '$teal9',
 });
 const PanelFeatureItem = styled(
   (props: HTMLProps<HTMLSpanElement>) => (
     <span {...props}>
-      <CheckIcon />
+      <IoCheckmarkSharp />
       {props.children}
     </span>
   ),
@@ -46,7 +47,7 @@ const PanelFeatureItem = styled(
     display: 'flex',
     alignItems: 'center',
     '& svg': {
-      color: '$violet9',
+      color: '$teal9',
       height: '1em',
       width: '1em',
       fontWeight: 'bolder',
@@ -62,13 +63,13 @@ const PanelSubmitSeparator = styled('span', {
 const PannelSubmitDropArea = styled('div', {
   padding: '2em 4em',
   border: '2px dashed $gray8',
-  backgroundColor: '$violet3',
+  backgroundColor: '$teal2',
   color: '$gray10',
   borderRadius: '5px',
 
   '&:hover, &.hover': {
-    borderColor: '$violet7',
-    color: '$violet9',
+    borderColor: '$teal7',
+    color: '$teal9',
     cursor: 'pointer',
   },
 });
@@ -123,7 +124,7 @@ export default function Home() {
           }}
         />
         <Button size="large" onClick={() => inputRef.current.click()}>
-          Choose a bibtex file
+          <IoCloudUploadOutline style={{ marginRight: 5 }} /> Choose a bibtex file
         </Button>
         <PanelSubmitSeparator>-- or --</PanelSubmitSeparator>
         <PannelSubmitDropArea

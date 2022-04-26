@@ -43,7 +43,7 @@ const Grid = styled('div', {
   },
 });
 
-const Link = styled('a', { color: '$violet9' });
+const Link = styled('a', { color: '$teal9' });
 
 type MemberInfoType = {
   name: string;

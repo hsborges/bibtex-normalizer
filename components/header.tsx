@@ -6,8 +6,14 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FunctionComponent, HTMLAttributes } from 'react';
+import {
+  IoBook,
+  IoCodeSlash,
+  IoCogOutline,
+  IoHomeSharp,
+  IoInformationCircleOutline,
+} from 'react-icons/io5';
 
-import { CodeIcon, GearIcon, HomeIcon, InfoCircledIcon } from '@radix-ui/react-icons';
 import { styled } from '@stitches/react';
 
 const Header = styled('header', {
@@ -25,9 +31,10 @@ const Logo = styled('a', {
   alignItems: 'center',
   cursor: 'pointer',
   fontWeight: 'bolder',
+  color: '$gray10',
 
-  '& img': {
-    paddingRight: '0.25em',
+  [`& svg`]: {
+    marginRight: '0.25em',
     height: '1em',
   },
 });
@@ -36,8 +43,8 @@ const Menu = styled('div', {
   marginLeft: '0.5em',
   display: 'flex',
   justifyContent: 'space-between',
-  fontSize: '1.1em',
-  opacity: 0.75,
+  fontSize: '1.15em',
+  color: '$gray9',
 });
 
 const MenuItemComponent: FunctionComponent<
@@ -67,7 +74,7 @@ const MenuItem = styled(MenuItemComponent, {
   },
 
   '&.active': {
-    color: '$violet9',
+    color: '$teal9',
     fontWeight: 'bolder',
   },
 });
@@ -79,7 +86,7 @@ export default function HeaderComponemt(props: HTMLAttributes<HTMLDivElement>) {
     <Header {...props}>
       <Link href="/" passHref>
         <Logo>
-          <img src="/images/logo.png" alt="Bibtex normalizer logo" />
+          <IoBook />
           Bibtex-normalizer
         </Logo>
       </Link>
@@ -87,25 +94,25 @@ export default function HeaderComponemt(props: HTMLAttributes<HTMLDivElement>) {
         <MenuItem
           href="/"
           title="Home"
-          icon={HomeIcon}
+          icon={IoHomeSharp}
           className={`${router.pathname === '/' ? 'active' : ''}`}
         />
         <MenuItem
           href="/settings"
           title="Settings"
-          icon={GearIcon}
+          icon={IoCogOutline}
           className={`${router.pathname === '/settings' ? 'active' : ''}`}
         />
         <MenuItem
           href="/editor"
           title="Editor"
-          icon={CodeIcon}
+          icon={IoCodeSlash}
           className={`${router.pathname === '/editor' ? 'active' : ''}`}
         />
         <MenuItem
           href="/about"
           title="About"
-          icon={InfoCircledIcon}
+          icon={IoInformationCircleOutline}
           className={`${router.pathname === '/about' ? 'active' : ''}`}
         />
       </Menu>

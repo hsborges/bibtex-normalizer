@@ -2,17 +2,17 @@
  * @author Hudson Silva Borges
  */
 import { useContext, useEffect, useRef, useState } from 'react';
+import {
+  IoBuildSharp,
+  IoClose,
+  IoCloudDownloadOutline,
+  IoCopyOutline,
+  IoTrashBinOutline,
+} from 'react-icons/io5';
 
 import { simpleMode } from '@codemirror/legacy-modes/mode/simple-mode';
 import { lintGutter, linter } from '@codemirror/lint';
 import { StreamLanguage } from '@codemirror/stream-parser';
-import {
-  ClipboardCopyIcon,
-  Cross2Icon,
-  DownloadIcon,
-  EraserIcon,
-  MagicWandIcon,
-} from '@radix-ui/react-icons';
 import { styled } from '@stitches/react';
 import CodeMirror, { ReactCodeMirrorRef, TransactionSpec } from '@uiw/react-codemirror';
 
@@ -33,7 +33,7 @@ const StyledCodeMirror = styled(CodeMirror, {
   width: 'calc(100% + 15px)',
   height: '100%',
   maxHeight: '100%',
-  border: '1px solid $violet6',
+  border: '1px solid $teal6',
 
   '& .cm-scroller': { overflow: 'scroll' },
 });
@@ -169,7 +169,7 @@ export default function SettingComponent() {
               });
             }}
           >
-            <MagicWandIcon style={{ height: '1em', width: '1em' }} /> Normalize
+            <IoBuildSharp style={{ height: '1em', width: '1em' }} /> Normalize
           </Button>
           <Button
             size="normal"
@@ -183,7 +183,7 @@ export default function SettingComponent() {
               });
             }}
           >
-            <ClipboardCopyIcon style={{ height: '1em', width: '1em' }} /> Copy
+            <IoCopyOutline style={{ height: '1em', width: '1em' }} /> Copy
           </Button>
           <Button
             size="normal"
@@ -201,7 +201,7 @@ export default function SettingComponent() {
               element.remove();
             }}
           >
-            <DownloadIcon style={{ height: '1em', width: '1em' }} /> Download
+            <IoCloudDownloadOutline style={{ height: '1em', width: '1em' }} /> Download
           </Button>
           <Button
             size="normal"
@@ -224,7 +224,7 @@ export default function SettingComponent() {
               });
             }}
           >
-            <EraserIcon style={{ height: '1em', width: '1em' }} /> Clear
+            <IoTrashBinOutline style={{ height: '1em', width: '1em' }} /> Clear
           </Button>
         </ActionsMenu>
 
@@ -237,7 +237,7 @@ export default function SettingComponent() {
           <Toast.Description>{toast.description}</Toast.Description>
           <Toast.Action asChild altText="Close">
             <Button color="transparent" bordered={false}>
-              <Cross2Icon />
+              <IoClose />
             </Button>
           </Toast.Action>
         </Toast.Root>

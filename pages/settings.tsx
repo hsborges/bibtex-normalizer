@@ -18,13 +18,7 @@ const Grid = styled('div', {
   display: 'flex',
   flexFlow: 'column',
   margin: '15px auto 50px',
-  rowGap: 10,
-
-  '& > h2': {
-    color: '$violet9',
-    textDecoration: 'underline',
-    '&:after': { content: ':' },
-  },
+  rowGap: 25,
 });
 
 const EntriesConfigComponentRoot = styled('div', {
@@ -86,7 +80,7 @@ const BibtexFieldSelect = styled(
     );
   },
   {
-    border: '1px solid $violet6',
+    border: '1px solid $teal6',
     backgroundColor: 'White',
     margin: '0px 5px',
     '&:focus': {
@@ -162,7 +156,7 @@ const RegExpInput = styled(
       lineHeight: 1.25,
 
       '&:first-child:focus': {
-        color: '$violet12',
+        color: '$teal12',
       },
       '&:last-child': {
         maxWidth: 50,
@@ -183,7 +177,7 @@ const EntrySelectComponent = styled('select', {
   border: 'none',
   backgroundColor: 'transparent',
   fontSize: '1.1em',
-  color: '$violet9',
+  color: '$teal9',
   fontWeight: 'bolder',
   outline: 'none',
 });
@@ -430,7 +424,7 @@ const NormalizerSettings = styled(
   },
   {
     '& > tbody > tr': {
-      backgroundColor: '$violet3',
+      backgroundColor: '$teal3',
 
       '& > td': {
         padding: '0.5em',
@@ -456,12 +450,10 @@ export default function SettingComponent() {
 
   return (
     <Grid>
-      <h2>Normalizer settings</h2>
       <NormalizerSettings
         config={config?.normalizer}
         onConfigUpdate={(data) => updateNormalizerConfig(data)}
       />
-      <h2>Entries settings</h2>
       <StyledEntriesConfigComponent
         config={config.entries}
         onConfigUpdate={(data) => updateEntryConfig(data)}

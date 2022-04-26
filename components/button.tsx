@@ -33,13 +33,13 @@ export default styled('button', {
     },
     color: {
       primary: {
-        backgroundColor: '$violet9',
-        borderColor: '$violet10',
+        backgroundColor: '$teal9',
+        borderColor: '$teal10',
         color: 'White',
 
         '&:hover': {
-          backgroundColor: '$violet10',
-          borderColor: '$violet11',
+          backgroundColor: '$teal10',
+          borderColor: '$teal11',
         },
       },
       warning: {
