@@ -2,7 +2,6 @@
  * @author Hudson Silva Borges
  */
 import { capitalize, flatten } from 'lodash';
-import { matchRecursive } from 'xregexp';
 
 import { Diagnostic } from '@codemirror/lint';
 
