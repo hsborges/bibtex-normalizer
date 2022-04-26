@@ -2,6 +2,7 @@
  * @author Hudson Silva Borges
  */
 import { capitalize, flatten } from 'lodash';
+import { matchRecursive } from 'xregexp';
 
 import { Diagnostic } from '@codemirror/lint';
 
@@ -592,16 +593,50 @@ export function toString(node: Node, config?: BibtexNormalizerConfig): string {
         );
       })
       .map((field) => {
-        let value = ['month', 'year'].includes(field.name.trim().toLowerCase())
-          ? field.value.concat.map((cv) => valueFormater(cv.value.trim(), 'literal')).join('')
-          : field.value.concat
-              .map((cv) =>
-                valueFormater(
-                  cv.value.trim(),
-                  config?.normalizer.awaysUseBraces ? 'braced' : cv.type
+        let value = field.value.concat
+          .map((cv) => {
+            const type = ['month', 'year'].includes(field.name.trim().toLowerCase())
+              ? 'literal'
+              : config?.normalizer.awaysUseBraces
+              ? 'braced'
+              : cv.type;
+
+            let fieldValue = cv.value.trim();
+
+            if (
+              field.name.trim().toLowerCase() === 'title' &&
+              config.normalizer.escapeProperNames.enabled
+            ) {
+              config.normalizer.escapeProperNames.names.forEach((name) => {
+                fieldValue = ` ${fieldValue} `
+                  .replaceAll(
+                    new RegExp(`^(.*)([\\s{]+)(${name})([\\s}]+)(.*)$`, 'gi'),
+                    `$1 {${name}} $5`
+                  )
+                  .replaceAll(/\s+/g, ' ')
+                  .trim();
+              });
+            }
+
+            if (
+              field.name.trim().toLowerCase() === 'author' &&
+              config.normalizer.formatAuthorField
+            ) {
+              fieldValue = fieldValue
+                .split(/\sand\s/i)
+                .map((author) =>
+                  author
+                    .replace(/(.*),(.*)/, '$2 $1')
+                    .replaceAll(/\s+/g, ' ')
+                    .trim()
                 )
-              )
-              .join('');
+                .join(' and ');
+            }
+
+            return valueFormater(fieldValue, type);
+          })
+          .join('');
+
         return `${padEndBibtexField(field.name.toLowerCase())} = ${value}`;
       })
       .join(',\n  ')}\n`;
