@@ -609,7 +609,7 @@ export function toString(node: Node, config?: BibtexNormalizerConfig): string {
               config.normalizer.escapeProperNames.names.forEach((name) => {
                 fieldValue = ` ${fieldValue} `
                   .replaceAll(
-                    new RegExp(`^(.*)([\\s{]+)(${name})([\\s}]+)(.*)$`, 'gi'),
+                    new RegExp(`^(.*)([\\s{]+|^)(${name})([\\s}]+|$)(.*)$`, 'gi'),
                     `$1 {${name}} $5`
                   )
                   .replaceAll(/\s+/g, ' ')
