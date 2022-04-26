@@ -1,17 +1,32 @@
-# See https://help.github.com/ignore-files/ for more about ignoring files.
-
-# compiled output
-/dist
-/tmp
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
 /node_modules
-/bower_components
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
 
 # misc
-/.sass-cache
-/connect.lock
-/coverage/*
-/libpeerconnection.log
+.DS_Store
+*.pem
+
+# debug
 npm-debug.log*
-testem.log
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel

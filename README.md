@@ -1,44 +1,34 @@
-![Bibtex-normalizer](public/assets/images/steps/bibtex-normalizer.png)
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-Bibtex-normalizer is an open source project to validate and normalize Bibtex entries online.
-This tool uses a defined standard to organize your references in a single way, making it
-easier to read.
+## Getting Started
 
-<p align="center">
-  <img src="public/assets/images/steps/mainpage.gif">
-</p>
+First, run the development server:
 
-## Usage
+```bash
+npm run dev
+# or
+yarn dev
+```
 
-We normalize your references.bib in a simple way! If this is your first time here, you may need to follow these steps:
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-**Step 1**: Access the [website](https://hsborges.github.io/bibtex-normalizer)
+You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-**Step 2**: Select or drag and drop your bibtex file. You can also click on tab "Editor" to use the web editor.
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
-**Step 3**: After the normalization process, a lists of potential issues is presented.
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-* *Auto-formatted fields:* Fields automatically formated by the tool (details below).
-* *Missing fields:* Mandatory fields that are not present (see "Settings").
-* *Unformatted fields:* Fields not following Bibtex standards.
+## Learn More
 
-  *Note*: Fields not configured as mandatory on "Settings" are automatically removed from the formatted bibtex.
+To learn more about Next.js, take a look at the following resources:
 
-**Step 4**: Verify the issues list and click on "Normalize" button to check the references again.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-**Step 5**: Copy the normalized references to the clipboard or download them.
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
+## Deploy on Vercel
 
-## Define your own configuration
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-
-![Configuration](public/assets/images/steps/configuration.png)
-
-
-Make adjustments on your normalization process accessing "Settings" tab, checking entries and attributes that your file needs to be normalized. Don't forget to save your changes.
-
-*Note*: Configuration requires permission to use cookies.
-
-## Developing
-
-This project uses Ember.js as framework for web applications. More information about Ember.js, we suggest you to [check Ember website](https://www.emberjs.com/).
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
