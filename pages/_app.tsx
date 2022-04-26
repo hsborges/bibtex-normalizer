@@ -6,6 +6,7 @@ import Head from 'next/head';
 
 import { styled } from '@stitches/react';
 
+import BetaBadge from '../components/beta-badge';
 import Footer from '../components/footer';
 import Header from '../components/header';
 import { ConfigProvider } from '../providers/ConfigProvider';
@@ -30,6 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <link rel="shortcut icon" href="/images/logo.png" />
         </Head>
         <Grid>
+          <BetaBadge />
           <Header />
           <MainContent>
             <Component {...pageProps} />

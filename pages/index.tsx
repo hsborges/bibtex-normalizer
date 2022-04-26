@@ -111,6 +111,7 @@ export default function Home() {
         <PanelFeatureItem>Get warnings on missing fields</PanelFeatureItem>
         <PanelFeatureItem>Check formatting</PanelFeatureItem>
         <PanelFeatureItem>Auto-formatting basic fields</PanelFeatureItem>
+        <PanelFeatureItem>Create validation rules</PanelFeatureItem>
       </PanelFeatures>
       <PanelSubmit>
         <input

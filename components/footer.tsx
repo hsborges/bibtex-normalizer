@@ -23,7 +23,7 @@ export default function FooterComponent() {
   return (
     <StyledFooter>
       This tool is maintained by
-      <a href="https://www.github.com/hsborges" target="_blank" rel="noreferrer">
+      <a href="https://www.github.com/hsborges/bibtex-normalizer" target="_blank" rel="noreferrer">
         <IoLogoGithub style={{ marginRight: 2 }} /> hsborges
       </a>
     </StyledFooter>
