@@ -28,25 +28,26 @@ const MemberComponent = styled(
 );
 
 const Grid = styled('div', {
-  margin: 'auto',
-  marginTop: '4em',
   display: 'flex',
   flexFlow: 'column',
+  justifyItems: 'center',
+  alignContent: 'center',
+  height: '80%',
   alignItems: 'center',
   justifyContent: 'center',
   rowGap: '4em',
   lineHeight: '1.5em',
-  width: '60%',
 
   '& > .section': {
     textAlign: 'center',
+    width: '60%',
 
     [`& ${MemberComponent} + ${MemberComponent}`]: {
       marginLeft: '2em',
     },
-  },
 
-  '@sm': { width: '90%' },
+    '@sm': { width: '90%' },
+  },
 });
 
 const Link = styled('a', { color: '$teal9' });

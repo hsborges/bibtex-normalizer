@@ -4,22 +4,27 @@
 import { capitalize, flatten, isEqual, omit } from 'lodash';
 import { HTMLProps, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
-import { styled } from '@stitches/react';
-
 import Button from '../components/button';
 import Checkbox from '../components/checkbox';
 import Switch from '../components/switch';
 import { BibtexEntryDefinition, BibtexEntryType, BibtexFieldType } from '../lib/bibtex-definitions';
 import * as BibtexEntries from '../lib/bibtex-entries';
 import ConfigContext, { BibtexEntryConfig, NormalizerCofig } from '../providers/ConfigProvider';
+import { styled } from '../stitches.config';
 
 const Grid = styled('div', {
-  width: '80%',
   display: 'flex',
   flexFlow: 'column',
-  margin: '15px auto 50px',
+  margin: 'auto',
+  height: '80%',
+  justifyContent: 'center',
+  alignItems: 'center',
   rowGap: 25,
   fontSize: '0.9em',
+
+  '& > *': {
+    width: '60%',
+  },
 });
 
 const EntriesConfigComponentRoot = styled('div', {
@@ -424,8 +429,10 @@ const NormalizerSettings = styled(
     );
   },
   {
+    border: '1px solid $gray9',
+    padding: '5px 0',
     '& > tbody > tr': {
-      backgroundColor: '$teal3',
+      backgroundColor: '$teal1',
 
       '& > td': {
         padding: '0.5em',
