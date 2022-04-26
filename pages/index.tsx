@@ -5,18 +5,24 @@ import { useRouter } from 'next/router';
 import { HTMLProps, useContext, useRef } from 'react';
 import { IoCheckmarkSharp, IoCloudUploadOutline } from 'react-icons/io5';
 
-import { styled } from '@stitches/react';
-
 import Button from '../components/button';
 import EditorConfig from '../providers/EditorProvider';
+import { styled } from './../stitches.config';
 
 const MainComponent = styled('section', {
   display: 'flex',
   justifyItems: 'center',
-  fontSize: '1.25em',
+  fontSize: '1.1em',
   minHeight: '90%',
   width: '80%',
   margin: 'auto',
+
+  '@sm': {
+    display: 'block',
+    fontSize: '1em',
+    width: 'calc(100% + 15px)',
+    margin: '0',
+  },
 });
 
 const Panel = styled('div', {
@@ -28,13 +34,21 @@ const Panel = styled('div', {
   justifyContent: 'center',
 });
 
-const PanelFeatures = styled(Panel, {});
+const PanelFeatures = styled(Panel, {
+  '@sm': {
+    margin: '4em 0',
+  },
+});
 const PanelTitle = styled('h1', {
   fontWeight: 'bolder',
   fontSize: '2em',
   margin: 0,
   marginBottom: 15,
   color: '$teal9',
+
+  '@sm': {
+    fontSize: '1.75em',
+  },
 });
 const PanelFeatureItem = styled(
   (props: HTMLProps<HTMLSpanElement>) => (
@@ -57,9 +71,12 @@ const PanelFeatureItem = styled(
 );
 
 const PanelSubmit = styled(Panel, {});
+
 const PanelSubmitSeparator = styled('span', {
   padding: '25px 0',
+  '@sm': { display: 'none' },
 });
+
 const PannelSubmitDropArea = styled('div', {
   padding: '2em 4em',
   border: '2px dashed $gray8',
@@ -72,6 +89,8 @@ const PannelSubmitDropArea = styled('div', {
     color: '$teal9',
     cursor: 'pointer',
   },
+
+  '@sm': { display: 'none' },
 });
 
 export default function Home() {

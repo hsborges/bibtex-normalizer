@@ -4,7 +4,8 @@
 import { HTMLAttributes } from 'react';
 
 import * as Avatar from '@radix-ui/react-avatar';
-import { styled } from '@stitches/react';
+
+import { styled } from '../stitches.config';
 
 const MemberComponent = styled(
   ({ member, ...props }: HTMLAttributes<HTMLDivElement> & { member: MemberInfoType }) => (
@@ -17,14 +18,16 @@ const MemberComponent = styled(
   {
     display: 'inline-flex',
     flexFlow: 'column',
-    rowGap: 2,
+    rowGap: 0,
     alignItems: 'center',
     '& > *:nth-child(2)': { fontWeight: 'bolder' },
+    '& > span + span': { marginTop: -5 },
+    fontSize: '0.9em',
+    '@sm': { fontSize: '0.85em' },
   }
 );
 
 const Grid = styled('div', {
-  fontSize: 16,
   margin: 'auto',
   marginTop: '4em',
   display: 'flex',
@@ -33,14 +36,17 @@ const Grid = styled('div', {
   justifyContent: 'center',
   rowGap: '4em',
   lineHeight: '1.5em',
+  width: '60%',
 
   '& > .section': {
     textAlign: 'center',
 
     [`& ${MemberComponent} + ${MemberComponent}`]: {
-      marginLeft: 50,
+      marginLeft: '2em',
     },
   },
+
+  '@sm': { width: '90%' },
 });
 
 const Link = styled('a', { color: '$teal9' });
@@ -53,12 +59,12 @@ type MemberInfoType = {
 
 const teamInfo: MemberInfoType[] = [
   {
-    name: 'Hudson Silva Borges',
+    name: 'Hudson S. Borges',
     photo: 'hudson.jpg',
     email: 'hsborges[at]facom.ufms.br',
   },
   {
-    name: 'Paulo Henrique de Carvalho',
+    name: 'Paulo H. de Carvalho',
     photo: 'paulo.jpg',
     email: 'paulocarvalho[at]dcc.ufmg.br',
   },
@@ -72,10 +78,12 @@ const ImageComponent = styled(
   ),
   {
     '& > .image': {
-      height: 150,
+      height: 125,
       padding: 4,
       margin: 4,
       border: '1px solid $gray6',
+
+      '@sm': { height: 115 },
     },
   }
 );
@@ -86,9 +94,9 @@ export default function SettingComponent() {
   return (
     <Grid>
       <div className="section">
-        Bibtex Normalizer is maintained by <br />
+        Bibtex Normalizer is maintained by{' '}
         <abbr title="Laboratório de Desenvolvimento de Software">LEDES</abbr>, from Federal
-        University of Mato Grosso do Sul, and <br />
+        University of Mato Grosso do Sul, and{' '}
         <Link href="http://aserg.labsoft.dcc.ufmg.br/" target="_blank" rel="noreferrer">
           Applied Software Engineering Research Group
         </Link>

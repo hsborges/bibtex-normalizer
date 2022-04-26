@@ -10,4 +10,7 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
         ...teal,
       },
     },
+    media: {
+      sm: 'screen and (max-width: 640px)',
+    },
   });

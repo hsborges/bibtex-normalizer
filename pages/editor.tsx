@@ -13,7 +13,6 @@ import {
 import { simpleMode } from '@codemirror/legacy-modes/mode/simple-mode';
 import { lintGutter, linter } from '@codemirror/lint';
 import { StreamLanguage } from '@codemirror/stream-parser';
-import { styled } from '@stitches/react';
 import CodeMirror, { ReactCodeMirrorRef, TransactionSpec } from '@uiw/react-codemirror';
 
 import Button from '../components/button';
@@ -21,27 +20,36 @@ import * as Toast from '../components/toast';
 import { generateAST, toString } from '../lib/bibtex-parser';
 import ConfigContext from '../providers/ConfigProvider';
 import EditorContext from '../providers/EditorProvider';
+import { styled } from '../stitches.config';
 
 const Grid = styled('div', {
   height: '100%',
   display: 'flex',
   flexFlow: 'row',
   columnGap: '1em',
+  fontSize: '14px',
+
+  '@sm': { flexFlow: 'column' },
 });
 
 const StyledCodeMirror = styled(CodeMirror, {
   width: 'calc(100% + 15px)',
-  height: '100%',
   maxHeight: '100%',
   border: '1px solid $teal6',
 
   '& .cm-scroller': { overflow: 'scroll' },
+  '@sm': { height: '75%' },
 });
 
 const ActionsMenu = styled('div', {
   display: 'flex',
   flexFlow: 'column',
   rowGap: 10,
+
+  '@sm': {
+    marginTop: 25,
+    rowGap: 5,
+  },
 });
 
 const bibtexSyntaxHighlight = {
@@ -111,6 +119,7 @@ export default function SettingComponent() {
 
   const ref = useRef<ReactCodeMirrorRef>();
   const [height, setHeight] = useState<number>(null);
+  const [width, setWidth] = useState<number>(null);
 
   const [toast, setToast] = useState<{ opened: boolean; title?: string; description?: string }>({
     opened: false,
@@ -121,7 +130,8 @@ export default function SettingComponent() {
     setTimeout(() => setToast(status), 250);
   };
 
-  useEffect(() => setHeight(ref.current?.editor?.clientHeight), []);
+  useEffect(() => setHeight(ref.current?.editor?.clientHeight));
+  useEffect(() => setWidth(ref.current?.editor?.clientWidth));
 
   return (
     <Toast.Provider swipeDirection="right">
@@ -130,6 +140,8 @@ export default function SettingComponent() {
           ref={ref}
           height={height ? `${height}px` : '100%'}
           maxHeight={height ? `${height}px` : '100%'}
+          width={width ? `${width}px` : '100%'}
+          maxWidth={width ? `${width}px` : '100%'}
           basicSetup
           placeholder={`// Paste your bibtex content here.`}
           value={content || ''}

@@ -19,6 +19,7 @@ const Grid = styled('div', {
   flexFlow: 'column',
   margin: '15px auto 50px',
   rowGap: 25,
+  fontSize: '0.9em',
 });
 
 const EntriesConfigComponentRoot = styled('div', {
@@ -176,7 +177,7 @@ const Center = styled('div', {
 const EntrySelectComponent = styled('select', {
   border: 'none',
   backgroundColor: 'transparent',
-  fontSize: '1.1em',
+  fontSize: '1em',
   color: '$teal9',
   fontWeight: 'bolder',
   outline: 'none',

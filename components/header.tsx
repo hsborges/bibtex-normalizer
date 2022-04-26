@@ -14,7 +14,7 @@ import {
   IoInformationCircleOutline,
 } from 'react-icons/io5';
 
-import { styled } from '@stitches/react';
+import { styled } from './../stitches.config';
 
 const Header = styled('header', {
   display: 'inline-flex',
@@ -23,10 +23,19 @@ const Header = styled('header', {
   flexFlow: 'column',
   alignItems: 'center',
   rowGap: 8,
+
+  '@sm': {
+    margin: 0,
+    paddingTop: '1em',
+    width: 'calc(100% + 15px)',
+    borderBottom: '1px solid $teal3',
+    paddingBottom: '1.5em',
+    rowGap: 4,
+  },
 });
 
 const Logo = styled('a', {
-  fontSize: '3em',
+  fontSize: '2.5em',
   display: 'flex',
   alignItems: 'center',
   cursor: 'pointer',
@@ -37,14 +46,29 @@ const Logo = styled('a', {
     marginRight: '0.25em',
     height: '1em',
   },
+
+  '@sm': {
+    '& > span': {
+      display: 'none',
+    },
+
+    [`& svg`]: {
+      height: '1em',
+      marginRight: 0,
+      marginBottom: 5,
+    },
+  },
 });
 
 const Menu = styled('div', {
-  marginLeft: '0.5em',
   display: 'flex',
   justifyContent: 'space-between',
-  fontSize: '1.15em',
+  fontSize: '1.1em',
   color: '$gray9',
+
+  '@sm': {
+    fontSize: '1em',
+  },
 });
 
 const MenuItemComponent: FunctionComponent<
@@ -77,6 +101,10 @@ const MenuItem = styled(MenuItemComponent, {
     color: '$teal9',
     fontWeight: 'bolder',
   },
+
+  '@sm': {
+    padding: '0 0.5em',
+  },
 });
 
 export default function HeaderComponemt(props: HTMLAttributes<HTMLDivElement>) {
@@ -87,7 +115,7 @@ export default function HeaderComponemt(props: HTMLAttributes<HTMLDivElement>) {
       <Link href="/" passHref>
         <Logo>
           <IoBook />
-          Bibtex-normalizer
+          <span>Bibtex-normalizer</span>
         </Logo>
       </Link>
       <Menu>
@@ -102,6 +130,7 @@ export default function HeaderComponemt(props: HTMLAttributes<HTMLDivElement>) {
           title="Settings"
           icon={IoCogOutline}
           className={`${router.pathname === '/settings' ? 'active' : ''}`}
+          css={{ '@sm': { display: 'none' } }}
         />
         <MenuItem
           href="/editor"
