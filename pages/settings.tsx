@@ -15,16 +15,13 @@ import { styled } from '../stitches.config';
 const Grid = styled('div', {
   display: 'flex',
   flexFlow: 'column',
-  margin: 'auto',
-  height: '80%',
+  height: '90%',
   justifyContent: 'center',
   alignItems: 'center',
   rowGap: 25,
   fontSize: '0.9em',
 
-  '& > *': {
-    width: '60%',
-  },
+  '& > *': { width: '60%' },
 });
 
 const EntriesConfigComponentRoot = styled('div', {
