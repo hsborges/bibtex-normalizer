@@ -31,7 +31,7 @@ const Logo = styled('a', {
   alignItems: 'center',
   cursor: 'pointer',
   fontWeight: 'bolder',
-  color: '$gray10',
+  color: '$gray11',
 
   [`& svg`]: {
     marginRight: '0.25em',

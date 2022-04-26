@@ -55,7 +55,7 @@ const teamInfo: MemberInfoType[] = [
   {
     name: 'Hudson Silva Borges',
     photo: 'hudson.jpg',
-    email: 'hsborges[at]dcc.ufmg.br',
+    email: 'hsborges[at]facom.ufms.br',
   },
   {
     name: 'Paulo Henrique de Carvalho',
