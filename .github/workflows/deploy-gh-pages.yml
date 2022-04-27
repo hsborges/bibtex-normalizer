@@ -23,12 +23,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
-      - run: yarn
-      - run: yarn build
         env:
           NODE_ENV: production
           GA_TRACKING_ID: ${{ secrets.GA_TRACKING_ID }}
           NEXT_PUBLIC_GA_ID: ${{ secrets.GA_TRACKING_ID }}
+      - run: yarn
+      - run: yarn build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
