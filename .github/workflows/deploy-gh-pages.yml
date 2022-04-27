@@ -11,28 +11,22 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
-    env:
-      NODE_ENV: production
-      GA_TRACKING_ID: ${{ secrets.GA_TRACKING_ID }}
-      NEXT_PUBLIC_GA_ID: ${{ secrets.GA_TRACKING_ID }}
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-
     steps:
       - uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 16
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 16
           cache: 'yarn'
-      - run: yarn
+      - run: yarn install
       - run: yarn build
+        env:
+          GA_TRACKING_ID: ${{ secrets.GA_TRACKING_ID }}
+          NEXT_PUBLIC_GA_ID: ${{ secrets.GA_TRACKING_ID }}
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
+          publish_dir: ./bibtex-normalizer
