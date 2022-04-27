@@ -13,7 +13,7 @@ jobs:
 
     env:
       GA_TRACKING_ID: ${{ secrets.GA_TRACKING_ID }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      NEXT_PUBLIC_GA_ID: ${{ secrets.GA_TRACKING_ID }}
 
     steps:
       - uses: actions/checkout@v3
@@ -22,18 +22,17 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'yarn'
+          cache: 'npm'
       - name: Install dependencies
-        run: yarn install
+        run: |
+          npm install
+          npm run prepare
 
       - name: Build and export static files
-        env:
-          GA_TRACKING_ID: ${{ env.GA_TRACKING_ID }}
-          NEXT_PUBLIC_GA_ID: ${{ env.GA_TRACKING_ID }}
-        run: yarn build
+        run: npm run build
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ env.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./bibtex-normalizer
