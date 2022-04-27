@@ -14,13 +14,11 @@ env:
 jobs:
   check-secret:
     runs-on: ubuntu-latest
-    outputs:
-      key: ${{ steps.key.outputs.defined }}
     steps:
       - id: key
         name: Validating key existence
         run: |
-          if [ "$NEXT_PUBLIC_GA_ID" == "" ]; then
+          if [ "$GA_TRACKING_ID" == "" ]; then
             echo ::set-output name=defined::false
           else
             echo ::set-output name=defined::true
@@ -30,7 +28,7 @@ jobs:
         uses: actions/github-script@v3
         with:
           script: |
-            core.setFailed('NEXT_PUBLIC_GA_ID is empty!')
+            core.setFailed('GA_TRACKING_ID is empty!')
 
   build-and-deploy:
     runs-on: ubuntu-latest
