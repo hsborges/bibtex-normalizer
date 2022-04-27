@@ -25,6 +25,9 @@ jobs:
           cache: 'yarn'
       - run: yarn
       - run: yarn build
+        env:
+          NODE_ENV: production
+          GA_TRACKING_ID: ${{ secrets.GA_TRACKING_ID }}
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
