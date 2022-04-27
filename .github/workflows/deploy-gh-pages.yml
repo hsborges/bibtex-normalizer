@@ -23,13 +23,16 @@ jobs:
         with:
           node-version: 16
           cache: 'yarn'
-      - run: yarn install
-      - run: yarn build
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build and export static files
         env:
           GA_TRACKING_ID: ${{ env.GA_TRACKING_ID }}
           NEXT_PUBLIC_GA_ID: ${{ env.GA_TRACKING_ID }}
+        run: yarn build
 
-      - name: Deploy
+      - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ env.GITHUB_TOKEN }}
