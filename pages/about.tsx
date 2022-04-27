@@ -5,12 +5,13 @@ import { HTMLAttributes } from 'react';
 
 import * as Avatar from '@radix-ui/react-avatar';
 
+import { basePath } from '../next.config';
 import { styled } from '../stitches.config';
 
 const MemberComponent = styled(
   ({ member, ...props }: HTMLAttributes<HTMLDivElement> & { member: MemberInfoType }) => (
     <div {...props}>
-      <ImageComponent src={`/images/${member.photo}`} />
+      <ImageComponent src={`${basePath || ''}/images/${member.photo}`} />
       <span>{member.name}</span>
       <span>{member.email}</span>
     </div>

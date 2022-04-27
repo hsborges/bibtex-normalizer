@@ -14,6 +14,7 @@ import BetaBadge from '../components/beta-badge';
 import Footer from '../components/footer';
 import Header from '../components/header';
 import * as gtag from '../lib/gtag';
+import { basePath } from '../next.config';
 import { ConfigProvider } from '../providers/ConfigProvider';
 import { EditorConfigProvider } from '../providers/EditorProvider';
 import '../styles/globals.css';
@@ -46,6 +47,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <EditorConfigProvider>
           <Head>
             <title>Bibtex Normalizer</title>
+            <link rel="shortcut icon" href={`${basePath}/favicon.ico`} type="image/x-icon" />
           </Head>
           <Grid>
             <BetaBadge />
