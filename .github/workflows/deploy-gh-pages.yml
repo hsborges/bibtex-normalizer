@@ -8,8 +8,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
+    env:
+      NODE_ENV: production
+      GA_TRACKING_ID: ${{ secrets.GA_TRACKING_ID }}
+      NEXT_PUBLIC_GA_ID: ${{ secrets.GA_TRACKING_ID }}
 
     strategy:
       matrix:
@@ -23,10 +28,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
-        env:
-          NODE_ENV: production
-          GA_TRACKING_ID: ${{ secrets.GA_TRACKING_ID }}
-          NEXT_PUBLIC_GA_ID: ${{ secrets.GA_TRACKING_ID }}
       - run: yarn
       - run: yarn build
 
