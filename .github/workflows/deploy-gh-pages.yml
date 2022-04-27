@@ -27,7 +27,7 @@ jobs:
     - run: yarn build
     
     - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
+      uses: JamesIves/github-pages-deploy-action@v4.3.0
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./out
+        branch: gh-pages
+        folder: out 
