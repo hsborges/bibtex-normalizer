@@ -45,10 +45,10 @@ jobs:
           npm install
           npm run prepare
       - name: Build and export static files
-        run: npm run build
         env:
           GA_TRACKING_ID: ${{ secrets.GA_TRACKING_ID }}
           NEXT_PUBLIC_GA_ID: ${{ secrets.GA_TRACKING_ID }}
+        run: npm run build
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
