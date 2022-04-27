@@ -1,1 +1,0 @@
-ace.define("ace/snippets/groovy",["require","exports","module"],function(e,o,i){"use strict";o.snippetText=void 0,o.scope="groovy"});

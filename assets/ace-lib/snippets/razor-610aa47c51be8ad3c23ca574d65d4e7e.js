@@ -1,1 +1,0 @@
-ace.define("ace/snippets/razor",["require","exports","module"],function(e,n,t){"use strict";n.snippetText="snippet if\n(${1} == ${2}) {\n\t${3}\n}",n.scope="razor"});

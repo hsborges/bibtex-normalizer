@@ -1,1 +1,0 @@
-ace.define("ace/snippets/dockerfile",["require","exports","module"],function(e,i,c){"use strict";i.snippetText=void 0,i.scope="dockerfile"});

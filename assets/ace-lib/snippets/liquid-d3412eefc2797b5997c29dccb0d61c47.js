@@ -1,1 +1,0 @@
-ace.define("ace/snippets/liquid",["require","exports","module"],function(e,i,s){"use strict";i.snippetText=void 0,i.scope="liquid"});

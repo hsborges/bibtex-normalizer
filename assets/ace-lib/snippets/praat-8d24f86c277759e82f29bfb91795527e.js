@@ -1,1 +1,0 @@
-ace.define("ace/snippets/praat",["require","exports","module"],function(e,t,p){"use strict";t.snippetText=void 0,t.scope="praat"});
