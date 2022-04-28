@@ -10,7 +10,7 @@ on:
 jobs:
   check-secret:
     runs-on: ubuntu-latest
-    environment: gh-pages
+    environment: github-pages
     steps:
       - id: key
         name: Validating key existence
@@ -31,7 +31,7 @@ jobs:
 
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment: gh-pages
+    environment: github-pages
     needs: [check-secret]
     steps:
       - uses: actions/checkout@v3
