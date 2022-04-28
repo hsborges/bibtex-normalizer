@@ -236,7 +236,7 @@ const StyledEntriesConfigComponent = styled(function (props: {
           <Center css={{ columnGap: 10 }}>
             <StyledButton
               size="small"
-              color="transparent"
+              bordered
               onClick={(event) => {
                 updateState(config.find((ec) => ec.entry === entry.name));
                 event.stopPropagation();

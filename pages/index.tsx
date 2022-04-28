@@ -3,7 +3,7 @@
  */
 import { useRouter } from 'next/router';
 import { HTMLProps, useContext, useRef } from 'react';
-import { IoCheckmarkSharp, IoCloudUploadOutline } from 'react-icons/io5';
+import { IoArrowForwardOutline, IoCheckmarkSharp, IoCloudUploadOutline } from 'react-icons/io5';
 
 import Button from '../components/button';
 import EditorConfig from '../providers/EditorProvider';
@@ -21,7 +21,6 @@ const MainComponent = styled('section', {
     display: 'block',
     fontSize: '1em',
     width: 'calc(100% + 15px)',
-    margin: '0',
   },
 });
 
@@ -70,7 +69,9 @@ const PanelFeatureItem = styled(
   }
 );
 
-const PanelSubmit = styled(Panel, {});
+const PanelSubmit = styled(Panel, {
+  '@sm': { fontSize: '0.9em' },
+});
 
 const PanelSubmitSeparator = styled('span', {
   padding: '25px 0',
@@ -91,6 +92,15 @@ const PannelSubmitDropArea = styled('div', {
   },
 
   '@sm': { display: 'none' },
+});
+
+const OpenFileButton = styled(Button, {
+  '@sm': { display: 'none !important' },
+});
+
+const CodeEditorButton = styled(Button, {
+  display: 'none',
+  '@sm': { display: 'inherit' },
 });
 
 export default function Home() {
@@ -143,9 +153,18 @@ export default function Home() {
             fileHandler((event.target as HTMLInputElement).files[0]);
           }}
         />
-        <Button size="large" onClick={() => inputRef.current.click()}>
+        <CodeEditorButton
+          size="large"
+          color="normal"
+          bordered
+          onMouseEnter={() => router.prefetch('/editor')}
+          onClick={() => router.push('/editor')}
+        >
+          Open code editor <IoArrowForwardOutline />
+        </CodeEditorButton>
+        <OpenFileButton size="large" onClick={() => inputRef.current.click()}>
           <IoCloudUploadOutline style={{ marginRight: 5 }} /> Choose a bibtex file
-        </Button>
+        </OpenFileButton>
         <PanelSubmitSeparator>-- or --</PanelSubmitSeparator>
         <PannelSubmitDropArea
           ref={dragRef}

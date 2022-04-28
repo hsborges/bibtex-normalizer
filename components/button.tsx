@@ -10,19 +10,19 @@ export default styled('button', {
   columnGap: 5,
   padding: '0.5em 1em',
   border: '1px solid',
-
+  borderRadius: '8px',
   fontWeight: 'bolder',
-  color: '$gray12',
   cursor: 'pointer',
   variants: {
     rounded: {
       true: {
-        borderRadius: '8px',
+        padding: '0.5em',
+        borderRadius: '100%',
       },
     },
     bordered: {
-      false: {
-        border: 'none !important',
+      true: {
+        backgroundColor: 'transparent !important',
       },
     },
     disabled: {
@@ -32,32 +32,21 @@ export default styled('button', {
       },
     },
     color: {
+      normal: {
+        backgroundColor: '$gray11',
+        borderColor: '$gray11',
+        color: 'White',
+      },
       primary: {
         backgroundColor: '$teal9',
         borderColor: '$teal10',
         color: 'White',
-
-        '&:hover': {
-          backgroundColor: '$teal10',
-          borderColor: '$teal11',
-        },
       },
       warning: {
-        color: '$tomato10',
+        color: 'White',
         border: '1px solid $tomato10',
-        backgroundColor: 'transparent',
+        backgroundColor: '$tomato10',
         fontWeight: 'bolder',
-        '&:hover': {
-          borderColor: '$tomato12',
-        },
-      },
-      transparent: {
-        border: '1px solid $gray9',
-        backgroundColor: 'transparent',
-        fontWeight: 'normal',
-        '&:hover': {
-          borderColor: '$gray12',
-        },
       },
     },
     size: {
@@ -72,10 +61,27 @@ export default styled('button', {
       },
     },
   },
+  compoundVariants: [
+    {
+      color: 'normal',
+      bordered: true,
+      css: { color: '$gray11', borderColor: '$gray11' },
+    },
+    {
+      color: 'primary',
+      bordered: true,
+      css: { color: '$teal9', borderColor: '$teal9' },
+    },
+    {
+      color: 'warning',
+      bordered: true,
+      css: { color: '$tomato10', borderColor: '$tomato10' },
+    },
+  ],
   defaultVariants: {
     color: 'primary',
     size: 'normal',
-    rounded: true,
-    bordered: true,
+    rounded: false,
+    bordered: false,
   },
 });

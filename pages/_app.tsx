@@ -34,11 +34,18 @@ export default function App({ Component, pageProps }: AppProps) {
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
+    minHeight: 600,
     maxWidth: 'calc(100vw - 15px)',
-    '@sm': { maxWidth: '100vw' },
+    '@sm': {
+      maxHeight: '100vh + 15px',
+      maxWidth: '100vw + 15px',
+    },
   });
 
-  const MainContent = styled('div', { flexGrow: 1 });
+  const MainContent = styled('div', {
+    flexGrow: 1,
+    maxWidth: 'calc(100vw + 15px)',
+  });
 
   return (
     <>

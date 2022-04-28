@@ -38,6 +38,7 @@ const Grid = styled('div', {
   justifyContent: 'center',
   rowGap: '4em',
   lineHeight: '1.5em',
+  width: 'calc(100% + 15px)',
 
   '& > .section': {
     textAlign: 'center',

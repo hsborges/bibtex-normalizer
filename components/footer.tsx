@@ -3,7 +3,7 @@
  */
 import { IoLogoGithub } from 'react-icons/io5';
 
-import { styled } from '@stitches/react';
+import { styled } from '../stitches.config';
 
 const StyledFooter = styled('footer', {
   fontSize: '0.9em',
@@ -16,6 +16,10 @@ const StyledFooter = styled('footer', {
     color: '$teal9',
     display: 'inline-flex',
     padding: '0 5px',
+  },
+
+  '@sm': {
+    width: 'calc(100% + 15px)',
   },
 });
 

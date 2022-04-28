@@ -29,6 +29,7 @@ const Grid = styled('div', {
   flexFlow: 'row',
   columnGap: '1em',
   fontSize: '14px',
+  width: 'calc(100% + 15px)',
 
   '@sm': { flexFlow: 'column' },
 });
@@ -280,7 +281,8 @@ export default function SettingComponent() {
           </Button>
           <Button
             size="normal"
-            color="transparent"
+            color="normal"
+            bordered
             onClick={() => {
               navigator.clipboard.writeText(ref.current.view.state.doc.toJSON().join('\n'));
               updateToast({
@@ -294,7 +296,8 @@ export default function SettingComponent() {
           </Button>
           <Button
             size="normal"
-            color="transparent"
+            color="normal"
+            bordered
             onClick={() => {
               const element = document.createElement('a');
               const file = new Blob([ref.current.view.state.doc.toJSON().join('\n')], {
@@ -312,6 +315,7 @@ export default function SettingComponent() {
           </Button>
           <Button
             size="normal"
+            bordered
             color="warning"
             onClick={() => {
               ref.current.view.update([
@@ -343,7 +347,7 @@ export default function SettingComponent() {
           <Toast.Title>✔ | {toast.title}</Toast.Title>
           <Toast.Description>{toast.description}</Toast.Description>
           <Toast.Action asChild altText="Close">
-            <Button color="transparent" bordered={false}>
+            <Button rounded>
               <IoClose />
             </Button>
           </Toast.Action>
