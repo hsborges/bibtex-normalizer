@@ -34,28 +34,27 @@ const Panel = styled('div', {
 });
 
 const PanelFeatures = styled(Panel, {
-  '@sm': {
-    margin: '4em 0',
-  },
+  '@sm': { margin: '4em 0' },
 });
+
 const PanelTitle = styled('h1', {
   fontWeight: 'bolder',
   fontSize: '2em',
   margin: 0,
   marginBottom: 15,
   color: '$teal9',
-
-  '@sm': {
-    fontSize: '1.75em',
-  },
+  '@sm': { fontSize: '1.75em' },
 });
-const PanelFeatureItem = styled(
-  (props: HTMLProps<HTMLSpanElement>) => (
-    <span {...props}>
-      <IoCheckmarkSharp />
-      {props.children}
-    </span>
-  ),
+
+const FeatureItem = styled(
+  function (props: HTMLProps<HTMLSpanElement>) {
+    return (
+      <span {...props}>
+        <IoCheckmarkSharp />
+        {props.children}
+      </span>
+    );
+  },
   {
     display: 'flex',
     alignItems: 'center',
@@ -69,15 +68,14 @@ const PanelFeatureItem = styled(
   }
 );
 
-const PanelSubmit = styled(Panel, {
-  '@sm': { fontSize: '0.9em' },
+const MobilePanel = styled(Panel, {
+  display: 'none',
+  '@sm': { display: 'flex' },
 });
+const CodeEditorButton = styled(Button, {});
 
-const PanelSubmitSeparator = styled('span', {
-  padding: '25px 0',
-  '@sm': { display: 'none' },
-});
-
+const FileSubmitPanel = styled(Panel, { '@sm': { display: 'none' } });
+const PanelSubmitSeparator = styled('span', { padding: '25px 0' });
 const PannelSubmitDropArea = styled('div', {
   padding: '2em 4em',
   border: '2px dashed $gray8',
@@ -90,18 +88,8 @@ const PannelSubmitDropArea = styled('div', {
     color: '$teal9',
     cursor: 'pointer',
   },
-
-  '@sm': { display: 'none' },
 });
-
-const OpenFileButton = styled(Button, {
-  '@sm': { display: 'none !important' },
-});
-
-const CodeEditorButton = styled(Button, {
-  display: 'none',
-  '@sm': { display: 'inherit' },
-});
+const OpenFileButton = styled(Button, {});
 
 export default function Home() {
   const inputRef = useRef<HTMLInputElement>();
@@ -136,13 +124,24 @@ export default function Home() {
     <MainComponent>
       <PanelFeatures>
         <PanelTitle>Normalize your .bib</PanelTitle>
-        <PanelFeatureItem>Remove unnecessary fields</PanelFeatureItem>
-        <PanelFeatureItem>Get warnings on missing fields</PanelFeatureItem>
-        <PanelFeatureItem>Check formatting</PanelFeatureItem>
-        <PanelFeatureItem>Auto-formatting basic fields</PanelFeatureItem>
-        <PanelFeatureItem>Create validation rules</PanelFeatureItem>
+        <FeatureItem>Remove unnecessary fields</FeatureItem>
+        <FeatureItem>Get warnings on missing fields</FeatureItem>
+        <FeatureItem>Check formatting</FeatureItem>
+        <FeatureItem>Auto-formatting basic fields</FeatureItem>
+        <FeatureItem>Create validation rules</FeatureItem>
       </PanelFeatures>
-      <PanelSubmit>
+      <MobilePanel>
+        <CodeEditorButton
+          size="large"
+          color="normal"
+          bordered
+          onMouseEnter={() => router.prefetch('/editor')}
+          onClick={() => router.push('/editor')}
+        >
+          Open code editor <IoArrowForwardOutline />
+        </CodeEditorButton>
+      </MobilePanel>
+      <FileSubmitPanel>
         <input
           ref={inputRef}
           type="file"
@@ -153,15 +152,6 @@ export default function Home() {
             fileHandler((event.target as HTMLInputElement).files[0]);
           }}
         />
-        <CodeEditorButton
-          size="large"
-          color="normal"
-          bordered
-          onMouseEnter={() => router.prefetch('/editor')}
-          onClick={() => router.push('/editor')}
-        >
-          Open code editor <IoArrowForwardOutline />
-        </CodeEditorButton>
         <OpenFileButton size="large" onClick={() => inputRef.current.click()}>
           <IoCloudUploadOutline style={{ marginRight: 5 }} /> Choose a bibtex file
         </OpenFileButton>
@@ -180,7 +170,7 @@ export default function Home() {
         >
           Drop your file here
         </PannelSubmitDropArea>
-      </PanelSubmit>
+      </FileSubmitPanel>
     </MainComponent>
   );
 }

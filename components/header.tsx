@@ -64,47 +64,43 @@ const Menu = styled('div', {
   justifyContent: 'space-between',
   fontSize: '1.1em',
   color: '$gray9',
-
-  '@sm': {
-    fontSize: '1em',
-  },
+  '@sm': { fontSize: '1em' },
 });
 
-const MenuItemComponent: FunctionComponent<
+type MenuItemProps = { href: string; title: string; icon: FunctionComponent };
+const MenuItem = styled(
+  function (props: MenuItemProps & HTMLAttributes<HTMLAnchorElement>) {
+    const { icon: Icon, href, ...aProps } = props;
+    return (
+      <Link href={href} shallow>
+        <a {...aProps}>
+          <Icon /> <span>{props.title}</span>
+        </a>
+      </Link>
+    );
+  },
   {
-    href: string;
-    title: string;
-    icon: FunctionComponent;
-  } & HTMLAttributes<HTMLAnchorElement>
-> = ({ icon: Icon, href, ...props }) => (
-  <Link href={href}>
-    <a {...props}>
-      <Icon /> <span>{props.title}</span>
-    </a>
-  </Link>
+    display: 'inline-flex',
+    alignItems: 'center',
+    padding: '0 0.85em',
+    borderRadius: 6,
+
+    '& svg': {
+      height: '1em',
+      width: '1em',
+      marginRight: '2px',
+    },
+
+    '&.active': {
+      color: '$teal9',
+      fontWeight: 'bolder',
+    },
+
+    '@sm': {
+      padding: '0 0.5em',
+    },
+  }
 );
-
-const MenuItem = styled(MenuItemComponent, {
-  display: 'inline-flex',
-  alignItems: 'center',
-  padding: '0 0.85em',
-  borderRadius: 6,
-
-  '& svg': {
-    height: '1em',
-    width: '1em',
-    marginRight: '2px',
-  },
-
-  '&.active': {
-    color: '$teal9',
-    fontWeight: 'bolder',
-  },
-
-  '@sm': {
-    padding: '0 0.5em',
-  },
-});
 
 export default function HeaderComponemt(props: HTMLAttributes<HTMLDivElement>) {
   const router = useRouter();
