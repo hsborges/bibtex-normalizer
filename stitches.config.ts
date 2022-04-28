@@ -1,4 +1,4 @@
-import { gray, teal, tomato } from '@radix-ui/colors';
+import { amber, gray, purple, teal, tomato } from '@radix-ui/colors';
 import { createStitches } from '@stitches/react';
 
 export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme, config } =
@@ -8,6 +8,8 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
         ...gray,
         ...tomato,
         ...teal,
+        ...amber,
+        ...purple,
       },
     },
     media: {

@@ -1,7 +1,8 @@
 /**
  * @author Hudson Silva Borges
  */
-import { useContext, useEffect, useRef, useState } from 'react';
+import { isEqual } from 'lodash';
+import { HTMLProps, useContext, useEffect, useRef, useState } from 'react';
 import {
   IoBuildSharp,
   IoClose,
@@ -11,13 +12,13 @@ import {
 } from 'react-icons/io5';
 
 import { simpleMode } from '@codemirror/legacy-modes/mode/simple-mode';
-import { lintGutter, linter } from '@codemirror/lint';
+import { Diagnostic, lintGutter, linter } from '@codemirror/lint';
 import { StreamLanguage } from '@codemirror/stream-parser';
 import CodeMirror, { ReactCodeMirrorRef, TransactionSpec } from '@uiw/react-codemirror';
 
 import Button from '../components/button';
 import * as Toast from '../components/toast';
-import { generateAST, toString } from '../lib/bibtex-parser';
+import { BibTeXSyntaxError, generateAST, toString } from '../lib/bibtex-parser';
 import ConfigContext from '../providers/ConfigProvider';
 import EditorContext from '../providers/EditorProvider';
 import { styled } from '../stitches.config';
@@ -33,13 +34,75 @@ const Grid = styled('div', {
 });
 
 const StyledCodeMirror = styled(CodeMirror, {
-  width: 'calc(100% + 15px)',
+  width: '100%',
   maxHeight: '100%',
   border: '1px solid $teal6',
 
   '& .cm-scroller': { overflow: 'scroll' },
-  '@sm': { height: '75%' },
 });
+
+const CodeMirrorWraper = styled(
+  function (
+    props: HTMLProps<HTMLDivElement> & {
+      hasSyntaxError?: boolean;
+      infos?: number;
+      warnings?: number;
+      errors?: number;
+    }
+  ) {
+    const { hasSyntaxError = false, infos = 0, warnings = 0, errors = 0, ...divProps } = props;
+    return (
+      <div
+        {...divProps}
+        className={`${divProps.className} ${hasSyntaxError ? 'has-syntax-error' : ''}`}
+      >
+        {props.children}
+        <span>
+          <span hidden={!hasSyntaxError}>Syntax Error!</span>
+          <span hidden={hasSyntaxError || !infos}>{infos} info(s)</span>
+          <span hidden={hasSyntaxError || !warnings}>{warnings} warning(s)</span>
+          <span hidden={hasSyntaxError || !errors}>{errors} error(s)</span>
+        </span>
+      </div>
+    );
+  },
+  {
+    display: 'flex',
+    position: 'relative',
+    width: '100%',
+    opacity: 0.75,
+    fontWeight: 'bolder',
+    border: '2px solid transparent',
+
+    '&.has-syntax-error': {
+      border: '2px solid $tomato8',
+    },
+
+    '& > span': {
+      position: 'absolute',
+      bottom: 25,
+      right: '50%',
+      transform: 'translate(50%)',
+
+      '& > span:nth-child(2)': {
+        color: '$purple8',
+      },
+      '& > span:nth-child(3)': {
+        color: '$amber8',
+      },
+      '& > span:nth-child(1), & > span:nth-child(4)': {
+        color: '$tomato8',
+      },
+
+      '& > span + span': {
+        marginLeft: 15,
+        textAlign: 'end',
+      },
+    },
+
+    '@sm': { height: '85%' },
+  }
+);
 
 const ActionsMenu = styled('div', {
   display: 'flex',
@@ -47,7 +110,8 @@ const ActionsMenu = styled('div', {
   rowGap: 10,
 
   '@sm': {
-    marginTop: 25,
+    marginTop: 15,
+
     rowGap: 5,
   },
 });
@@ -133,28 +197,59 @@ export default function SettingComponent() {
   useEffect(() => setHeight(ref.current?.editor?.clientHeight));
   useEffect(() => setWidth(ref.current?.editor?.clientWidth));
 
+  const [resultsSummary, setResultsSummary] = useState({
+    errors: 0,
+    warnings: 0,
+    hasSyntaxError: false,
+  });
+
   return (
     <Toast.Provider swipeDirection="right">
       <Grid>
-        <StyledCodeMirror
-          ref={ref}
-          height={height ? `${height}px` : '100%'}
-          maxHeight={height ? `${height}px` : '100%'}
-          width={width ? `${width}px` : '100%'}
-          maxWidth={width ? `${width}px` : '100%'}
-          basicSetup
-          placeholder={`// Paste your bibtex content here.`}
-          value={content || ''}
-          extensions={[
-            linter((view) => {
-              const [, diagnotic] = generateAST(view.state.doc.toJSON().join('\n'), config.entries);
-              return diagnotic;
-            }),
-            lintGutter(),
-            StreamLanguage.define(simpleMode(bibtexSyntaxHighlight)),
-          ]}
-          onChange={(value) => updateContent(value)}
-        />
+        <CodeMirrorWraper {...resultsSummary}>
+          <StyledCodeMirror
+            ref={ref}
+            height={height ? `${height}px` : '100%'}
+            maxHeight={height ? `${height}px` : '100%'}
+            width={width ? `${width}px` : '100%'}
+            maxWidth={width ? `${width}px` : '100%'}
+            basicSetup
+            placeholder={`// Paste your bibtex content and click on "Normalize"`}
+            value={content || ''}
+            extensions={[
+              linter((view) => {
+                let lintError: BibTeXSyntaxError;
+                let diagnotic: Diagnostic[];
+
+                try {
+                  [, diagnotic] = generateAST(view.state.doc.toJSON().join('\n'), config.entries);
+                } catch (error) {
+                  if (error instanceof BibTeXSyntaxError) {
+                    lintError = error;
+                    diagnotic = lintError.diagnostic;
+                  }
+                }
+
+                if (lintError !== undefined) alert('Syntax error!');
+
+                const data = {
+                  infos: diagnotic.filter((d) => d.severity === 'info').length,
+                  warnings: diagnotic.filter((d) => d.severity === 'warning').length,
+                  errors: diagnotic.filter((d) => d.severity === 'error').length,
+                  hasSyntaxError: lintError !== undefined,
+                };
+
+                if (!isEqual(data, resultsSummary)) setResultsSummary(data);
+
+                return diagnotic;
+              }),
+              lintGutter(),
+              StreamLanguage.define(simpleMode(bibtexSyntaxHighlight)),
+            ]}
+            onChange={(value) => updateContent(value)}
+          />
+        </CodeMirrorWraper>
+
         <ActionsMenu>
           <Button
             size="normal"
@@ -232,7 +327,7 @@ export default function SettingComponent() {
               updateToast({
                 opened: true,
                 title: 'Cleared',
-                description: 'Content totally cleared',
+                description: 'Content cleared',
               });
             }}
           >

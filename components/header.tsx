@@ -48,13 +48,11 @@ const Logo = styled('a', {
   },
 
   '@sm': {
-    '& > span': {
-      display: 'none',
-    },
+    fontSize: '2.25em',
+    marginTop: 15,
 
     [`& svg`]: {
-      height: '1em',
-      marginRight: 0,
+      marginRight: '0.1em',
       marginBottom: 5,
     },
   },

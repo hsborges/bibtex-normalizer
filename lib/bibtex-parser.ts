@@ -252,7 +252,7 @@ export function generateAST(
         } else if (char === '=') {
           // no key, this is a field name
           if (!node.key) {
-            throw new BibTeXSyntaxError(input, node, i, line, column);
+            throw new BibTeXSyntaxError(input, node, i, line, column, diagnostic);
           }
           const field: FieldNode = new FieldNode(i + 1, node, node.key);
           node.fields.push(field);
@@ -261,7 +261,7 @@ export function generateAST(
         } else if (isWhitespace(char)) {
           //TODO
         } else if (char.match(/[=#,{}()\[\]]/)) {
-          throw new BibTeXSyntaxError(input, node, i, line, column);
+          throw new BibTeXSyntaxError(input, node, i, line, column, diagnostic);
         } else {
           node.key = (node.key ?? '') + char;
         }
@@ -283,7 +283,7 @@ export function generateAST(
           node.name = node.name.trim();
           node = new FieldNode(i + 1, node.parent);
         } else if (/[=,{}()\[\]]/.test(char)) {
-          throw new BibTeXSyntaxError(input, node, i, line, column);
+          throw new BibTeXSyntaxError(input, node, i, line, column, diagnostic);
         } else if (!node.name) {
           if (!isWhitespace(char)) {
             node.parent.fields.push(node);
@@ -302,7 +302,7 @@ export function generateAST(
           break; // noop
         } else if (node.canConsumeValue) {
           if (/[#=,}()\[\]]/.test(char)) {
-            throw new BibTeXSyntaxError(input, node, i, line, column);
+            throw new BibTeXSyntaxError(input, node, i, line, column, diagnostic);
           } else {
             node.canConsumeValue = false;
             if (char === '{') {
@@ -351,7 +351,7 @@ export function generateAST(
           } else if (char === '#') {
             node.canConsumeValue = true;
           } else {
-            throw new BibTeXSyntaxError(input, node, i, line, column);
+            throw new BibTeXSyntaxError(input, node, i, line, column, diagnostic);
           }
         }
         break;
@@ -401,7 +401,7 @@ export function generateAST(
         } else if (char === '}') {
           node.depth--;
           if (node.depth < 0) {
-            throw new BibTeXSyntaxError(input, node, i, line, column);
+            throw new BibTeXSyntaxError(input, node, i, line, column, diagnostic);
           }
         }
         node.value += char;
@@ -492,7 +492,7 @@ export function generateAST(
           diagnostic.push({
             ...pos,
             message: `Field "${node.name.trim()}" is not mandatory on @${node.parent.parent.command.toLocaleLowerCase()}`,
-            severity: 'warning',
+            severity: 'info',
           });
         }
       }
@@ -527,7 +527,8 @@ export class BibTeXSyntaxError extends Error {
     public node: Node,
     pos: number,
     public line: number,
-    public column: number
+    public column: number,
+    public diagnostic?: Diagnostic[]
   ) {
     super(
       `Line ${line}:${column}: Syntax Error in ${node.type}\n` +

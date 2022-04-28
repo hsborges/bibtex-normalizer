@@ -1,6 +1,6 @@
 import { HTMLProps } from 'react';
 
-import { styled } from '@stitches/react';
+import { styled } from '../stitches.config';
 
 export default styled(
   function (props: HTMLProps<HTMLSpanElement>) {
@@ -21,5 +21,12 @@ export default styled(
     marginTop: '0.75em',
     marginLeft: '-2em',
     transform: 'rotate(-40deg)',
+
+    '@sm': {
+      fontSize: '1.05em',
+      lineHeight: '1.5em',
+      marginTop: '0.5em',
+      marginLeft: '-2.5em',
+    },
   }
 );

@@ -3,11 +3,8 @@
  */
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-
-import { styled } from '@stitches/react';
 
 import Analytics from '../components/analytics';
 import BetaBadge from '../components/beta-badge';
@@ -17,6 +14,7 @@ import * as gtag from '../lib/gtag';
 import { basePath } from '../next.config';
 import { ConfigProvider } from '../providers/ConfigProvider';
 import { EditorConfigProvider } from '../providers/EditorProvider';
+import { styled } from '../stitches.config';
 import '../styles/globals.css';
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -37,6 +35,7 @@ export default function App({ Component, pageProps }: AppProps) {
     flexDirection: 'column',
     height: '100vh',
     maxWidth: 'calc(100vw - 15px)',
+    '@sm': { maxWidth: '100vw' },
   });
 
   const MainContent = styled('div', { flexGrow: 1 });
