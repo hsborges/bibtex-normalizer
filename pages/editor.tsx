@@ -2,7 +2,7 @@
  * @author Hudson Silva Borges
  */
 import { isEqual } from 'lodash';
-import { HTMLProps, useContext, useEffect, useRef, useState } from 'react';
+import { HTMLProps, forwardRef, useContext, useEffect, useRef, useState } from 'react';
 import {
   IoBuildSharp,
   IoClose,
@@ -201,6 +201,7 @@ export default function SettingComponent() {
   const { content, updateContent } = useContext(EditorContext);
 
   const ref = useRef<ReactCodeMirrorRef>();
+  const wrapperRef = useRef<HTMLDivElement>();
   const normalizeButtonRef = useRef<HTMLButtonElement>();
 
   const [height, setHeight] = useState<number>(null);
@@ -216,8 +217,9 @@ export default function SettingComponent() {
   };
 
   useEffect(() => {
-    setHeight(ref.current?.editor?.clientHeight);
-    setWidth(ref.current?.editor?.clientWidth);
+    const el = document.getElementById('bn-editor-codemirror').children[0];
+    setHeight(el?.clientHeight);
+    setWidth(el?.clientWidth);
   }, []);
 
   const [resultsSummary, setResultsSummary] = useState({
