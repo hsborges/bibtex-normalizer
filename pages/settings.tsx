@@ -389,7 +389,7 @@ const NormalizerSettings = styled(
           </tr>
           <tr>
             <td>
-              <label htmlFor="escape-proper-names">Escape proper names on title</label>
+              <label htmlFor="escape-proper-names">Preserve proper names on title</label>
             </td>
             <td>
               <Switch

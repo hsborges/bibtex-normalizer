@@ -57,6 +57,7 @@ const FeatureItem = styled(
   {
     display: 'flex',
     alignItems: 'center',
+    lineHeight: '1.25em',
     '& svg': {
       color: '$teal9',
       height: '1em',
@@ -64,6 +65,7 @@ const FeatureItem = styled(
       fontWeight: 'bolder',
       fontSize: '1.5em',
     },
+    '@sm': { lineHeight: '1em' },
   }
 );
 
@@ -127,7 +129,7 @@ export default function Home() {
         <FeatureItem>Get warnings on missing fields</FeatureItem>
         <FeatureItem>Check formatting</FeatureItem>
         <FeatureItem>Auto-formatting basic fields</FeatureItem>
-        <FeatureItem>Create validation rules</FeatureItem>
+        <FeatureItem>Custom validation rules</FeatureItem>
       </PanelFeatures>
       <MobilePanel>
         <CodeEditorButton

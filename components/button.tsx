@@ -32,6 +32,10 @@ export default styled('button', {
       },
     },
     color: {
+      transparent: {
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
+      },
       normal: {
         backgroundColor: '$gray11',
         borderColor: '$gray11',

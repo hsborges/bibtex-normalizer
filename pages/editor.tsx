@@ -445,10 +445,10 @@ export default function SettingComponent() {
           onOpenChange={(opened) => setToast({ ...toast, opened })}
           duration={3000}
         >
-          <Toast.Title>✔ | {toast.title}</Toast.Title>
+          <Toast.Title css={{ color: '$teal9' }}>✔ | {toast.title}</Toast.Title>
           <Toast.Description>{toast.description}</Toast.Description>
           <Toast.Action asChild altText="Close">
-            <Button rounded>
+            <Button color="transparent">
               <IoClose />
             </Button>
           </Toast.Action>
