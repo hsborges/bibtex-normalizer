@@ -101,7 +101,7 @@ const CodeMirrorWraper = styled(
       },
     },
 
-    '@sm': { height: '72vh' },
+    '@sm': { height: '100%' },
   }
 );
 

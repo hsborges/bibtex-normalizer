@@ -47,8 +47,15 @@ const Grid = styled('div', {
     [`& ${MemberComponent} + ${MemberComponent}`]: {
       marginLeft: '2em',
     },
+  },
 
-    '@sm': { width: '90%' },
+  '@sm': {
+    rowGap: '2em',
+    '& > .section': {
+      height: 'fit-content',
+      width: '90%',
+      [`& ${MemberComponent} + ${MemberComponent}`]: { marginLeft: '1em' },
+    },
   },
 });
 

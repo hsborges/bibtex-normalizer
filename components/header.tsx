@@ -26,11 +26,11 @@ const Header = styled('header', {
 
   '@sm': {
     margin: 0,
-    paddingTop: '1em',
+    paddingTop: '0.5em',
     width: 'calc(100% + 15px)',
     borderBottom: '1px solid $teal3',
-    paddingBottom: '1.5em',
-    rowGap: 4,
+    paddingBottom: '1em',
+    rowGap: 2,
   },
 });
 
