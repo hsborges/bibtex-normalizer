@@ -34,7 +34,6 @@ export default function App({ Component, pageProps }: AppProps) {
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
-    minHeight: 600,
     maxWidth: 'calc(100vw - 15px)',
     '@sm': {
       maxHeight: '100vh + 15px',

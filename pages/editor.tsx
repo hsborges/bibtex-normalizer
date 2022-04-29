@@ -117,7 +117,7 @@ const ActionsMenu = styled('div', {
     justifyContent: 'center',
 
     [`& > ${Button}`]: {
-      display: 'inline',
+      display: 'inline-flex',
       '& > span': { display: 'none' },
     },
 

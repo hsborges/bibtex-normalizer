@@ -18,7 +18,8 @@ const MainComponent = styled('section', {
   margin: 'auto',
 
   '@sm': {
-    display: 'block',
+    display: 'flex',
+    flexFlow: 'column',
     fontSize: '1em',
     width: 'calc(100% + 15px)',
   },
@@ -33,9 +34,7 @@ const Panel = styled('div', {
   justifyContent: 'center',
 });
 
-const PanelFeatures = styled(Panel, {
-  '@sm': { margin: '4em 0' },
-});
+const PanelFeatures = styled(Panel, {});
 
 const PanelTitle = styled('h1', {
   fontWeight: 'bolder',
