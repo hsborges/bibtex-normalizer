@@ -101,7 +101,7 @@ const CodeMirrorWraper = styled(
       },
     },
 
-    '@sm': { height: '85%' },
+    '@sm': { height: '72vh' },
   }
 );
 
@@ -112,8 +112,18 @@ const ActionsMenu = styled('div', {
 
   '@sm': {
     marginTop: 15,
-
     rowGap: 5,
+    flexFlow: 'row',
+    justifyContent: 'center',
+
+    [`& > ${Button}`]: {
+      display: 'inline',
+      '& > span': { display: 'none' },
+    },
+
+    [`& > ${Button} + ${Button}`]: {
+      marginLeft: '1em',
+    },
   },
 });
 
@@ -292,7 +302,7 @@ export default function SettingComponent() {
               });
             }}
           >
-            <IoCopyOutline style={{ height: '1em', width: '1em' }} /> Copy
+            <IoCopyOutline style={{ height: '1em', width: '1em' }} /> <span>Copy</span>
           </Button>
           <Button
             size="normal"
@@ -311,7 +321,7 @@ export default function SettingComponent() {
               element.remove();
             }}
           >
-            <IoCloudDownloadOutline style={{ height: '1em', width: '1em' }} /> Download
+            <IoCloudDownloadOutline style={{ height: '1em', width: '1em' }} /> <span>Download</span>
           </Button>
           <Button
             size="normal"
@@ -335,7 +345,7 @@ export default function SettingComponent() {
               });
             }}
           >
-            <IoTrashBinOutline style={{ height: '1em', width: '1em' }} /> Clear
+            <IoTrashBinOutline style={{ height: '1em', width: '1em' }} /> <span>Clear</span>
           </Button>
         </ActionsMenu>
 

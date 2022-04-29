@@ -138,7 +138,7 @@ export default function Home() {
           onMouseEnter={() => router.prefetch('/editor')}
           onClick={() => router.push('/editor')}
         >
-          Open code editor <IoArrowForwardOutline />
+          Open editor <IoArrowForwardOutline />
         </CodeEditorButton>
       </MobilePanel>
       <FileSubmitPanel>
