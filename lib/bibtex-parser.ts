@@ -410,14 +410,15 @@ export function generateAST(
   }
 
   (function validate(node: Node): void {
+    const additionalEntries = ['string', 'comment', 'preamble'];
     if (node instanceof RootNode) return node.children.forEach(validate);
     else if (node instanceof BlockNode) {
       const pos = { from: node.init, to: node.init + node.command.trim().length + 1 };
 
       if (
-        !Object.values(BibtexEntries)
-          .map((be) => be.name)
-          .includes(node.command.trim().toLowerCase() as BibtexEntryType)
+        ![...additionalEntries, ...Object.values(BibtexEntries).map((be) => be.name)].includes(
+          node.command.trim().toLowerCase()
+        )
       ) {
         diagnostic.push({
           ...pos,
@@ -574,12 +575,16 @@ export function toString(node: Node, config?: BibtexNormalizerConfig): string {
 
   if (node instanceof RootNode) return node.children.map((c) => toString(c, config)).join('\n');
   else if (node instanceof TextNode) return node.text.trim();
-  else if (node instanceof BlockNode)
+  else if (node instanceof BlockNode) {
     return `@${node.command.toLowerCase()} {${toString(node.block, config)}}`;
-  else if (node instanceof CommentNode) return node.raw.trim();
-  else if (node instanceof PreambleNode) return node.raw.trim();
-  else if (node instanceof StringNode) return node.raw.trim();
-  else if (node instanceof EntryNode) {
+  } else if (
+    node instanceof CommentNode ||
+    node instanceof PreambleNode ||
+    node instanceof StringNode
+  ) {
+    const [, row] = node.raw.trim().match(/^@\w+[{"](.*)[}"]$/i);
+    return ` ${row.trim()} `;
+  } else if (node instanceof EntryNode) {
     return `${node.key},\n  ${node.fields
       .sort((a, b) => fieldSorter(node.parent.command as BibtexEntryType, a.name, b.name))
       .filter((field) => {
