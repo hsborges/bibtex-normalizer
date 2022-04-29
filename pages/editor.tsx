@@ -18,6 +18,7 @@ import CodeMirror, { ReactCodeMirrorRef, TransactionSpec } from '@uiw/react-code
 
 import Button from '../components/button';
 import * as Toast from '../components/toast';
+import TourComponent from '../components/tour';
 import { BibTeXSyntaxError, generateAST, toString } from '../lib/bibtex-parser';
 import ConfigContext from '../providers/ConfigProvider';
 import EditorContext from '../providers/EditorProvider';
@@ -58,7 +59,7 @@ const CodeMirrorWraper = styled(
         className={`${divProps.className} ${hasSyntaxError ? 'has-syntax-error' : ''}`}
       >
         {props.children}
-        <span>
+        <span id="bn-editor-summary">
           <span hidden={!hasSyntaxError}>Syntax Error!</span>
           <span hidden={hasSyntaxError || !infos}>{infos} info(s)</span>
           <span hidden={hasSyntaxError || !warnings}>{warnings} warning(s)</span>
@@ -81,7 +82,7 @@ const CodeMirrorWraper = styled(
 
     '& > span': {
       position: 'absolute',
-      bottom: 25,
+      bottom: 15,
       right: '50%',
       transform: 'translate(50%)',
 
@@ -96,8 +97,15 @@ const CodeMirrorWraper = styled(
       },
 
       '& > span + span': {
-        marginLeft: 15,
+        marginLeft: 10,
         textAlign: 'end',
+      },
+
+      '@sm': {
+        width: '100%',
+        right: 'inherit',
+        transform: 'inherit',
+        textAlign: 'center',
       },
     },
 
@@ -193,6 +201,8 @@ export default function SettingComponent() {
   const { content, updateContent } = useContext(EditorContext);
 
   const ref = useRef<ReactCodeMirrorRef>();
+  const normalizeButtonRef = useRef<HTMLButtonElement>();
+
   const [height, setHeight] = useState<number>(null);
   const [width, setWidth] = useState<number>(null);
 
@@ -205,8 +215,10 @@ export default function SettingComponent() {
     setTimeout(() => setToast(status), 250);
   };
 
-  useEffect(() => setHeight(ref.current?.editor?.clientHeight));
-  useEffect(() => setWidth(ref.current?.editor?.clientWidth));
+  useEffect(() => {
+    setHeight(ref.current?.editor?.clientHeight);
+    setWidth(ref.current?.editor?.clientWidth);
+  }, []);
 
   const [resultsSummary, setResultsSummary] = useState({
     errors: 0,
@@ -216,8 +228,84 @@ export default function SettingComponent() {
 
   return (
     <Toast.Provider swipeDirection="right">
+      <TourComponent
+        tourName="editorTour"
+        steps={[
+          {
+            element: '#bn-editor-codemirror',
+            intro: 'You can start by copying your references to this editor.',
+            title: 'Bibtex editor',
+          },
+          {
+            element: '#bn-editor-summary',
+            intro: 'The editor validates the content and puts marks on important parts',
+            title: 'Summary',
+          },
+          {
+            element: '#bn-editor-normalize',
+            intro: 'Click on "Normalize" to automatically fix several issues',
+            title: 'Normalize',
+          },
+          {
+            element: '#bn-editor-codemirror',
+            intro: (
+              <div>
+                <div style={{ marginBottom: 25 }}>
+                  Several issues can be fixed and other ones may need your help. Here, we performed
+                  a:
+                </div>
+                <ul style={{ textAlign: 'start', marginBottom: 25 }}>
+                  <li>Code Identation</li>
+                  <li>Fields normalization</li>
+                  <li>Fields sorting</li>
+                  <li>Preserved proper names</li>
+                </ul>
+                <div>You can use your own settings acessing the menu</div>
+              </div>
+            ),
+            title: 'Bibtex editor',
+          },
+          {
+            element: '#bn-editor-clipboard',
+            intro: 'Finally, you can copy the normalized references to clipboard',
+            title: 'Download or copy',
+          },
+          {
+            element: '#bn-editor-download',
+            intro: '... or download directly <br> ✌(-‿-)✌',
+            title: 'Download or copy',
+          },
+        ]}
+        onBeforeChange={(nextIndex) => {
+          switch (nextIndex) {
+            case 0:
+              ref.current?.view.update([
+                ref.current?.view.state.update({
+                  changes: {
+                    from: 0,
+                    to: ref.current.view.state.doc.length,
+                    insert: `@Article{borges2019developers,
+  title="How do developers promote open source projects?",
+  author={Borges, Hudson Silva and Marco Tulio Valente},
+  journal={Computer}, pages={27--33},
+  year={19}
+}`,
+                  },
+                } as TransactionSpec),
+              ]);
+              break;
+
+            case 3:
+              normalizeButtonRef.current.click();
+              break;
+
+            default:
+              break;
+          }
+        }}
+      />
       <Grid>
-        <CodeMirrorWraper {...resultsSummary}>
+        <CodeMirrorWraper {...resultsSummary} id="bn-editor-codemirror">
           <StyledCodeMirror
             ref={ref}
             height={height ? `${height}px` : '100%'}
@@ -241,8 +329,6 @@ export default function SettingComponent() {
                   }
                 }
 
-                if (lintError !== undefined) alert('Syntax error!');
-
                 const data = {
                   infos: diagnotic.filter((d) => d.severity === 'info').length,
                   warnings: diagnotic.filter((d) => d.severity === 'warning').length,
@@ -263,6 +349,8 @@ export default function SettingComponent() {
 
         <ActionsMenu>
           <Button
+            id="bn-editor-normalize"
+            ref={normalizeButtonRef}
             size="normal"
             onClick={() => {
               const currentBibtex = ref.current.view.state.doc.toString();
@@ -290,6 +378,7 @@ export default function SettingComponent() {
             <IoBuildSharp style={{ height: '1em', width: '1em' }} /> Normalize
           </Button>
           <Button
+            id="bn-editor-clipboard"
             size="normal"
             color="normal"
             bordered
@@ -305,6 +394,7 @@ export default function SettingComponent() {
             <IoCopyOutline style={{ height: '1em', width: '1em' }} /> <span>Copy</span>
           </Button>
           <Button
+            id="bn-editor-download"
             size="normal"
             color="normal"
             bordered
@@ -324,6 +414,7 @@ export default function SettingComponent() {
             <IoCloudDownloadOutline style={{ height: '1em', width: '1em' }} /> <span>Download</span>
           </Button>
           <Button
+            id="bn-editor-clear"
             size="normal"
             bordered
             color="warning"

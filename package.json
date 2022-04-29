@@ -22,6 +22,8 @@
     "@radix-ui/react-toast": "^0.1.1",
     "@stitches/react": "^1.2.7",
     "@uiw/react-codemirror": "^4.6.0",
+    "intro.js": "^5.1.0",
+    "intro.js-react": "^0.6.0",
     "lodash": "^4.17.21",
     "next": "12.1.4",
     "react": "18.0.0",
