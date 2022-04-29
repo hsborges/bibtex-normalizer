@@ -33,18 +33,12 @@ export default function App({ Component, pageProps }: AppProps) {
   const Grid = styled('div', {
     display: 'flex',
     flexDirection: 'column',
-    height: '100vh',
-    maxWidth: 'calc(100vw - 15px)',
-    '@sm': {
-      maxHeight: '100vh + 15px',
-      maxWidth: '100vw + 15px',
-    },
+    maxWidth: 'calc(100% - 15px)',
+    height: '100%',
+    width: '100%',
   });
 
-  const MainContent = styled('div', {
-    flexGrow: 1,
-    maxWidth: 'calc(100vw + 15px)',
-  });
+  const MainContent = styled('div', { flexGrow: 1 });
 
   return (
     <>
