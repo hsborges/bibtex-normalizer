@@ -2,6 +2,7 @@
  * @author Hudson Silva Borges
  */
 import { capitalize, flatten, isEqual, omit } from 'lodash';
+import Head from 'next/head';
 import { HTMLProps, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import Button from '../components/button';
@@ -454,15 +455,20 @@ export default function SettingComponent() {
   const { config, updateEntryConfig, updateNormalizerConfig } = useContext(ConfigContext);
 
   return (
-    <Grid>
-      <NormalizerSettings
-        config={config?.normalizer}
-        onConfigUpdate={(data) => updateNormalizerConfig(data)}
-      />
-      <StyledEntriesConfigComponent
-        config={config.entries}
-        onConfigUpdate={(data) => updateEntryConfig(data)}
-      />
-    </Grid>
+    <>
+      <Head>
+        <title>Bibtex Normalizer - Settings</title>
+      </Head>
+      <Grid>
+        <NormalizerSettings
+          config={config?.normalizer}
+          onConfigUpdate={(data) => updateNormalizerConfig(data)}
+        />
+        <StyledEntriesConfigComponent
+          config={config.entries}
+          onConfigUpdate={(data) => updateEntryConfig(data)}
+        />
+      </Grid>
+    </>
   );
 }

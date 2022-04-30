@@ -2,6 +2,7 @@
  * @author Hudson Silva Borges
  */
 import { isEqual } from 'lodash';
+import Head from 'next/head';
 import { HTMLProps, forwardRef, useContext, useEffect, useRef, useState } from 'react';
 import {
   IoBuildSharp,
@@ -229,235 +230,241 @@ export default function SettingComponent() {
   });
 
   return (
-    <Toast.Provider swipeDirection="right">
-      <TourComponent
-        tourName="editorTour"
-        steps={[
-          {
-            element: '#bn-editor-codemirror',
-            intro: 'You can start by copying your references to this editor.',
-            title: 'Bibtex editor',
-          },
-          {
-            element: '#bn-editor-summary',
-            intro: 'The editor validates the content and puts marks on important parts',
-            title: 'Summary',
-          },
-          {
-            element: '#bn-editor-normalize',
-            intro: 'Click on "Normalize" to automatically fix several issues',
-            title: 'Normalize',
-          },
-          {
-            element: '#bn-editor-codemirror',
-            intro: (
-              <div>
-                <div style={{ marginBottom: 25 }}>
-                  Several issues can be fixed and other ones may need your help. Here, we performed
-                  a:
+    <>
+      <Head>
+        <title>Bibtex Normalizer - Editor</title>
+      </Head>
+      <Toast.Provider swipeDirection="right">
+        <TourComponent
+          tourName="editorTour"
+          steps={[
+            {
+              element: '#bn-editor-codemirror',
+              intro: 'You can start by copying your references to this editor.',
+              title: 'Bibtex editor',
+            },
+            {
+              element: '#bn-editor-summary',
+              intro: 'The editor validates the content and puts marks on important parts',
+              title: 'Summary',
+            },
+            {
+              element: '#bn-editor-normalize',
+              intro: 'Click on "Normalize" to automatically fix several issues',
+              title: 'Normalize',
+            },
+            {
+              element: '#bn-editor-codemirror',
+              intro: (
+                <div>
+                  <div style={{ marginBottom: 25 }}>
+                    Several issues can be fixed and other ones may need your help. Here, we
+                    performed a:
+                  </div>
+                  <ul style={{ textAlign: 'start', marginBottom: 25 }}>
+                    <li>Code Identation</li>
+                    <li>Fields normalization</li>
+                    <li>Fields sorting</li>
+                    <li>Preserved proper names</li>
+                  </ul>
+                  <div>You can use your own settings acessing the menu</div>
                 </div>
-                <ul style={{ textAlign: 'start', marginBottom: 25 }}>
-                  <li>Code Identation</li>
-                  <li>Fields normalization</li>
-                  <li>Fields sorting</li>
-                  <li>Preserved proper names</li>
-                </ul>
-                <div>You can use your own settings acessing the menu</div>
-              </div>
-            ),
-            title: 'Bibtex editor',
-          },
-          {
-            element: '#bn-editor-clipboard',
-            intro: 'Finally, you can copy the normalized references to clipboard',
-            title: 'Download or copy',
-          },
-          {
-            element: '#bn-editor-download',
-            intro: '... or download directly <br> ✌(-‿-)✌',
-            title: 'Download or copy',
-          },
-        ]}
-        onBeforeChange={(nextIndex) => {
-          switch (nextIndex) {
-            case 0:
-              ref.current?.view.update([
-                ref.current?.view.state.update({
-                  changes: {
-                    from: 0,
-                    to: ref.current.view.state.doc.length,
-                    insert: `@Article{borges2019developers,
+              ),
+              title: 'Bibtex editor',
+            },
+            {
+              element: '#bn-editor-clipboard',
+              intro: 'Finally, you can copy the normalized references to clipboard',
+              title: 'Download or copy',
+            },
+            {
+              element: '#bn-editor-download',
+              intro: '... or download directly <br> ✌(-‿-)✌',
+              title: 'Download or copy',
+            },
+          ]}
+          onBeforeChange={(nextIndex) => {
+            switch (nextIndex) {
+              case 0:
+                ref.current?.view.update([
+                  ref.current?.view.state.update({
+                    changes: {
+                      from: 0,
+                      to: ref.current.view.state.doc.length,
+                      insert: `@Article{borges2019developers,
   title="How do developers promote open source projects?",
   author={Borges, Hudson Silva and Marco Tulio Valente},
   journal={Computer}, pages={27--33},
   year={19}
 }`,
-                  },
-                } as TransactionSpec),
-              ]);
-              break;
+                    },
+                  } as TransactionSpec),
+                ]);
+                break;
 
-            case 3:
-              normalizeButtonRef.current.click();
-              break;
+              case 3:
+                normalizeButtonRef.current.click();
+                break;
 
-            default:
-              break;
-          }
-        }}
-      />
-      <Grid>
-        <CodeMirrorWraper {...resultsSummary} id="bn-editor-codemirror">
-          <StyledCodeMirror
-            ref={ref}
-            height={height ? `${height}px` : '100%'}
-            maxHeight={height ? `${height}px` : '100%'}
-            width={width ? `${width}px` : '100%'}
-            maxWidth={width ? `${width}px` : '100%'}
-            basicSetup
-            placeholder={`// Paste your bibtex content and click on "Normalize"`}
-            value={content || ''}
-            extensions={[
-              linter((view) => {
-                let lintError: BibTeXSyntaxError;
-                let diagnotic: Diagnostic[];
+              default:
+                break;
+            }
+          }}
+        />
+        <Grid>
+          <CodeMirrorWraper {...resultsSummary} id="bn-editor-codemirror">
+            <StyledCodeMirror
+              ref={ref}
+              height={height ? `${height}px` : '100%'}
+              maxHeight={height ? `${height}px` : '100%'}
+              width={width ? `${width}px` : '100%'}
+              maxWidth={width ? `${width}px` : '100%'}
+              basicSetup
+              placeholder={`// Paste your bibtex content and click on "Normalize"`}
+              value={content || ''}
+              extensions={[
+                linter((view) => {
+                  let lintError: BibTeXSyntaxError;
+                  let diagnotic: Diagnostic[];
 
-                try {
-                  [, diagnotic] = generateAST(view.state.doc.toJSON().join('\n'), config.entries);
-                } catch (error) {
-                  if (error instanceof BibTeXSyntaxError) {
-                    lintError = error;
-                    diagnotic = lintError.diagnostic;
+                  try {
+                    [, diagnotic] = generateAST(view.state.doc.toJSON().join('\n'), config.entries);
+                  } catch (error) {
+                    if (error instanceof BibTeXSyntaxError) {
+                      lintError = error;
+                      diagnotic = lintError.diagnostic;
+                    }
                   }
-                }
 
-                const data = {
-                  infos: diagnotic.filter((d) => d.severity === 'info').length,
-                  warnings: diagnotic.filter((d) => d.severity === 'warning').length,
-                  errors: diagnotic.filter((d) => d.severity === 'error').length,
-                  hasSyntaxError: lintError !== undefined,
-                };
+                  const data = {
+                    infos: diagnotic.filter((d) => d.severity === 'info').length,
+                    warnings: diagnotic.filter((d) => d.severity === 'warning').length,
+                    errors: diagnotic.filter((d) => d.severity === 'error').length,
+                    hasSyntaxError: lintError !== undefined,
+                  };
 
-                if (!isEqual(data, resultsSummary)) setResultsSummary(data);
+                  if (!isEqual(data, resultsSummary)) setResultsSummary(data);
 
-                return diagnotic;
-              }),
-              lintGutter(),
-              StreamLanguage.define(simpleMode(bibtexSyntaxHighlight)),
-            ]}
-            onChange={(value) => updateContent(value)}
-          />
-        </CodeMirrorWraper>
+                  return diagnotic;
+                }),
+                lintGutter(),
+                StreamLanguage.define(simpleMode(bibtexSyntaxHighlight)),
+              ]}
+              onChange={(value) => updateContent(value)}
+            />
+          </CodeMirrorWraper>
 
-        <ActionsMenu>
-          <Button
-            id="bn-editor-normalize"
-            ref={normalizeButtonRef}
-            size="normal"
-            onClick={() => {
-              const currentBibtex = ref.current.view.state.doc.toString();
-              const normalizedBibtex = toString(
-                generateAST(currentBibtex, config.entries)[0],
-                config
-              );
-              ref.current.view.update([
-                ref.current.view.state.update({
-                  changes: {
-                    from: 0,
-                    to: ref.current.view.state.doc.length,
-                    insert: normalizedBibtex,
-                  },
-                } as TransactionSpec),
-              ]);
+          <ActionsMenu>
+            <Button
+              id="bn-editor-normalize"
+              ref={normalizeButtonRef}
+              size="normal"
+              onClick={() => {
+                const currentBibtex = ref.current.view.state.doc.toString();
+                const normalizedBibtex = toString(
+                  generateAST(currentBibtex, config.entries)[0],
+                  config
+                );
+                ref.current.view.update([
+                  ref.current.view.state.update({
+                    changes: {
+                      from: 0,
+                      to: ref.current.view.state.doc.length,
+                      insert: normalizedBibtex,
+                    },
+                  } as TransactionSpec),
+                ]);
 
-              updateToast({
-                opened: true,
-                title: 'Normalized',
-                description: 'References normalized and editor updated',
-              });
-            }}
-          >
-            <IoBuildSharp style={{ height: '1em', width: '1em' }} /> Normalize
-          </Button>
-          <Button
-            id="bn-editor-clipboard"
-            size="normal"
-            color="normal"
-            bordered
-            onClick={() => {
-              navigator.clipboard.writeText(ref.current.view.state.doc.toJSON().join('\n'));
-              updateToast({
-                opened: true,
-                title: 'Copied',
-                description: 'Content copied to clipboard',
-              });
-            }}
-          >
-            <IoCopyOutline style={{ height: '1em', width: '1em' }} /> <span>Copy</span>
-          </Button>
-          <Button
-            id="bn-editor-download"
-            size="normal"
-            color="normal"
-            bordered
-            onClick={() => {
-              const element = document.createElement('a');
-              const file = new Blob([ref.current.view.state.doc.toJSON().join('\n')], {
-                type: 'application/x-bibtex',
-                endings: 'transparent',
-              });
-              element.href = URL.createObjectURL(file);
-              element.download = 'references.bib';
-              document.body.appendChild(element);
-              element.click();
-              element.remove();
-            }}
-          >
-            <IoCloudDownloadOutline style={{ height: '1em', width: '1em' }} /> <span>Download</span>
-          </Button>
-          <Button
-            id="bn-editor-clear"
-            size="normal"
-            bordered
-            color="warning"
-            onClick={() => {
-              ref.current.view.update([
-                ref.current.view.state.update({
-                  changes: {
-                    from: 0,
-                    to: ref.current.view.state.doc.length,
-                    insert: '',
-                  },
-                } as TransactionSpec),
-              ]);
-
-              updateToast({
-                opened: true,
-                title: 'Cleared',
-                description: 'Content cleared',
-              });
-            }}
-          >
-            <IoTrashBinOutline style={{ height: '1em', width: '1em' }} /> <span>Clear</span>
-          </Button>
-        </ActionsMenu>
-
-        <Toast.Root
-          open={toast.opened}
-          onOpenChange={(opened) => setToast({ ...toast, opened })}
-          duration={3000}
-        >
-          <Toast.Title css={{ color: '$teal9' }}>✔ | {toast.title}</Toast.Title>
-          <Toast.Description>{toast.description}</Toast.Description>
-          <Toast.Action asChild altText="Close">
-            <Button color="transparent">
-              <IoClose />
+                updateToast({
+                  opened: true,
+                  title: 'Normalized',
+                  description: 'References normalized and editor updated',
+                });
+              }}
+            >
+              <IoBuildSharp style={{ height: '1em', width: '1em' }} /> Normalize
             </Button>
-          </Toast.Action>
-        </Toast.Root>
+            <Button
+              id="bn-editor-clipboard"
+              size="normal"
+              color="normal"
+              bordered
+              onClick={() => {
+                navigator.clipboard.writeText(ref.current.view.state.doc.toJSON().join('\n'));
+                updateToast({
+                  opened: true,
+                  title: 'Copied',
+                  description: 'Content copied to clipboard',
+                });
+              }}
+            >
+              <IoCopyOutline style={{ height: '1em', width: '1em' }} /> <span>Copy</span>
+            </Button>
+            <Button
+              id="bn-editor-download"
+              size="normal"
+              color="normal"
+              bordered
+              onClick={() => {
+                const element = document.createElement('a');
+                const file = new Blob([ref.current.view.state.doc.toJSON().join('\n')], {
+                  type: 'application/x-bibtex',
+                  endings: 'transparent',
+                });
+                element.href = URL.createObjectURL(file);
+                element.download = 'references.bib';
+                document.body.appendChild(element);
+                element.click();
+                element.remove();
+              }}
+            >
+              <IoCloudDownloadOutline style={{ height: '1em', width: '1em' }} />{' '}
+              <span>Download</span>
+            </Button>
+            <Button
+              id="bn-editor-clear"
+              size="normal"
+              bordered
+              color="warning"
+              onClick={() => {
+                ref.current.view.update([
+                  ref.current.view.state.update({
+                    changes: {
+                      from: 0,
+                      to: ref.current.view.state.doc.length,
+                      insert: '',
+                    },
+                  } as TransactionSpec),
+                ]);
 
-        <Toast.Viewport />
-      </Grid>
-    </Toast.Provider>
+                updateToast({
+                  opened: true,
+                  title: 'Cleared',
+                  description: 'Content cleared',
+                });
+              }}
+            >
+              <IoTrashBinOutline style={{ height: '1em', width: '1em' }} /> <span>Clear</span>
+            </Button>
+          </ActionsMenu>
+
+          <Toast.Root
+            open={toast.opened}
+            onOpenChange={(opened) => setToast({ ...toast, opened })}
+            duration={3000}
+          >
+            <Toast.Title css={{ color: '$teal9' }}>✔ | {toast.title}</Toast.Title>
+            <Toast.Description>{toast.description}</Toast.Description>
+            <Toast.Action asChild altText="Close">
+              <Button color="transparent">
+                <IoClose />
+              </Button>
+            </Toast.Action>
+          </Toast.Root>
+
+          <Toast.Viewport />
+        </Grid>
+      </Toast.Provider>
+    </>
   );
 }

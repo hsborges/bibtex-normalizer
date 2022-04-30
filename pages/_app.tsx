@@ -42,12 +42,20 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
+      <Head>
+        <link rel="shortcut icon" href={`${basePath}/favicon.ico`} type="image/x-icon" />
+
+        <title>Bibtex Normalizer</title>
+        <meta name="description" content="Normalize your bibtex references!" />
+        <meta property="og:title" content="Bibtex Normalizer" />
+        <meta property="og:url" content="https://hsborges.github.io/bibtex-normalizer" />
+        <meta property="og:description" content="Normalize your bibtex references!" />
+        <meta property="og:image" content={`${basePath}/images/social_card_image.png`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="en_US" />
+      </Head>
       <ConfigProvider>
         <EditorConfigProvider>
-          <Head>
-            <title>Bibtex Normalizer</title>
-            <link rel="shortcut icon" href={`${basePath}/favicon.ico`} type="image/x-icon" />
-          </Head>
           <Grid>
             <BetaBadge />
             <Header />

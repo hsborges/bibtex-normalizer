@@ -1,6 +1,7 @@
 /**
  * @author Hudson Silva Borges
  */
+import Head from 'next/head';
 import { HTMLAttributes } from 'react';
 
 import * as Avatar from '@radix-ui/react-avatar';
@@ -102,21 +103,26 @@ const SpacedGrid = styled('div', { display: 'flex', justifyContent: 'space-evenl
 
 export default function SettingComponent() {
   return (
-    <Grid>
-      <div className="section">
-        Bibtex Normalizer is maintained by{' '}
-        <abbr title="Laboratório de Desenvolvimento de Software">LEDES</abbr>, from Federal
-        University of Mato Grosso do Sul, and{' '}
-        <Link href="http://aserg.labsoft.dcc.ufmg.br/" target="_blank" rel="noreferrer">
-          Applied Software Engineering Research Group
-        </Link>
-        , from Federal University of Minas Gerais, Brazil.
-      </div>
-      <SpacedGrid className="section">
-        {teamInfo.map((member) => (
-          <MemberComponent key={member.email} member={member} />
-        ))}
-      </SpacedGrid>
-    </Grid>
+    <>
+      <Head>
+        <title>Bibtex Normalizer - About</title>
+      </Head>
+      <Grid>
+        <div className="section">
+          Bibtex Normalizer is maintained by{' '}
+          <abbr title="Laboratório de Desenvolvimento de Software">LEDES</abbr>, from Federal
+          University of Mato Grosso do Sul, and{' '}
+          <Link href="http://aserg.labsoft.dcc.ufmg.br/" target="_blank" rel="noreferrer">
+            Applied Software Engineering Research Group
+          </Link>
+          , from Federal University of Minas Gerais, Brazil.
+        </div>
+        <SpacedGrid className="section">
+          {teamInfo.map((member) => (
+            <MemberComponent key={member.email} member={member} />
+          ))}
+        </SpacedGrid>
+      </Grid>
+    </>
   );
 }
