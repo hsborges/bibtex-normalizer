@@ -54,6 +54,14 @@ export default function App({ Component, pageProps }: AppProps) {
           property="og:image"
           content="https://hsborges.github.io/bibtex-normalizer/images/social_card_image.png"
         />
+        <meta property="og:image:width" content="1000" />
+        <meta property="og:image:height" content="516" />
+        <meta
+          property="og:image"
+          content="https://hsborges.github.io/bibtex-normalizer/images/social_card_image_2.png"
+        />
+        <meta property="og:image:width" content="400" />
+        <meta property="og:image:height" content="400" />
         <meta property="og:type" content="website" />
         <meta property="og:locale" content="en_US" />
       </Head>
