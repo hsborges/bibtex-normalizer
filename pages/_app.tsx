@@ -50,7 +50,10 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta property="og:title" content="Bibtex Normalizer" />
         <meta property="og:url" content="https://hsborges.github.io/bibtex-normalizer" />
         <meta property="og:description" content="Normalize your bibtex references!" />
-        <meta property="og:image" content={`${basePath}/images/social_card_image.png`} />
+        <meta
+          property="og:image"
+          content="https://hsborges.github.io/bibtex-normalizer/images/social_card_image.png"
+        />
         <meta property="og:type" content="website" />
         <meta property="og:locale" content="en_US" />
       </Head>
