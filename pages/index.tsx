@@ -159,6 +159,7 @@ export default function Home() {
           hidden
           onInput={(event) => {
             event.preventDefault();
+            gtag.event({ action: 'file_submission', category: 'index' });
             fileHandler((event.target as HTMLInputElement).files[0]);
           }}
         />
@@ -166,7 +167,7 @@ export default function Home() {
           size="large"
           onClick={() => {
             inputRef.current.click();
-            gtag.event({ action: 'file_submission', category: 'index' });
+            gtag.event({ action: 'file_button_click', category: 'index' });
           }}
         >
           <IoCloudUploadOutline style={{ marginRight: 5 }} /> Choose a bibtex file
@@ -174,7 +175,10 @@ export default function Home() {
         <PanelSubmitSeparator>-- or --</PanelSubmitSeparator>
         <PannelSubmitDropArea
           ref={dragRef}
-          onClick={() => inputRef.current.click()}
+          onClick={() => {
+            inputRef.current.click();
+            gtag.event({ action: 'file_drop_click', category: 'index' });
+          }}
           onDragEnter={composer(disable, () => dragRef.current.classList.add('hover'))}
           onDragLeave={composer(disable, () => dragRef.current.classList.remove('hover'))}
           onDragOver={disable}
