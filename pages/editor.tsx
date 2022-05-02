@@ -1,7 +1,7 @@
 /**
  * @author Hudson Silva Borges
  */
-import { isEqual } from 'lodash';
+import { countBy, isEqual } from 'lodash';
 import Head from 'next/head';
 import { HTMLProps, forwardRef, useContext, useEffect, useRef, useState } from 'react';
 import {
@@ -21,6 +21,7 @@ import Button from '../components/button';
 import * as Toast from '../components/toast';
 import TourComponent from '../components/tour';
 import { BibTeXSyntaxError, generateAST, toString } from '../lib/bibtex-parser';
+import * as gtag from '../lib/gtag';
 import ConfigContext from '../providers/ConfigProvider';
 import EditorContext from '../providers/EditorProvider';
 import { styled } from '../stitches.config';
@@ -363,10 +364,9 @@ export default function SettingComponent() {
                 if (content.length === 0) return;
 
                 const currentBibtex = ref.current.view.state.doc.toString();
-                const normalizedBibtex = toString(
-                  generateAST(currentBibtex, config.entries)[0],
-                  config
-                );
+                const [ast, diagnostic] = generateAST(currentBibtex, config.entries);
+                const normalizedBibtex = toString(ast, config);
+
                 ref.current.view.update([
                   ref.current.view.state.update({
                     changes: {
@@ -376,6 +376,11 @@ export default function SettingComponent() {
                     },
                   } as TransactionSpec),
                 ]);
+
+                gtag.event({
+                  event_name: 'editor_normalize',
+                  params: countBy(diagnostic, 'severity'),
+                });
 
                 updateToast({
                   opened: true,
@@ -395,6 +400,12 @@ export default function SettingComponent() {
                 if (content.length === 0) return;
 
                 navigator.clipboard.writeText(ref.current.view.state.doc.toJSON().join('\n'));
+
+                gtag.event({
+                  event_name: 'editor_clipboard_copy',
+                  params: { length: ref.current.view.state.doc.length },
+                });
+
                 updateToast({
                   opened: true,
                   title: 'Copied',
@@ -422,6 +433,11 @@ export default function SettingComponent() {
                 document.body.appendChild(element);
                 element.click();
                 element.remove();
+
+                gtag.event({
+                  event_name: 'editor_download',
+                  params: { length: ref.current.view.state.doc.length },
+                });
               }}
             >
               <IoCloudDownloadOutline style={{ height: '1em', width: '1em' }} />{' '}
@@ -444,6 +460,11 @@ export default function SettingComponent() {
                     },
                   } as TransactionSpec),
                 ]);
+
+                gtag.event({
+                  event_name: 'editor_clear',
+                  params: { length: ref.current.view.state.doc.length },
+                });
 
                 updateToast({
                   opened: true,
