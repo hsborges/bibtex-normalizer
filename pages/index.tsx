@@ -6,6 +6,7 @@ import { HTMLProps, useContext, useRef } from 'react';
 import { IoArrowForwardOutline, IoCheckmarkSharp, IoCloudUploadOutline } from 'react-icons/io5';
 
 import Button from '../components/button';
+import * as gtag from '../lib/gtag';
 import EditorConfig from '../providers/EditorProvider';
 import { styled } from './../stitches.config';
 
@@ -161,7 +162,13 @@ export default function Home() {
             fileHandler((event.target as HTMLInputElement).files[0]);
           }}
         />
-        <OpenFileButton size="large" onClick={() => inputRef.current.click()}>
+        <OpenFileButton
+          size="large"
+          onClick={() => {
+            inputRef.current.click();
+            gtag.event({ action: 'file_submission', category: 'index' });
+          }}
+        >
           <IoCloudUploadOutline style={{ marginRight: 5 }} /> Choose a bibtex file
         </OpenFileButton>
         <PanelSubmitSeparator>-- or --</PanelSubmitSeparator>
@@ -171,11 +178,11 @@ export default function Home() {
           onDragEnter={composer(disable, () => dragRef.current.classList.add('hover'))}
           onDragLeave={composer(disable, () => dragRef.current.classList.remove('hover'))}
           onDragOver={disable}
-          onDrop={composer(disable, (event: any) =>
-            event.dataTransfer.files && event.dataTransfer.files.length > 0
-              ? fileHandler(event.dataTransfer.files[0])
-              : null
-          )}
+          onDrop={composer(disable, (event: any) => {
+            gtag.event({ action: 'file_drop', category: 'index' });
+            if (event.dataTransfer.files && event.dataTransfer.files.length > 0)
+              fileHandler(event.dataTransfer.files[0]);
+          })}
         >
           Drop your file here
         </PannelSubmitDropArea>
