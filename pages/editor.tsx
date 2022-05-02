@@ -203,7 +203,6 @@ export default function SettingComponent() {
   const { content, updateContent } = useContext(EditorContext);
 
   const ref = useRef<ReactCodeMirrorRef>();
-  const wrapperRef = useRef<HTMLDivElement>();
   const normalizeButtonRef = useRef<HTMLButtonElement>();
 
   const [height, setHeight] = useState<number>(null);
@@ -361,6 +360,8 @@ export default function SettingComponent() {
               ref={normalizeButtonRef}
               size="normal"
               onClick={() => {
+                if (content.length === 0) return;
+
                 const currentBibtex = ref.current.view.state.doc.toString();
                 const normalizedBibtex = toString(
                   generateAST(currentBibtex, config.entries)[0],
@@ -391,6 +392,8 @@ export default function SettingComponent() {
               color="normal"
               bordered
               onClick={() => {
+                if (content.length === 0) return;
+
                 navigator.clipboard.writeText(ref.current.view.state.doc.toJSON().join('\n'));
                 updateToast({
                   opened: true,
@@ -407,6 +410,8 @@ export default function SettingComponent() {
               color="normal"
               bordered
               onClick={() => {
+                if (content.length === 0) return;
+
                 const element = document.createElement('a');
                 const file = new Blob([ref.current.view.state.doc.toJSON().join('\n')], {
                   type: 'application/x-bibtex',
@@ -428,6 +433,8 @@ export default function SettingComponent() {
               bordered
               color="warning"
               onClick={() => {
+                if (content.length === 0) return;
+
                 ref.current.view.update([
                   ref.current.view.state.update({
                     changes: {
