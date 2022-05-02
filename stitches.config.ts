@@ -14,5 +14,6 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
     },
     media: {
       sm: 'screen and (max-width: 640px)',
+      md: 'screen and (max-width: 1100px)',
     },
   });

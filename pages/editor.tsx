@@ -34,6 +34,7 @@ const Grid = styled('div', {
   width: 'calc(100% + 15px)',
 
   '@sm': { flexFlow: 'column' },
+  '@md': { paddingTop: '1em', paddingBottom: '2em' },
 });
 
 const StyledCodeMirror = styled(CodeMirror, {

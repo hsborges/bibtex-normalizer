@@ -50,7 +50,8 @@ const Grid = styled('div', {
     },
   },
 
-  '@sm': {
+  '@md': {
+    minHeight: 375,
     rowGap: '2em',
     '& > .section': {
       height: 'fit-content',

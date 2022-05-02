@@ -23,6 +23,12 @@ const Grid = styled('div', {
   fontSize: '0.9em',
 
   '& > *': { width: '60%' },
+
+  '@md': {
+    width: 'calc(100% + 15px)',
+    marginTop: 25,
+    '& > *': { width: '98%' },
+  },
 });
 
 const EntriesConfigComponentRoot = styled('div', {
@@ -48,10 +54,13 @@ const EntriesConfigComponentBody = styled('div', {
   padding: '25px 35px',
   rowGap: '1.2em',
   '& > .row': {
+    '&:first-child': {
+      textAlign: 'right',
+    },
     display: 'grid',
     gridAutoFlow: 'column',
     justifyContent: 'start',
-    textAlign: 'right',
+
     height: 'max-content',
     '& > span': {
       width: 70,
@@ -151,6 +160,7 @@ const RegExpInput = styled(
   },
   {
     color: '$gray8',
+    whiteSpace: 'nowrap',
     '& > input': {
       border: 'none',
       outline: 'none',
@@ -406,7 +416,7 @@ const NormalizerSettings = styled(
             </td>
             <td>
               <textarea
-                cols={50}
+                cols={45}
                 rows={3}
                 disabled={!config?.escapeProperNames.enabled}
                 value={config?.escapeProperNames.names.join(' ')}

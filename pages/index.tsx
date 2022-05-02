@@ -13,7 +13,8 @@ const MainComponent = styled('section', {
   display: 'flex',
   justifyItems: 'center',
   fontSize: '1.1em',
-  minHeight: '90%',
+  height: '90%',
+  minHeight: 350,
   width: '80%',
   margin: 'auto',
 
@@ -22,6 +23,10 @@ const MainComponent = styled('section', {
     flexFlow: 'column',
     fontSize: '1em',
     width: 'calc(100% + 15px)',
+  },
+
+  '@md': {
+    width: '100%',
   },
 });
 
@@ -75,7 +80,10 @@ const MobilePanel = styled(Panel, {
 });
 const CodeEditorButton = styled(Button, {});
 
-const FileSubmitPanel = styled(Panel, { '@sm': { display: 'none' } });
+const FileSubmitPanel = styled(Panel, {
+  '@sm': { display: 'none' },
+  '@md': { fontSize: '0.9em', width: 'min-content' },
+});
 const PanelSubmitSeparator = styled('span', { padding: '25px 0' });
 const PannelSubmitDropArea = styled('div', {
   padding: '2em 4em',
