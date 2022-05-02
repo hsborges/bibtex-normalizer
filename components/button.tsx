@@ -27,8 +27,8 @@ export default styled('button', {
     },
     disabled: {
       true: {
-        opacity: 0.25,
-        cursor: 'inherit',
+        opacity: 0.5,
+        cursor: 'not-allowed',
       },
     },
     color: {
