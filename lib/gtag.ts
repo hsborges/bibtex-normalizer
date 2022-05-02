@@ -9,8 +9,14 @@ export const pageview = (url: string) => {
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/events
 export const event = (params: {
-  event_name: string;
-  params: Record<string, string | boolean | number>;
+  action: string;
+  category: string;
+  label?: string;
+  value?: string;
 }) => {
-  window.gtag('event', params.event_name, params);
+  window.gtag('event', params.action, {
+    event_category: params.category,
+    event_label: params.label,
+    value: params.value,
+  });
 };

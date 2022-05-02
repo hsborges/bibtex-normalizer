@@ -377,10 +377,14 @@ export default function SettingComponent() {
                   } as TransactionSpec),
                 ]);
 
-                gtag.event({
-                  event_name: 'editor_normalize',
-                  params: countBy(diagnostic, 'severity'),
-                });
+                Object.entries(countBy(diagnostic, 'severity')).forEach(([label, value]) =>
+                  gtag.event({
+                    action: 'normalize',
+                    category: 'editor',
+                    label,
+                    value: Number(value).toString(),
+                  })
+                );
 
                 updateToast({
                   opened: true,
@@ -402,8 +406,10 @@ export default function SettingComponent() {
                 navigator.clipboard.writeText(ref.current.view.state.doc.toJSON().join('\n'));
 
                 gtag.event({
-                  event_name: 'editor_clipboard_copy',
-                  params: { length: ref.current.view.state.doc.length },
+                  action: 'copy_to_clipboard',
+                  category: 'editor',
+                  label: 'length',
+                  value: Number(ref.current.view.state.doc.length).toString(),
                 });
 
                 updateToast({
@@ -435,8 +441,10 @@ export default function SettingComponent() {
                 element.remove();
 
                 gtag.event({
-                  event_name: 'editor_download',
-                  params: { length: ref.current.view.state.doc.length },
+                  action: 'download',
+                  category: 'editor',
+                  label: 'length',
+                  value: Number(ref.current.view.state.doc.length).toString(),
                 });
               }}
             >
@@ -462,8 +470,10 @@ export default function SettingComponent() {
                 ]);
 
                 gtag.event({
-                  event_name: 'editor_clear',
-                  params: { length: ref.current.view.state.doc.length },
+                  action: 'editor_clear',
+                  category: 'editor',
+                  label: 'length',
+                  value: Number(ref.current.view.state.doc.length).toString(),
                 });
 
                 updateToast({
