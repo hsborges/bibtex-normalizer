@@ -1,8 +1,11 @@
 /**
  * @author Hudson Silva Borges
  */
+
+/* eslint-disable react/jsx-no-target-blank */
 import { IoLogoGithub } from 'react-icons/io5';
 
+import packageJson from '../package.json';
 import { styled } from '../stitches.config';
 
 const StyledFooter = styled('footer', {
@@ -10,6 +13,8 @@ const StyledFooter = styled('footer', {
   padding: '15px 0 5px',
   display: 'inline-flex',
   justifyContent: 'center',
+  alignItems: 'center',
+  textAlign: 'center',
 
   '& > a': {
     fontWeight: 'bolder',
@@ -26,9 +31,13 @@ const StyledFooter = styled('footer', {
 export default function FooterComponent() {
   return (
     <StyledFooter>
-      This tool is maintained by
-      <a href="https://www.github.com/hsborges/bibtex-normalizer" target="_blank" rel="noreferrer">
-        <IoLogoGithub style={{ marginRight: 2 }} /> hsborges
+      Developed by
+      <a href="https://github.com/hsborges" target="_blank">
+        hsborges
+      </a>
+      |
+      <a href="https://github.com/hsborges/bibtex-normalizer" target="_blank">
+        <IoLogoGithub style={{ marginRight: 2 }} /> v{packageJson.version}
       </a>
     </StyledFooter>
   );
