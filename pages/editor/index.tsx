@@ -3,7 +3,7 @@
  */
 import { countBy, isEqual } from 'lodash';
 import Head from 'next/head';
-import { HTMLProps, forwardRef, useContext, useEffect, useRef, useState } from 'react';
+import { HTMLProps, useContext, useEffect, useRef, useState } from 'react';
 import {
   IoBuildSharp,
   IoClose,
@@ -13,9 +13,9 @@ import {
   IoTrashBinOutline,
 } from 'react-icons/io5';
 
+import { StreamLanguage } from '@codemirror/language';
 import { simpleMode } from '@codemirror/legacy-modes/mode/simple-mode';
 import { Diagnostic, lintGutter, linter } from '@codemirror/lint';
-import { StreamLanguage } from '@codemirror/stream-parser';
 import CodeMirror, { ReactCodeMirrorRef, TransactionSpec } from '@uiw/react-codemirror';
 
 import Button from '../../components/button';
