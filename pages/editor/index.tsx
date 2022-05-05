@@ -267,12 +267,18 @@ export default function SettingComponent() {
             },
             {
               element: '#bn-editor-summary',
-              intro: 'The editor validates the content and puts marks on important parts',
+              intro: 'The tool validates the content and puts marks on important parts',
               title: 'Summary',
             },
             {
+              element: '#bn-editor-settings',
+              intro:
+                'You can change the settings (e.g., set the required fields, use custom validators, and enable/disable options)',
+              title: 'Settings',
+            },
+            {
               element: '#bn-editor-normalize',
-              intro: 'Click on "Normalize" to automatically fix several issues',
+              intro: 'Then, click on "Normalize" to automatically fix several issues',
               title: 'Normalize',
             },
             {
@@ -324,7 +330,7 @@ export default function SettingComponent() {
                 ]);
                 break;
 
-              case 3:
+              case 4:
                 normalizeButtonRef.current.click();
                 break;
 

@@ -3,8 +3,6 @@ import 'intro.js/introjs.css';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 
-import { styled } from '../stitches.config';
-
 const Steps = dynamic(
   async () => {
     const { Steps } = await import('intro.js-react');
@@ -48,6 +46,7 @@ export default function TourComponent(props: {
         onExit={(index) => {
           if (index !== undefined) localStorage.setItem(`tour.${props.tourName}`, '1');
         }}
+        options={{ doneLabel: 'Done', disableInteraction: true }}
       />
     </>
   );
