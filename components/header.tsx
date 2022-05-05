@@ -121,13 +121,6 @@ export default function HeaderComponemt(props: HTMLAttributes<HTMLDivElement>) {
           className={`${router.pathname === '/' ? 'active' : ''}`}
         />
         <MenuItem
-          href="/settings"
-          title="Settings"
-          icon={IoCogOutline}
-          className={`${router.pathname === '/settings' ? 'active' : ''}`}
-          css={{ '@sm': { display: 'none' } }}
-        />
-        <MenuItem
           href="/editor"
           title="Editor"
           icon={IoCodeSlash}
