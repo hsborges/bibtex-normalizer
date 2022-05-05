@@ -1,15 +1,6 @@
 /**
- * @author Hudson Silva Borges
+ * @credits https://github.com/FlamingTempura/bibtex-tidy
  */
-import { capitalize, flatten } from 'lodash';
-
-import { Diagnostic } from '@codemirror/lint';
-
-import { BibtexEntryConfig, BibtexNormalizerConfig } from '../providers/ConfigProvider';
-import { BibtexEntryType, BibtexFieldType } from './bibtex-definitions';
-import * as BibtexEntries from './bibtex-entries';
-import * as BibtexFields from './bibtex-fields';
-
 export class RootNode {
   type = 'root' as const;
   constructor(public init: number, public children: (TextNode | BlockNode)[] = []) {}
@@ -21,6 +12,7 @@ export class TextNode {
     parent.children.push(this);
   }
 }
+
 export class BlockNode {
   type = 'block' as const;
   public command: string = '';
@@ -29,6 +21,7 @@ export class BlockNode {
     parent.children.push(this);
   }
 }
+
 export class CommentNode {
   type = 'comment' as const;
   constructor(
@@ -41,6 +34,7 @@ export class CommentNode {
     parent.block = this;
   }
 }
+
 export class PreambleNode {
   type = 'preamble' as const;
   constructor(
@@ -53,7 +47,8 @@ export class PreambleNode {
     parent.block = this;
   }
 }
-class StringNode {
+
+export class StringNode {
   type = 'string' as const;
   constructor(
     public init: number,
@@ -65,6 +60,7 @@ class StringNode {
     parent.block = this;
   }
 }
+
 export class EntryNode {
   type = 'entry' as const;
   key?: string;
@@ -74,6 +70,7 @@ export class EntryNode {
     this.fields = [];
   }
 }
+
 export class FieldNode {
   type = 'field' as const;
   /** Each value is concatenated */
@@ -82,6 +79,7 @@ export class FieldNode {
     this.value = new ConcatNode(init, this);
   }
 }
+
 class ConcatNode {
   type = 'concat' as const;
   concat: (LiteralNode | BracedNode | QuotedNode)[];
@@ -97,12 +95,14 @@ class ConcatNode {
       .trim();
   }
 }
+
 class LiteralNode {
   type = 'literal' as const;
   constructor(public init: number, public parent: ConcatNode, public value: string) {
     parent.concat.push(this);
   }
 }
+
 class BracedNode {
   type = 'braced' as const;
   value: string = '';
@@ -112,6 +112,7 @@ class BracedNode {
     parent.concat.push(this);
   }
 }
+
 class QuotedNode {
   type = 'quoted' as const;
   value: string = '';
@@ -136,12 +137,7 @@ export type Node =
   | BracedNode
   | QuotedNode;
 
-export function generateAST(
-  input: string,
-  config?: BibtexEntryConfig[]
-): [RootNode] | [RootNode, Diagnostic[]] {
-  const diagnostic = Array<Diagnostic>();
-  const keys = new Set<string>();
+export function generateAST(input: string): RootNode {
   const rootNode = new RootNode(0);
   let node: Node = rootNode;
   let line = 1;
@@ -252,7 +248,7 @@ export function generateAST(
         } else if (char === '=') {
           // no key, this is a field name
           if (!node.key) {
-            throw new BibTeXSyntaxError(input, node, i, line, column, diagnostic);
+            throw new BibTeXSyntaxError(input, node, i, line, column);
           }
           const field: FieldNode = new FieldNode(i + 1, node, node.key);
           node.fields.push(field);
@@ -261,7 +257,7 @@ export function generateAST(
         } else if (isWhitespace(char)) {
           //TODO
         } else if (char.match(/[=#,{}()\[\]]/)) {
-          throw new BibTeXSyntaxError(input, node, i, line, column, diagnostic);
+          throw new BibTeXSyntaxError(input, node, i, line, column);
         } else {
           node.key = (node.key ?? '') + char;
         }
@@ -269,10 +265,6 @@ export function generateAST(
       }
 
       case 'field': {
-        const data = config?.find(
-          (ec) => ec.entry === (node as FieldNode).parent.parent.command.trim().toLocaleLowerCase()
-        );
-
         if (char === '}' || char === ')') {
           node.name = node.name.trim();
           node = node.parent.parent.parent; // root
@@ -283,7 +275,7 @@ export function generateAST(
           node.name = node.name.trim();
           node = new FieldNode(i + 1, node.parent);
         } else if (/[=,{}()\[\]]/.test(char)) {
-          throw new BibTeXSyntaxError(input, node, i, line, column, diagnostic);
+          throw new BibTeXSyntaxError(input, node, i, line, column);
         } else if (!node.name) {
           if (!isWhitespace(char)) {
             node.parent.fields.push(node);
@@ -302,7 +294,7 @@ export function generateAST(
           break; // noop
         } else if (node.canConsumeValue) {
           if (/[#=,}()\[\]]/.test(char)) {
-            throw new BibTeXSyntaxError(input, node, i, line, column, diagnostic);
+            throw new BibTeXSyntaxError(input, node, i, line, column);
           } else {
             node.canConsumeValue = false;
             if (char === '{') {
@@ -317,41 +309,11 @@ export function generateAST(
           if (char === ',') {
             node = new FieldNode(i + 1, node.parent.parent);
           } else if (char === '}' || char === ')') {
-            const data = config.find(
-              (ec) =>
-                ec.entry ===
-                (node as ConcatNode).parent.parent.parent.command.trim().toLocaleLowerCase()
-            );
-
-            if (data) {
-              const entryFields = node.parent.parent.fields.map((f) => f.name.trim().toLowerCase());
-              const from = node.parent.parent.parent.init;
-              const to = from + node.parent.parent.parent.command.length + 1;
-
-              data.requiredFields.forEach((field) => {
-                if (
-                  entryFields.filter((ef) =>
-                    typeof field === 'string' ? ef === field : field.includes(ef as BibtexFieldType)
-                  ).length > 0
-                )
-                  return;
-
-                diagnostic.push({
-                  from,
-                  to,
-                  message: `Missing required field ${(typeof field === 'string' ? [field] : field)
-                    .map((f) => `"${f}"`)
-                    .join(' or ')}`,
-                  severity: 'error',
-                });
-              });
-            }
-
             node = node.parent.parent.parent.parent; // root
           } else if (char === '#') {
             node.canConsumeValue = true;
           } else {
-            throw new BibTeXSyntaxError(input, node, i, line, column, diagnostic);
+            throw new BibTeXSyntaxError(input, node, i, line, column);
           }
         }
         break;
@@ -401,7 +363,7 @@ export function generateAST(
         } else if (char === '}') {
           node.depth--;
           if (node.depth < 0) {
-            throw new BibTeXSyntaxError(input, node, i, line, column, diagnostic);
+            throw new BibTeXSyntaxError(input, node, i, line, column);
           }
         }
         node.value += char;
@@ -409,112 +371,7 @@ export function generateAST(
     }
   }
 
-  (function validate(node: Node): void {
-    const additionalEntries = ['string', 'comment', 'preamble'];
-    if (node instanceof RootNode) return node.children.forEach(validate);
-    else if (node instanceof BlockNode) {
-      const pos = { from: node.init, to: node.init + node.command.trim().length + 1 };
-
-      if (
-        ![...additionalEntries, ...Object.values(BibtexEntries).map((be) => be.name)].includes(
-          node.command.trim().toLowerCase()
-        )
-      ) {
-        diagnostic.push({
-          ...pos,
-          message: `Unknown bibtex entry "${node.command.trim()}"`,
-          severity: 'error',
-        });
-      } else if (node.command.trim() !== node.command.trim().toLowerCase()) {
-        diagnostic.push({
-          ...pos,
-          message: 'Bibtex entries should be lower case letters',
-          severity: 'warning',
-        });
-      }
-
-      return validate(node.block);
-    } else if (node instanceof EntryNode) {
-      if ((node.key || '').trim() === '') {
-        diagnostic.push({
-          from: node.init,
-          to: node.init,
-          message: 'No key provided to the reference',
-          severity: 'error',
-        });
-      } else if (!keys.has(node.key)) {
-        keys.add(node.key);
-      } else {
-        diagnostic.push({
-          from: node.init,
-          to: node.init + node.key.length,
-          message: 'Duplicated reference key',
-          severity: 'error',
-        });
-      }
-
-      return node.fields.forEach(validate);
-    } else if (node instanceof FieldNode) {
-      const data: BibtexEntryConfig | undefined = config.find(
-        (ec) => ec.entry === node.parent.parent.command.trim().toLowerCase()
-      );
-
-      const normalizedFieldName = node.name.trim().toLowerCase() as BibtexFieldType;
-      const pos = { from: node.init, to: node.init + normalizedFieldName.length };
-
-      if (!BibtexFields?.[capitalize(normalizedFieldName)]) {
-        diagnostic.push({
-          ...pos,
-          message: 'Invalid bibtex field name',
-          severity: 'error',
-        });
-      } else {
-        if (node.name.trim() !== normalizedFieldName) {
-          diagnostic.push({
-            ...pos,
-            message: 'Field names should on lower case',
-            severity: 'warning',
-          });
-        }
-
-        if (
-          node.parent.fields
-            .map((pf) => pf.name.trim().toLowerCase())
-            .filter((name) => normalizedFieldName === name).length > 1
-        ) {
-          diagnostic.push({
-            ...pos,
-            message: 'Duplicated field on the reference',
-            severity: 'error',
-          });
-        }
-
-        if (data && data.normalize && !flatten(data.requiredFields).includes(normalizedFieldName)) {
-          diagnostic.push({
-            ...pos,
-            message: `Field "${node.name.trim()}" is not mandatory on @${node.parent.parent.command.toLocaleLowerCase()}`,
-            severity: 'info',
-          });
-        }
-      }
-
-      if (data.validators) {
-        const validator = data.validators?.[normalizedFieldName];
-        if (validator && !validator.test(node.value.toString())) {
-          diagnostic.push({
-            from: node.init,
-            to: node.init + node.name.length,
-            message: `Validation failed for '${node.name}' (validator: ${validator.toString()})`,
-            severity: 'error',
-          });
-        }
-      }
-
-      return node.value.concat.forEach(validate);
-    }
-  })(rootNode);
-
-  return [rootNode, diagnostic];
+  return rootNode;
 }
 
 function isWhitespace(string: string): boolean {
@@ -528,8 +385,7 @@ export class BibTeXSyntaxError extends Error {
     public node: Node,
     pos: number,
     public line: number,
-    public column: number,
-    public diagnostic?: Diagnostic[]
+    public column: number
   ) {
     super(
       `Line ${line}:${column}: Syntax Error in ${node.type}\n` +
@@ -542,110 +398,4 @@ export class BibTeXSyntaxError extends Error {
     this.name = 'Syntax Error';
     this.char = input[pos];
   }
-}
-
-function padEndBibtexField(field: string): string {
-  const maxTabSize = Math.max(...Object.keys(BibtexFields).map((bf) => bf.length));
-  return field.padEnd(maxTabSize, ' ');
-}
-
-function fieldSorter(entry: string, a: string, b: string): number {
-  const entryObject = Object.values(BibtexEntries).find(
-    (e) => e.name === entry.trim().toLowerCase()
-  );
-
-  if (!entryObject) return 0;
-
-  const allFields = flatten([...entryObject.requiredFields, ...entryObject.optionalFields]);
-
-  const [ai, bi] = [
-    allFields.indexOf(a.trim().toLowerCase() as BibtexFieldType),
-    allFields.indexOf(b.trim().toLowerCase() as BibtexFieldType),
-  ];
-
-  return (ai >= 0 ? ai : Number.MAX_VALUE) - (bi >= 0 ? bi : Number.MAX_VALUE);
-}
-
-export function toString(node: Node, config?: BibtexNormalizerConfig): string {
-  function valueFormater(value: string, type: 'literal' | 'braced' | 'quoted'): string {
-    if (type === 'braced') return `{ ${value} }`;
-    if (type === 'quoted') return `"${value}"`;
-    return value;
-  }
-
-  if (node instanceof RootNode) return node.children.map((c) => toString(c, config)).join('\n');
-  else if (node instanceof TextNode) return node.text.trim();
-  else if (node instanceof BlockNode) {
-    return `@${node.command.toLowerCase()} {${toString(node.block, config)}}`;
-  } else if (
-    node instanceof CommentNode ||
-    node instanceof PreambleNode ||
-    node instanceof StringNode
-  ) {
-    const [, row] = node.raw.trim().match(/^@\w+[{"](.*)[}"]$/i);
-    return ` ${row.trim()} `;
-  } else if (node instanceof EntryNode) {
-    return `${node.key},\n  ${node.fields
-      .sort((a, b) => fieldSorter(node.parent.command as BibtexEntryType, a.name, b.name))
-      .filter((field) => {
-        if (!config?.normalizer.removeNotRequiredFields) return true;
-        const entryConfig = config?.entries.find(
-          (ce) => ce.entry === field.parent.parent.command.trim().toLowerCase()
-        );
-
-        return flatten(entryConfig?.requiredFields || []).includes(
-          field.name.trim().toLowerCase() as BibtexFieldType
-        );
-      })
-      .map((field) => {
-        let value = field.value.concat
-          .map((cv) => {
-            const type = ['month', 'year'].includes(field.name.trim().toLowerCase())
-              ? 'literal'
-              : config?.normalizer.awaysUseBraces
-              ? 'braced'
-              : cv.type;
-
-            let fieldValue = cv.value.trim();
-
-            if (
-              field.name.trim().toLowerCase() === 'title' &&
-              config.normalizer.escapeProperNames.enabled
-            ) {
-              config.normalizer.escapeProperNames.names.forEach((name) => {
-                fieldValue = ` ${fieldValue} `
-                  .replaceAll(
-                    new RegExp(`^(.*)([\\s{]+|^)(${name})([\\s}]+|$)(.*)$`, 'gi'),
-                    `$1 {${name}} $5`
-                  )
-                  .replaceAll(/\s+/g, ' ')
-                  .trim();
-              });
-            }
-
-            if (
-              field.name.trim().toLowerCase() === 'author' &&
-              config.normalizer.formatAuthorField
-            ) {
-              fieldValue = fieldValue
-                .split(/\sand\s/i)
-                .map((author) =>
-                  author
-                    .replace(/(.*),(.*)/, '$2 $1')
-                    .replaceAll(/\s+/g, ' ')
-                    .trim()
-                )
-                .join(' and ');
-            }
-
-            return valueFormater(fieldValue, type);
-          })
-          .join('');
-
-        return `${padEndBibtexField(field.name.toLowerCase())} = ${value}`;
-      })
-      .join(',\n  ')}\n`;
-  }
-
-  throw new Error(`Unknown Bibtex AST Node (${node.type})`);
 }

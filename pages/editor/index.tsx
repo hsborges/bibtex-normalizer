@@ -21,7 +21,9 @@ import CodeMirror, { ReactCodeMirrorRef, TransactionSpec } from '@uiw/react-code
 import Button from '../../components/button';
 import * as Toast from '../../components/toast';
 import TourComponent from '../../components/tour';
-import { BibTeXSyntaxError, generateAST, toString } from '../../lib/bibtex-parser';
+import lint from '../../lib/bibtex/linter';
+import toString from '../../lib/bibtex/normalizer';
+import { BibTeXSyntaxError, generateAST } from '../../lib/bibtex/parser';
 import * as gtag from '../../lib/gtag';
 import ConfigContext from '../../providers/ConfigProvider';
 import EditorContext from '../../providers/EditorProvider';
@@ -353,15 +355,15 @@ export default function SettingComponent() {
               extensions={[
                 linter((view) => {
                   let lintError: BibTeXSyntaxError;
-                  let diagnotic: Diagnostic[];
+                  let diagnotic: Diagnostic[] = [];
 
                   try {
-                    [, diagnotic] = generateAST(view.state.doc.toJSON().join('\n'), config.entries);
+                    diagnotic = lint(
+                      generateAST(view.state.doc.toJSON().join('\n')),
+                      config.entries
+                    );
                   } catch (error) {
-                    if (error instanceof BibTeXSyntaxError) {
-                      lintError = error;
-                      diagnotic = lintError.diagnostic;
-                    }
+                    if (error instanceof BibTeXSyntaxError) lintError = error;
                   }
 
                   const data = {
@@ -392,7 +394,7 @@ export default function SettingComponent() {
                 if (content.length === 0) return;
 
                 const currentBibtex = ref.current.view.state.doc.toString();
-                const [ast, diagnostic] = generateAST(currentBibtex, config.entries);
+                const ast = generateAST(currentBibtex);
                 const normalizedBibtex = toString(ast, config);
 
                 ref.current.view.update([
@@ -405,13 +407,14 @@ export default function SettingComponent() {
                   } as TransactionSpec),
                 ]);
 
-                Object.entries(countBy(diagnostic, 'severity')).forEach(([label, value]) =>
-                  gtag.event({
-                    action: 'normalize',
-                    category: 'editor',
-                    label,
-                    value: Number(value).toString(),
-                  })
+                Object.entries(countBy(lint(ast, config.entries), 'severity')).forEach(
+                  ([label, value]) =>
+                    gtag.event({
+                      action: 'normalize',
+                      category: 'editor',
+                      label,
+                      value: Number(value).toString(),
+                    })
                 );
 
                 updateToast({

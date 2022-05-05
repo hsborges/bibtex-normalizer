@@ -21,8 +21,8 @@ import {
   BibtexEntryDefinition,
   BibtexEntryType,
   BibtexFieldType,
-} from '../../lib/bibtex-definitions';
-import * as BibtexEntries from '../../lib/bibtex-entries';
+} from '../../lib/bibtex/definitions';
+import * as BibtexEntries from '../../lib/bibtex/entries';
 import ConfigContext, { BibtexEntryConfig, NormalizerCofig } from '../../providers/ConfigProvider';
 import { styled } from '../../stitches.config';
 

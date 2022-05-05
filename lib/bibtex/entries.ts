@@ -1,7 +1,7 @@
 /**
  * @author Hudson Silva Borges
  */
-import { BibtexEntryDefinition } from './bibtex-definitions';
+import { BibtexEntryDefinition } from './definitions';
 
 export const Article: BibtexEntryDefinition = {
   name: 'article',

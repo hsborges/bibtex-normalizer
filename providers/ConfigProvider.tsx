@@ -4,9 +4,9 @@
 import { createContext, useEffect, useState } from 'react';
 import regexParser from 'regex-parser';
 
-import { BibtexEntryType, BibtexFieldType } from '../lib/bibtex-definitions';
-import * as BibtexEntries from '../lib/bibtex-entries';
-import * as BibtexFields from '../lib/bibtex-fields';
+import { BibtexEntryType, BibtexFieldType } from '../lib/bibtex/definitions';
+import * as BibtexEntries from '../lib/bibtex/entries';
+import * as BibtexFields from '../lib/bibtex/fields';
 
 export type BibtexEntryConfig = {
   entry: BibtexEntryType;

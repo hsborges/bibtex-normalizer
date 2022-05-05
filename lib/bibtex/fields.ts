@@ -1,7 +1,7 @@
 /**
  * @author Hudson Silva Borges
  */
-import { BibtexFieldDefinition } from './bibtex-definitions';
+import { BibtexFieldDefinition } from './definitions';
 
 export const Address: BibtexFieldDefinition = {
   name: 'address',
