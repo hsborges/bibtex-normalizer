@@ -9,7 +9,7 @@
     "lint": "next lint",
     "commit": "cz",
     "prepare": "husky install",
-    "release": "standard-version --release-as minor"
+    "release": "standard-version"
   },
   "dependencies": {
     "@codemirror/language": "^0.20.0",
