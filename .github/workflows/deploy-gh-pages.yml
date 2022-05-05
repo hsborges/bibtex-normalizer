@@ -42,7 +42,7 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: |
-          npm install
+          npm install --force
           npm run prepare
       - name: Build and export static files
         env:
