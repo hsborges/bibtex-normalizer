@@ -13,6 +13,7 @@ export default styled('button', {
   borderRadius: '8px',
   fontWeight: 'bolder',
   cursor: 'pointer',
+  outline: 'none',
   variants: {
     rounded: {
       true: {

@@ -8,6 +8,7 @@ import {
   IoBuildSharp,
   IoClose,
   IoCloudDownloadOutline,
+  IoCogOutline,
   IoCopyOutline,
   IoTrashBinOutline,
 } from 'react-icons/io5';
@@ -17,14 +18,15 @@ import { Diagnostic, lintGutter, linter } from '@codemirror/lint';
 import { StreamLanguage } from '@codemirror/stream-parser';
 import CodeMirror, { ReactCodeMirrorRef, TransactionSpec } from '@uiw/react-codemirror';
 
-import Button from '../components/button';
-import * as Toast from '../components/toast';
-import TourComponent from '../components/tour';
-import { BibTeXSyntaxError, generateAST, toString } from '../lib/bibtex-parser';
-import * as gtag from '../lib/gtag';
-import ConfigContext from '../providers/ConfigProvider';
-import EditorContext from '../providers/EditorProvider';
-import { styled } from '../stitches.config';
+import Button from '../../components/button';
+import * as Toast from '../../components/toast';
+import TourComponent from '../../components/tour';
+import { BibTeXSyntaxError, generateAST, toString } from '../../lib/bibtex-parser';
+import * as gtag from '../../lib/gtag';
+import ConfigContext from '../../providers/ConfigProvider';
+import EditorContext from '../../providers/EditorProvider';
+import { styled } from '../../stitches.config';
+import Settings from './settings';
 
 const Grid = styled('div', {
   height: '100%',
@@ -36,6 +38,16 @@ const Grid = styled('div', {
 
   '@sm': { flexFlow: 'column' },
   '@md': { paddingTop: '1em', paddingBottom: '2em' },
+});
+
+const StyledSettings = styled(Settings, {
+  position: 'absolute',
+  zIndex: 999,
+  top: 0,
+  height: '100%',
+  width: '100%',
+  backgroundColor: 'rgba(255, 255, 255, 0.75)',
+  backdropFilter: 'blur(2px)',
 });
 
 const StyledCodeMirror = styled(CodeMirror, {
@@ -55,7 +67,14 @@ const CodeMirrorWraper = styled(
       errors?: number;
     }
   ) {
-    const { hasSyntaxError = false, infos = 0, warnings = 0, errors = 0, ...divProps } = props;
+    const {
+      hasSyntaxError = false,
+      infos = 0,
+      warnings = 0,
+      errors = 0,
+
+      ...divProps
+    } = props;
     return (
       <div
         {...divProps}
@@ -206,6 +225,7 @@ export default function SettingComponent() {
   const ref = useRef<ReactCodeMirrorRef>();
   const normalizeButtonRef = useRef<HTMLButtonElement>();
 
+  const [showSettings, setShowSettings] = useState<boolean>(false);
   const [height, setHeight] = useState<number>(null);
   const [width, setWidth] = useState<number>(null);
 
@@ -235,6 +255,7 @@ export default function SettingComponent() {
       <Head>
         <title>Bibtex Normalizer - Editor</title>
       </Head>
+      <StyledSettings hidden={!showSettings} onClose={() => setShowSettings(false)} />
       <Toast.Provider swipeDirection="right">
         <TourComponent
           tourName="editorTour"
@@ -360,6 +381,7 @@ export default function SettingComponent() {
               id="bn-editor-normalize"
               ref={normalizeButtonRef}
               size="normal"
+              disabled={showSettings}
               onClick={() => {
                 if (content.length === 0) return;
 
@@ -393,13 +415,23 @@ export default function SettingComponent() {
                 });
               }}
             >
-              <IoBuildSharp style={{ height: '1em', width: '1em' }} /> Normalize
+              <IoBuildSharp style={{ height: '1.25em', width: '1.25em' }} /> <span>Normalize</span>
+            </Button>
+            <Button
+              id="bn-editor-settings"
+              size="normal"
+              color="normal"
+              bordered
+              onClick={() => setShowSettings(!showSettings)}
+            >
+              <IoCogOutline style={{ height: '1.25em', width: '1.25em' }} /> <span>Settings</span>
             </Button>
             <Button
               id="bn-editor-clipboard"
               size="normal"
               color="normal"
               bordered
+              disabled={showSettings}
               onClick={() => {
                 if (content.length === 0) return;
 
@@ -419,13 +451,14 @@ export default function SettingComponent() {
                 });
               }}
             >
-              <IoCopyOutline style={{ height: '1em', width: '1em' }} /> <span>Copy</span>
+              <IoCopyOutline style={{ height: '1.25em', width: '1.25em' }} /> <span>Copy</span>
             </Button>
             <Button
               id="bn-editor-download"
               size="normal"
               color="normal"
               bordered
+              disabled={showSettings}
               onClick={() => {
                 if (content.length === 0) return;
 
@@ -448,7 +481,7 @@ export default function SettingComponent() {
                 });
               }}
             >
-              <IoCloudDownloadOutline style={{ height: '1em', width: '1em' }} />{' '}
+              <IoCloudDownloadOutline style={{ height: '1.25em', width: '1.25em' }} />{' '}
               <span>Download</span>
             </Button>
             <Button
@@ -456,6 +489,7 @@ export default function SettingComponent() {
               size="normal"
               bordered
               color="warning"
+              disabled={showSettings}
               onClick={() => {
                 if (content.length === 0) return;
 

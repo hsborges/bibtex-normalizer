@@ -1,12 +1,21 @@
+import Link from 'next/link';
 import { HTMLProps } from 'react';
+import { IoLogoGithub } from 'react-icons/io5';
 
 import { styled } from '../stitches.config';
 
 export default styled(
-  function (props: HTMLProps<HTMLSpanElement>) {
-    return <span {...props}>Beta</span>;
+  function (props: HTMLProps<HTMLAnchorElement>) {
+    return (
+      // eslint-disable-next-line react/jsx-no-target-blank
+      <a {...props} href="https://github.com/hsborges/bibtex-normalizer" target="_blank">
+        <IoLogoGithub /> Beta
+      </a>
+    );
   },
   {
+    display: 'flex',
+    alignItems: 'center',
     fontSize: '1.15em',
     position: 'absolute',
     lineHeight: '1.75em',
@@ -19,14 +28,16 @@ export default styled(
     color: 'White',
     fontWeight: 'bolder',
     marginTop: '0.75em',
-    marginLeft: '-2em',
+    marginLeft: '-3em',
     transform: 'rotate(-40deg)',
+
+    '& > svg': { marginRight: 5 },
 
     '@sm': {
       fontSize: '1.05em',
       lineHeight: '1.5em',
-      marginTop: '0.5em',
-      marginLeft: '-2.5em',
+      marginTop: '0.75em',
+      marginLeft: '-2.75em',
     },
   }
 );
