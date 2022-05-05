@@ -36,8 +36,8 @@ export default styled(
     '@sm': {
       fontSize: '1.05em',
       lineHeight: '1.5em',
-      marginTop: '0.5em',
-      marginLeft: '-2.5em',
+      marginTop: '0.75em',
+      marginLeft: '-2.75em',
     },
   }
 );
