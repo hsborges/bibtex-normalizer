@@ -316,20 +316,22 @@ export default function SettingComponent() {
           onBeforeChange={(nextIndex) => {
             switch (nextIndex) {
               case 0:
-                ref.current?.view.update([
-                  ref.current?.view.state.update({
-                    changes: {
-                      from: 0,
-                      to: ref.current.view.state.doc.length,
-                      insert: `@Article{borges2019developers,
+                if (ref.current?.view.state.doc.toJSON().join('').trim() === '') {
+                  ref.current?.view.update([
+                    ref.current?.view.state.update({
+                      changes: {
+                        from: 0,
+                        to: ref.current.view.state.doc.length,
+                        insert: `@Article{borges2019developers,
   title="How do developers promote open source projects?",
   author={Borges, Hudson Silva and Marco Tulio Valente},
   journal={Computer}, pages={27--33},
   year={19}
 }`,
-                    },
-                  } as TransactionSpec),
-                ]);
+                      },
+                    } as TransactionSpec),
+                  ]);
+                }
                 break;
 
               case 4:
