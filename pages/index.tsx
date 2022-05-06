@@ -13,7 +13,7 @@ import { styled } from './../stitches.config';
 const MainComponent = styled('section', {
   display: 'flex',
   justifyItems: 'center',
-  fontSize: '1.1em',
+  fontSize: 'calc(1em + 2px)',
   height: '90%',
   minHeight: 350,
   width: '80%',
@@ -26,9 +26,7 @@ const MainComponent = styled('section', {
     width: 'calc(100% + 15px)',
   },
 
-  '@md': {
-    width: '100%',
-  },
+  '@md': { width: '100%' },
 });
 
 const Panel = styled('div', {
@@ -63,7 +61,7 @@ const FeatureItem = styled(
   {
     display: 'flex',
     alignItems: 'center',
-    lineHeight: '1.25em',
+    lineHeight: '1.5em',
     '& svg': {
       color: '$teal9',
       height: '1em',
@@ -71,7 +69,7 @@ const FeatureItem = styled(
       fontWeight: 'bolder',
       fontSize: '1.5em',
     },
-    '@sm': { lineHeight: '1em' },
+    '@sm': { lineHeight: '1.5em' },
   }
 );
 

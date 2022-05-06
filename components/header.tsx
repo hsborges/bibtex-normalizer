@@ -6,13 +6,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FunctionComponent, HTMLAttributes } from 'react';
-import {
-  IoBook,
-  IoCodeSlash,
-  IoCogOutline,
-  IoHomeSharp,
-  IoInformationCircleOutline,
-} from 'react-icons/io5';
+import { IoBook, IoCodeSlash, IoHomeSharp, IoInformationCircleOutline } from 'react-icons/io5';
 
 import { styled } from './../stitches.config';
 
@@ -42,29 +36,18 @@ const Logo = styled('a', {
   fontWeight: 'bolder',
   color: '$gray11',
 
-  [`& svg`]: {
-    marginRight: '0.25em',
-    height: '1em',
-  },
+  [`& svg`]: { marginRight: '0.25em' },
 
   '@sm': {
-    '& > span': {
-      display: 'none',
-    },
-
-    [`& svg`]: {
-      marginRight: 0,
-      marginBottom: 5,
-    },
+    '& > span': { display: 'none' },
+    [`& svg`]: { marginRight: 0, marginBottom: 5 },
   },
 });
 
 const Menu = styled('div', {
   display: 'flex',
-  justifyContent: 'space-between',
-  fontSize: '1.1em',
+  fontSize: 'calc(1em + 2px)',
   color: '$gray9',
-  '@sm': { fontSize: '1em' },
 });
 
 type MenuItemProps = { href: string; title: string; icon: FunctionComponent };
@@ -74,31 +57,19 @@ const MenuItem = styled(
     return (
       <Link href={href} shallow>
         <a {...aProps}>
-          <Icon /> <span>{props.title}</span>
+          <Icon /> {props.title}
         </a>
       </Link>
     );
   },
   {
     display: 'inline-flex',
-    alignItems: 'center',
-    padding: '0 0.85em',
-    borderRadius: 6,
+    padding: '0 0.5em',
 
-    '& svg': {
-      height: '1em',
-      width: '1em',
-      marginRight: '2px',
-    },
+    '& svg': { marginRight: '2px' },
+    '&.active': { color: '$teal9', fontWeight: 'bolder' },
 
-    '&.active': {
-      color: '$teal9',
-      fontWeight: 'bolder',
-    },
-
-    '@sm': {
-      padding: '0 0.5em',
-    },
+    '@sm': { padding: '0 0.5em' },
   }
 );
 
