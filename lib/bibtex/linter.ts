@@ -1,7 +1,7 @@
 /**
  * @author Hudson Silva Borges
  */
-import { capitalize, flatten } from 'lodash';
+import { capitalize, flatten, intersection } from 'lodash';
 
 import { Action, Diagnostic } from '@codemirror/lint';
 
@@ -51,7 +51,8 @@ type DiagnosticType =
   | 'UNKNOWN_ENTRY'
   | 'UNKNOWN_FIELD'
   | 'NOT_REQUIRED'
-  | 'VALIDATION_ERROR';
+  | 'VALIDATION_ERROR'
+  | 'MISSING_FIELD';
 
 type ExtendedDiagnostic = Diagnostic & { type: DiagnosticType; node?: Node };
 
@@ -77,15 +78,44 @@ export default function lint(node: Node, config?: BibtexEntryConfig[]): Array<Ex
           type: 'UNKNOWN_ENTRY',
           node,
         });
-      } else if (node.command.trim() !== node.command.trim().toLowerCase()) {
-        diagnostic.push({
-          ...pos,
-          message: 'Bibtex entries should be on lowercase letters',
-          severity: 'warning',
-          actions: [Actions.TO_LOWER_CASE],
-          type: 'NOT_LOWER_CASE',
-          node,
-        });
+      } else {
+        if (node.command.trim() !== node.command.trim().toLowerCase()) {
+          diagnostic.push({
+            ...pos,
+            message: 'Bibtex entries should be on lowercase letters',
+            severity: 'warning',
+            actions: [Actions.TO_LOWER_CASE],
+            type: 'NOT_LOWER_CASE',
+            node,
+          });
+        }
+
+        if (node.block instanceof EntryNode) {
+          const data: BibtexEntryConfig | undefined = config.find(
+            (ec) => ec.entry === node.command.trim().toLowerCase()
+          );
+
+          for (const requiredField of data.requiredFields) {
+            const rfArray = typeof requiredField === 'string' ? [requiredField] : requiredField;
+
+            if (
+              intersection(
+                node.block.fields.map((f) => f.name.trim().toLowerCase()),
+                rfArray
+              ).length === 0
+            ) {
+              diagnostic.push({
+                ...pos,
+                message: `Entry missing required field(s) ${rfArray
+                  .map((v) => `"${v}"`)
+                  .join(' or ')}`,
+                severity: 'error',
+                type: 'MISSING_FIELD',
+                node,
+              });
+            }
+          }
+        }
       }
 
       return validate(node.block);
@@ -128,6 +158,7 @@ export default function lint(node: Node, config?: BibtexEntryConfig[]): Array<Ex
           severity: 'error',
           type: 'UNKNOWN_FIELD',
           node,
+          actions: [Actions.REMOVE_FIELD],
         });
       } else {
         if (node.name.trim() !== normalizedFieldName) {
