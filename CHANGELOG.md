@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/hsborges/bibtex-normalizer/compare/v2.1.4...v2.2.0) (2022-05-07)
+
+
+### Features
+
+* detect missing required fields ([90d30e6](https://github.com/hsborges/bibtex-normalizer/commit/90d30e6c1cde1c73ab14693b21268f6ca55f8aca))
+* provide action recommendations and add more context information to diagnostic class ([357c2b4](https://github.com/hsborges/bibtex-normalizer/commit/357c2b416de35160ce96d5f581605c52599c3930))
+* uses a simple entry cache to recovery removed fields when users modify the settings ([8ade99a](https://github.com/hsborges/bibtex-normalizer/commit/8ade99afd6a28c1ec299668e8dc10e4be8b95498))
+
 ### [2.1.4](https://github.com/hsborges/bibtex-normalizer/compare/v2.1.3...v2.1.4) (2022-05-06)
 
 ### [2.1.3](https://github.com/hsborges/bibtex-normalizer/compare/v2.1.2...v2.1.3) (2022-05-06)
