@@ -80,7 +80,7 @@ export class FieldNode {
   }
 }
 
-class ConcatNode {
+export class ConcatNode {
   type = 'concat' as const;
   concat: (LiteralNode | BracedNode | QuotedNode)[];
   canConsumeValue: boolean = true;
