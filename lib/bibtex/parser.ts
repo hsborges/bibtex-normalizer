@@ -96,7 +96,7 @@ export class ConcatNode {
   }
 }
 
-class LiteralNode {
+export class LiteralNode {
   type = 'literal' as const;
   constructor(public init: number, public parent: ConcatNode, public value: string) {
     parent.concat.push(this);

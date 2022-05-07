@@ -13,7 +13,7 @@ import Header from '../components/header';
 import * as gtag from '../lib/gtag';
 import { basePath } from '../next.config';
 import { ConfigProvider } from '../providers/ConfigProvider';
-import { EditorConfigProvider } from '../providers/EditorProvider';
+import { SessionProvider } from '../providers/SessionProvider';
 import { styled } from '../stitches.config';
 import '../styles/globals.css';
 
@@ -68,7 +68,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
       </Head>
       <ConfigProvider>
-        <EditorConfigProvider>
+        <SessionProvider>
           <Grid>
             <BetaBadge />
             <Header />
@@ -77,7 +77,7 @@ export default function App({ Component, pageProps }: AppProps) {
             </MainContent>
             <Footer />
           </Grid>
-        </EditorConfigProvider>
+        </SessionProvider>
       </ConfigProvider>
       <Analytics />
     </>

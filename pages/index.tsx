@@ -7,7 +7,7 @@ import { IoArrowForwardOutline, IoCheckmarkSharp, IoCloudUploadOutline } from 'r
 
 import Button from '../components/button';
 import * as gtag from '../lib/gtag';
-import EditorConfig from '../providers/EditorProvider';
+import EditorConfig from '../providers/SessionProvider';
 import { styled } from './../stitches.config';
 
 const MainComponent = styled('section', {

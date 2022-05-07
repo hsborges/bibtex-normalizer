@@ -1,7 +1,7 @@
 /**
  * @author Hudson Silva Borges
  */
-import { countBy, isEqual } from 'lodash';
+import { countBy, difference, flatten, isEqual, pick } from 'lodash';
 import Head from 'next/head';
 import { HTMLProps, useContext, useEffect, useRef, useState } from 'react';
 import {
@@ -23,10 +23,18 @@ import * as Toast from '../../components/toast';
 import TourComponent from '../../components/tour';
 import lint from '../../lib/bibtex/linter';
 import toString from '../../lib/bibtex/normalizer';
-import { BibTeXSyntaxError, generateAST } from '../../lib/bibtex/parser';
+import {
+  BibTeXSyntaxError,
+  BlockNode,
+  ConcatNode,
+  EntryNode,
+  FieldNode,
+  LiteralNode,
+  generateAST,
+} from '../../lib/bibtex/parser';
 import * as gtag from '../../lib/gtag';
 import ConfigContext from '../../providers/ConfigProvider';
-import EditorContext from '../../providers/EditorProvider';
+import SessionContext from '../../providers/SessionProvider';
 import { styled } from '../../stitches.config';
 import Settings from './settings';
 
@@ -222,7 +230,7 @@ const bibtexSyntaxHighlight = {
 
 export default function SettingComponent() {
   const { config } = useContext(ConfigContext);
-  const { content, updateContent } = useContext(EditorContext);
+  const { content, updateContent, updateEntry, findEntry } = useContext(SessionContext);
 
   const ref = useRef<ReactCodeMirrorRef>();
   const normalizeButtonRef = useRef<HTMLButtonElement>();
@@ -397,14 +405,51 @@ export default function SettingComponent() {
 
                 const currentBibtex = ref.current.view.state.doc.toString();
                 const ast = generateAST(currentBibtex);
-                const normalizedBibtex = toString(ast, config);
+
+                ast.children
+                  .map((c) =>
+                    c instanceof BlockNode && c.block instanceof EntryNode ? c.block : null
+                  )
+                  .filter((c) => c !== null)
+                  .forEach((entry) => updateEntry(entry));
+
+                for (const diagnostic of lint(ast, config.entries).filter(
+                  (d) => d.type === 'MISSING_FIELD'
+                )) {
+                  const node = diagnostic.node as BlockNode;
+                  const entryNode = node.block as unknown as EntryNode;
+
+                  const data = config.entries.find((e) => e.entry === node.command.toLowerCase());
+                  const cache = findEntry(
+                    entryNode.key,
+                    toString(
+                      entryNode.fields.find((f) => f.name.trim().toLowerCase() === 'title').value
+                    )
+                  );
+
+                  if (!data || !cache) continue;
+
+                  const requiredFields = flatten(data.requiredFields);
+                  const missingFields = difference(
+                    requiredFields as string[],
+                    entryNode.fields.map((f) => f.name.trim().toLowerCase())
+                  );
+
+                  for (const field of missingFields) {
+                    if (cache?.[field] !== undefined) {
+                      const newNode = new FieldNode(NaN, entryNode, field);
+                      entryNode.fields.push(newNode);
+                      new LiteralNode(NaN, newNode.value, cache?.[field]);
+                    }
+                  }
+                }
 
                 ref.current.view.update([
                   ref.current.view.state.update({
                     changes: {
                       from: 0,
                       to: ref.current.view.state.doc.length,
-                      insert: normalizedBibtex,
+                      insert: toString(ast, config),
                     },
                   } as TransactionSpec),
                 ]);

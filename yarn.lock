@@ -965,6 +965,11 @@
   resolved "https://registry.npmjs.org/@types/scheduler/-/scheduler-0.16.2.tgz"
   integrity sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==
 
+"@types/string-similarity@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/string-similarity/-/string-similarity-4.0.0.tgz#8cc03d5d1baad2b74530fe6c7d849d5768d391ad"
+  integrity sha512-dMS4S07fbtY1AILG/RhuwmptmzK1Ql8scmAebOTJ/8iBtK/KI17NwGwKzu1uipjj8Kk+3mfPxum56kKZE93mzQ==
+
 "@typescript-eslint/parser@^5.21.0":
   version "5.22.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-5.22.0.tgz#7bedf8784ef0d5d60567c5ba4ce162460e70c178"
@@ -3798,6 +3803,11 @@ standard-version@^9.3.2:
     semver "^7.1.1"
     stringify-package "^1.0.1"
     yargs "^16.0.0"
+
+string-similarity@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/string-similarity/-/string-similarity-4.0.4.tgz#42d01ab0b34660ea8a018da8f56a3309bb8b2a5b"
+  integrity sha512-/q/8Q4Bl4ZKAPjj8WerIBJWALKkaPRfrvhfF8k/B23i4nzrlRj2/go1m90In7nG/3XDSbOo0+pu6RvCTM9RGMQ==
 
 string-width@^2.1.0:
   version "2.1.1"
