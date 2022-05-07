@@ -90,16 +90,18 @@ const SettingsTitle = styled(
       <div {...divProps}>
         <Center>{divProps.children}</Center>
         <Center css={{ columnGap: 10 }}>
-          <Button
-            size="small"
-            bordered
-            onClick={(event) => {
-              event.stopPropagation();
-              if (onDefault) onDefault();
-            }}
-          >
-            Restore
-          </Button>
+          {changed && (
+            <Button
+              size="small"
+              bordered
+              onClick={(event) => {
+                event.stopPropagation();
+                if (onDefault) onDefault();
+              }}
+            >
+              Restore
+            </Button>
+          )}
           <Button
             size="small"
             disabled={!changed}

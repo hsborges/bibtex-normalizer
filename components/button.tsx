@@ -4,7 +4,7 @@
 import { styled } from '@stitches/react';
 
 export default styled('button', {
-  display: 'flex',
+  display: 'inline-flex',
   justifyContent: 'center',
   alignItems: 'center',
   columnGap: 5,
