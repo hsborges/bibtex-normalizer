@@ -3,7 +3,7 @@
  */
 import { capitalize, flatten } from 'lodash';
 
-import { Diagnostic } from '@codemirror/lint';
+import { Action, Diagnostic } from '@codemirror/lint';
 
 import { BibtexEntryConfig } from '../../providers/ConfigProvider';
 import { BibtexFieldType } from './definitions';
@@ -11,9 +11,53 @@ import * as BibtexEntries from './entries';
 import * as BibtexFields from './fields';
 import { BlockNode, EntryNode, FieldNode, Node, RootNode } from './parser';
 
-export default function lint(node: Node, config?: BibtexEntryConfig[]): Array<Diagnostic> {
+const Actions = {
+  TO_LOWER_CASE: {
+    name: 'toLowerCase',
+    apply(view, from, to) {
+      view.update([
+        view.state.update({
+          changes: {
+            from,
+            to,
+            insert: view.state.doc.toJSON().join('\n').substring(from, to).toLocaleLowerCase(),
+          },
+        }),
+      ]);
+    },
+  } as Action,
+  REMOVE_FIELD: {
+    name: 'remove',
+    apply(view, from) {
+      const content = view.state.doc.toJSON().join('\n');
+      view.update([
+        view.state.update({
+          changes: {
+            from: content.substring(0, from).trimEnd().length,
+            to: content.indexOf('\n', from),
+            insert: '',
+          },
+        }),
+      ]);
+    },
+  } as Action,
+};
+
+type DiagnosticType =
+  | 'NO_KEY'
+  | 'NOT_LOWER_CASE'
+  | 'DUPLICATED_KEY'
+  | 'DUPLICATED_FIELD'
+  | 'UNKNOWN_ENTRY'
+  | 'UNKNOWN_FIELD'
+  | 'NOT_REQUIRED'
+  | 'VALIDATION_ERROR';
+
+type ExtendedDiagnostic = Diagnostic & { type: DiagnosticType; node?: Node };
+
+export default function lint(node: Node, config?: BibtexEntryConfig[]): Array<ExtendedDiagnostic> {
   const keys: Set<string> = new Set();
-  const diagnostic: Array<Diagnostic> = [];
+  const diagnostic: Array<ExtendedDiagnostic> = [];
 
   (function validate(node: Node): void {
     const additionalEntries = ['string', 'comment', 'preamble'];
@@ -28,14 +72,19 @@ export default function lint(node: Node, config?: BibtexEntryConfig[]): Array<Di
       ) {
         diagnostic.push({
           ...pos,
-          message: `Unknown bibtex entry "${node.command.trim()}"`,
+          message: `Unknown bibtex entry type "${node.command.trim()}"`,
           severity: 'error',
+          type: 'UNKNOWN_ENTRY',
+          node,
         });
       } else if (node.command.trim() !== node.command.trim().toLowerCase()) {
         diagnostic.push({
           ...pos,
-          message: 'Bibtex entries should be lower case letters',
+          message: 'Bibtex entries should be on lowercase letters',
           severity: 'warning',
+          actions: [Actions.TO_LOWER_CASE],
+          type: 'NOT_LOWER_CASE',
+          node,
         });
       }
 
@@ -45,8 +94,10 @@ export default function lint(node: Node, config?: BibtexEntryConfig[]): Array<Di
         diagnostic.push({
           from: node.init,
           to: node.init,
-          message: 'No key provided to the reference',
+          message: 'No key provided to the entry',
           severity: 'error',
+          type: 'NO_KEY',
+          node,
         });
       } else if (!keys.has(node.key)) {
         keys.add(node.key);
@@ -54,8 +105,10 @@ export default function lint(node: Node, config?: BibtexEntryConfig[]): Array<Di
         diagnostic.push({
           from: node.init,
           to: node.init + node.key.length,
-          message: 'Duplicated reference key',
+          message: 'Duplicated entry key',
           severity: 'error',
+          type: 'DUPLICATED_KEY',
+          node,
         });
       }
 
@@ -71,15 +124,20 @@ export default function lint(node: Node, config?: BibtexEntryConfig[]): Array<Di
       if (!BibtexFields?.[capitalize(normalizedFieldName)]) {
         diagnostic.push({
           ...pos,
-          message: 'Invalid bibtex field name',
+          message: 'Unknown bibtex field',
           severity: 'error',
+          type: 'UNKNOWN_FIELD',
+          node,
         });
       } else {
         if (node.name.trim() !== normalizedFieldName) {
           diagnostic.push({
             ...pos,
-            message: 'Field names should on lower case',
+            message: 'Field names should on lowercase letters',
             severity: 'warning',
+            actions: [Actions.TO_LOWER_CASE],
+            type: 'NOT_LOWER_CASE',
+            node,
           });
         }
 
@@ -90,8 +148,11 @@ export default function lint(node: Node, config?: BibtexEntryConfig[]): Array<Di
         ) {
           diagnostic.push({
             ...pos,
-            message: 'Duplicated field on the reference',
+            message: 'Duplicated field on the entry',
             severity: 'error',
+            actions: [Actions.REMOVE_FIELD],
+            type: 'DUPLICATED_FIELD',
+            node,
           });
         }
 
@@ -100,6 +161,9 @@ export default function lint(node: Node, config?: BibtexEntryConfig[]): Array<Di
             ...pos,
             message: `Field "${node.name.trim()}" is not mandatory on @${node.parent.parent.command.toLocaleLowerCase()}`,
             severity: 'info',
+            actions: [Actions.REMOVE_FIELD],
+            type: 'NOT_REQUIRED',
+            node,
           });
         }
       }
@@ -112,6 +176,8 @@ export default function lint(node: Node, config?: BibtexEntryConfig[]): Array<Di
             to: node.init + node.name.length,
             message: `Validation failed for '${node.name}' (validator: ${validator.toString()})`,
             severity: 'error',
+            type: 'VALIDATION_ERROR',
+            node,
           });
         }
       }
