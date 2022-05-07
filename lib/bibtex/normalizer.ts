@@ -10,6 +10,7 @@ import * as BibtexFields from './fields';
 import {
   BlockNode,
   CommentNode,
+  ConcatNode,
   EntryNode,
   Node,
   PreambleNode,
@@ -71,54 +72,55 @@ export default function normalize(node: Node, config?: BibtexNormalizerConfig): 
           field.name.trim().toLowerCase() as BibtexFieldType
         );
       })
-      .map((field) => {
-        let value = field.value.concat
-          .map((cv) => {
-            const type = ['month', 'year'].includes(field.name.trim().toLowerCase())
-              ? 'literal'
-              : config?.normalizer.awaysUseBraces
-              ? 'braced'
-              : cv.type;
-
-            let fieldValue = cv.value.trim();
-
-            if (
-              field.name.trim().toLowerCase() === 'title' &&
-              config.normalizer.escapeProperNames.enabled
-            ) {
-              config.normalizer.escapeProperNames.names.forEach((name) => {
-                fieldValue = ` ${fieldValue} `
-                  .replaceAll(
-                    new RegExp(`^(.*)([\\s{]+|^)(${name})([\\s}]+|$)(.*)$`, 'gi'),
-                    `$1 {${name}} $5`
-                  )
-                  .replaceAll(/\s+/g, ' ')
-                  .trim();
-              });
-            }
-
-            if (
-              field.name.trim().toLowerCase() === 'author' &&
-              config.normalizer.formatAuthorField
-            ) {
-              fieldValue = fieldValue
-                .split(/\sand\s/i)
-                .map((author) =>
-                  author
-                    .replace(/(.*),(.*)/, '$2 $1')
-                    .replaceAll(/\s+/g, ' ')
-                    .trim()
-                )
-                .join(' and ');
-            }
-
-            return valueFormater(fieldValue, type);
-          })
-          .join('');
-
-        return `${padEndBibtexField(field.name.toLowerCase())} = ${value}`;
-      })
+      .map(
+        (field) =>
+          `${padEndBibtexField(field.name.toLowerCase())} = ${normalize(field.value, config)}`
+      )
       .join(',\n  ')}\n`;
+  } else if (node instanceof ConcatNode) {
+    return node.concat
+      .map((cv) => {
+        const type = ['month', 'year'].includes(node.parent.name.trim().toLowerCase())
+          ? 'literal'
+          : config?.normalizer.awaysUseBraces
+          ? 'braced'
+          : cv.type;
+
+        let fieldValue = cv.value.trim();
+
+        if (
+          node.parent.name.trim().toLowerCase() === 'title' &&
+          config?.normalizer.escapeProperNames.enabled
+        ) {
+          config.normalizer.escapeProperNames.names.forEach((name) => {
+            fieldValue = ` ${fieldValue} `
+              .replaceAll(
+                new RegExp(`^(.*)([\\s{]+|^)(${name})([\\s}]+|$)(.*)$`, 'gi'),
+                `$1 {${name}} $5`
+              )
+              .replaceAll(/\s+/g, ' ')
+              .trim();
+          });
+        }
+
+        if (
+          node.parent.name.trim().toLowerCase() === 'author' &&
+          config?.normalizer.formatAuthorField
+        ) {
+          fieldValue = fieldValue
+            .split(/\sand\s/i)
+            .map((author) =>
+              author
+                .replace(/(.*),(.*)/, '$2 $1')
+                .replaceAll(/\s+/g, ' ')
+                .trim()
+            )
+            .join(' and ');
+        }
+
+        return valueFormater(fieldValue, type);
+      })
+      .join('');
   }
 
   throw new Error(`Unknown Bibtex AST Node (${node.type})`);
