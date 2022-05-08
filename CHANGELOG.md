@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.3.0](https://github.com/hsborges/bibtex-normalizer/compare/v2.2.0...v2.3.0) (2022-05-08)
+
+
+### Features
+
+* add information on the meaning of mandatory/optional fields ([e495778](https://github.com/hsborges/bibtex-normalizer/commit/e49577810e79d1d2562746988aecade258ede8db))
+* hide restore button when settings is not modified ([e0b0bf7](https://github.com/hsborges/bibtex-normalizer/commit/e0b0bf77e4fd1fb184718d8512c86ccec2b7953d))
+
 ## [2.2.0](https://github.com/hsborges/bibtex-normalizer/compare/v2.1.4...v2.2.0) (2022-05-07)
 
 
