@@ -59,8 +59,8 @@ const CloseButton = styled(
     position: 'absolute',
     width: 'min-content',
     cursor: 'pointer',
-    top: 5,
     right: '50%',
+    marginTop: '-1.5em',
     transform: 'translateX(50%)',
     color: '$teal9',
     fontSize: '3.5em',
@@ -130,8 +130,16 @@ const SettingsTitle = styled(
 );
 
 const SettingsBody = styled('div', {
-  padding: 15,
-  '@sm': { padding: '10px 0' },
+  padding: 5,
+  '@sm': { padding: '5px 0' },
+});
+
+const SettingsFootnote = styled('div', {
+  width: '90%',
+  margin: 'auto',
+  textAlign: 'center',
+  color: '$gray9',
+  padding: '10px 0',
 });
 
 const BibtexFieldSelect = styled(
@@ -240,17 +248,18 @@ const Center = styled('div', {
 const EntrySelectComponent = styled('select', {
   border: 'none',
   backgroundColor: 'transparent',
-  fontSize: '1em',
   color: '$teal9',
   fontWeight: 'bolder',
   outline: 'none',
 });
 
 const EntriesSettings = styled(
-  function (props: {
-    config?: BibtexEntryConfig[];
-    onConfigUpdate?: (data: BibtexEntryConfig) => void;
-  }) {
+  function (
+    props: HTMLAttributes<HTMLDivElement> & {
+      config?: BibtexEntryConfig[];
+      onConfigUpdate?: (data: BibtexEntryConfig) => void;
+    }
+  ) {
     const { config, onConfigUpdate, ...divProps } = props;
 
     const [entry, setEntry] = useState<BibtexEntryDefinition>();
@@ -291,7 +300,10 @@ const EntriesSettings = styled(
             Entry:
             <EntrySelectComponent
               value={entry.name}
-              onChange={(event) => resetComponent(event.currentTarget.value as BibtexEntryType)}
+              onChange={(event) => {
+                if (!state.changed) resetComponent(event.currentTarget.value as BibtexEntryType);
+                else alert('Save or discard changes before proceeding.');
+              }}
             >
               {Object.values(BibtexEntries).map((e, index) => (
                 <option key={e.name} value={e.name} label={`@${e.name}`} />
@@ -300,14 +312,14 @@ const EntriesSettings = styled(
           </SettingsTitle>
           <SettingsBody>
             <div className="row">
-              <span>Enabled:</span>
+              <span>Normalize:</span>
               <Switch
                 checked={state.normalize}
                 onCheckedChange={(val) => updateState({ ...state, normalize: val })}
               />
             </div>
             <div className="row">
-              <span>Required:</span>
+              <span>Mandatory:</span>
               <div>
                 {entry.requiredFields.length
                   ? entry.requiredFields.map((field) => (
@@ -355,7 +367,10 @@ const EntriesSettings = styled(
                     entry={entry}
                     value={field}
                     disabled={!state.normalize}
-                    onChange={(el) => setField((el.currentTarget.value as any) || '')}
+                    onChange={(el) => {
+                      if (!state.changed) setField((el.currentTarget.value as any) || '');
+                      else alert('Save or discard changes before proceeding.');
+                    }}
                   />
                   using the pattern
                   <RegExpInput
@@ -372,6 +387,12 @@ const EntriesSettings = styled(
               </div>
             </div>
           </SettingsBody>
+          <SettingsFootnote>
+            By definition, <strong>mandatory fields</strong> are the ones that should be present on
+            the entry, otherwise the LaTeX will produce warning messages. Here, you can also enforce
+            the presence of some <strong>optional fields</strong> to improve the readability of your
+            references.
+          </SettingsFootnote>
         </SettingsRoot>
       )
     );
@@ -381,7 +402,7 @@ const EntriesSettings = styled(
       display: 'flex',
       flexFlow: 'column',
       alignContent: 'center',
-      padding: '25px 35px',
+      padding: '15px 25px 10px',
       rowGap: '1.2em',
       '& > .row': {
         display: 'grid',
@@ -434,6 +455,7 @@ const NormalizerSettings = styled(
 
     return (
       <SettingsRoot {...tableProps}>
+        {tableProps.children}
         <SettingsTitle
           changed={state.changed}
           onSave={() => {
@@ -503,7 +525,7 @@ const NormalizerSettings = styled(
                 </td>
                 <td>
                   <textarea
-                    rows={3}
+                    rows={2}
                     disabled={!state?.escapeProperNames.enabled}
                     value={state?.escapeProperNames.names.join(' ')}
                     onChange={(event) =>
@@ -524,6 +546,7 @@ const NormalizerSettings = styled(
     );
   },
   {
+    position: 'relative',
     '& table': {
       width: '100%',
 
@@ -543,7 +566,7 @@ const NormalizerSettings = styled(
           '&:nth-child(2)': {
             width: 60,
           },
-          '&:nth-child(3)': { '& textarea': { width: '100%' } },
+          '&:nth-child(3)': { '& textarea': { width: '100%', fontSize: '0.95em' } },
         },
       },
     },
@@ -559,13 +582,26 @@ export default styled(function SettingComponent(
   useEscape(onClose);
 
   return (
-    <Grid {...divProps} className={`${divProps.className} ${divProps.hidden ? 'hidden' : ''}`}>
-      <CloseButton onClick={onClose} />
+    <Grid
+      {...divProps}
+      className={`${divProps.className} ${divProps.hidden ? 'hidden' : ''}`}
+      onClick={(event) => {
+        event.stopPropagation();
+        onClose();
+      }}
+    >
       <NormalizerSettings
         config={config?.normalizer}
         onConfigUpdate={(data) => updateNormalizerConfig(data)}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <CloseButton onClick={onClose} />
+      </NormalizerSettings>
+      <EntriesSettings
+        config={config.entries}
+        onConfigUpdate={(data) => updateEntryConfig(data)}
+        onClick={(event) => event.stopPropagation()}
       />
-      <EntriesSettings config={config.entries} onConfigUpdate={(data) => updateEntryConfig(data)} />
     </Grid>
   );
 },

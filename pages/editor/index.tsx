@@ -489,8 +489,6 @@ export default function SettingComponent() {
               bordered
               disabled={showSettings}
               onClick={() => {
-                if (content.length === 0) return;
-
                 navigator.clipboard.writeText(ref.current.view.state.doc.toJSON().join('\n'));
 
                 gtag.event({
@@ -516,8 +514,6 @@ export default function SettingComponent() {
               bordered
               disabled={showSettings}
               onClick={() => {
-                if (content.length === 0) return;
-
                 const element = document.createElement('a');
                 const file = new Blob([ref.current.view.state.doc.toJSON().join('\n')], {
                   type: 'application/x-bibtex',
@@ -547,8 +543,6 @@ export default function SettingComponent() {
               color="warning"
               disabled={showSettings}
               onClick={() => {
-                if (content.length === 0) return;
-
                 ref.current.view.update([
                   ref.current.view.state.update({
                     changes: {
