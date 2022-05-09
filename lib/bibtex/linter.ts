@@ -187,7 +187,7 @@ export default function lint(node: Node, config?: BibtexEntryConfig[]): Array<Ex
           });
         }
 
-        if (data && data.normalize && !flatten(data.requiredFields).includes(normalizedFieldName)) {
+        if (data?.normalize && !flatten(data.requiredFields).includes(normalizedFieldName)) {
           diagnostic.push({
             ...pos,
             message: `Field "${node.name.trim()}" is not mandatory on @${node.parent.parent.command.toLocaleLowerCase()}`,
@@ -199,7 +199,7 @@ export default function lint(node: Node, config?: BibtexEntryConfig[]): Array<Ex
         }
       }
 
-      if (data.validators) {
+      if (data?.validators) {
         const validator = data.validators?.[normalizedFieldName];
         if (validator && !validator.test(node.value.toString())) {
           diagnostic.push({

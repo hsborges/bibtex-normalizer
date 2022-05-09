@@ -93,11 +93,10 @@ export default function normalize(node: Node, config?: BibtexNormalizerConfig): 
           config?.normalizer.escapeProperNames.enabled
         ) {
           config.normalizer.escapeProperNames.names.forEach((name) => {
+            if (new RegExp(`{.*${name}.*?}`, 'gi').test(fieldValue)) return;
+
             fieldValue = ` ${fieldValue} `
-              .replaceAll(
-                new RegExp(`^(.*)([\\s{]+|^)(${name})([\\s}]+|$)(.*)$`, 'gi'),
-                `$1 {${name}} $5`
-              )
+              .replaceAll(new RegExp(`${name}`, 'gi'), `{${name}}`)
               .replaceAll(/\s+/g, ' ')
               .trim();
           });

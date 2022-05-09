@@ -71,31 +71,21 @@ const StyledCodeMirror = styled(CodeMirror, {
 const CodeMirrorWraper = styled(
   function (
     props: HTMLProps<HTMLDivElement> & {
-      hasSyntaxError?: boolean;
+      error?: BibTeXSyntaxError;
       infos?: number;
       warnings?: number;
       errors?: number;
     }
   ) {
-    const {
-      hasSyntaxError = false,
-      infos = 0,
-      warnings = 0,
-      errors = 0,
-
-      ...divProps
-    } = props;
+    const { error, infos = 0, warnings = 0, errors = 0, ...divProps } = props;
     return (
-      <div
-        {...divProps}
-        className={`${divProps.className} ${hasSyntaxError ? 'has-syntax-error' : ''}`}
-      >
+      <div {...divProps} className={`${divProps.className} ${error ? 'has-syntax-error' : ''}`}>
         {props.children}
         <span id="bn-editor-summary">
-          <span hidden={!hasSyntaxError}>Syntax Error!</span>
-          <span hidden={hasSyntaxError || !infos}>{infos} info(s)</span>
-          <span hidden={hasSyntaxError || !warnings}>{warnings} warning(s)</span>
-          <span hidden={hasSyntaxError || !errors}>{errors} error(s)</span>
+          <span hidden={!error}>Syntax Error!</span>
+          <span hidden={!!error || !infos}>{infos} info(s)</span>
+          <span hidden={!!error || !warnings}>{warnings} warning(s)</span>
+          <span hidden={!!error || !errors}>{errors} error(s)</span>
         </span>
       </div>
     );
@@ -254,11 +244,12 @@ export default function SettingComponent() {
     setWidth(el?.clientWidth);
   }, []);
 
-  const [resultsSummary, setResultsSummary] = useState({
-    errors: 0,
-    warnings: 0,
-    hasSyntaxError: false,
-  });
+  const [resultsSummary, setResultsSummary] = useState<{
+    infos?: number;
+    errors?: number;
+    warnings?: number;
+    error?: BibTeXSyntaxError;
+  }>({});
 
   return (
     <>
@@ -374,13 +365,14 @@ export default function SettingComponent() {
                     );
                   } catch (error) {
                     if (error instanceof BibTeXSyntaxError) lintError = error;
+                    console.error(error);
                   }
 
                   const data = {
                     infos: diagnotic.filter((d) => d.severity === 'info').length,
                     warnings: diagnotic.filter((d) => d.severity === 'warning').length,
                     errors: diagnotic.filter((d) => d.severity === 'error').length,
-                    hasSyntaxError: lintError !== undefined,
+                    error: lintError,
                   };
 
                   if (!isEqual(data, resultsSummary)) setResultsSummary(data);
