@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/hsborges/bibtex-normalizer/compare/v2.3.1...v2.4.0) (2022-05-11)
+
+
+### Features
+
+* changes settings interface and add config profiles ([8de1537](https://github.com/hsborges/bibtex-normalizer/commit/8de153781ce6ff20b6748048f66c7072fe769cd7))
+
 ### [2.3.1](https://github.com/hsborges/bibtex-normalizer/compare/v2.3.0...v2.3.1) (2022-05-09)
 
 
