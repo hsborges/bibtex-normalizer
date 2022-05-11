@@ -7,9 +7,9 @@ import { HTMLProps, useContext, useEffect, useRef, useState } from 'react';
 import {
   IoBuildSharp,
   IoClose,
-  IoCloudDownloadOutline,
   IoCogOutline,
   IoCopyOutline,
+  IoSaveOutline,
   IoTrashBinOutline,
 } from 'react-icons/io5';
 
@@ -325,7 +325,8 @@ export default function SettingComponent() {
   title="How do developers promote open source projects?",
   author={Borges, Hudson Silva and Marco Tulio Valente},
   journal={Computer}, pages={27--33},
-  year={19}
+  year={2019},
+  number={8},
 }`,
                       },
                     } as TransactionSpec),
@@ -525,8 +526,7 @@ export default function SettingComponent() {
                 });
               }}
             >
-              <IoCloudDownloadOutline style={{ height: '1.25em', width: '1.25em' }} />{' '}
-              <span>Download</span>
+              <IoSaveOutline style={{ height: '1.25em', width: '1.25em' }} /> <span>Download</span>
             </Button>
             <Button
               id="bn-editor-clear"

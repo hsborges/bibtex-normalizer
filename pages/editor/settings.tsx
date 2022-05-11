@@ -1,13 +1,14 @@
 /**
  * @author Hudson Silva Borges
  */
-import { capitalize, flatten, isEqual, omit } from 'lodash';
+import { capitalize, flatten, isEqual } from 'lodash';
 import {
   HTMLAttributes,
   HTMLProps,
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -23,6 +24,7 @@ import {
   BibtexFieldType,
 } from '../../lib/bibtex/definitions';
 import * as BibtexEntries from '../../lib/bibtex/entries';
+import { DEFAULT } from '../../providers/ConfigProfiles';
 import ConfigContext, { BibtexEntryConfig, NormalizerCofig } from '../../providers/ConfigProvider';
 import { styled } from '../../stitches.config';
 
@@ -81,11 +83,10 @@ const SettingsTitle = styled(
   function (
     props: HTMLProps<HTMLDivElement> & {
       changed?: boolean;
-      onSave?: () => void;
       onRestore?: () => void;
     }
   ) {
-    const { changed, onSave, onRestore: onDefault, ...divProps } = props;
+    const { changed, onRestore, ...divProps } = props;
     return (
       <div {...divProps}>
         <Center>{divProps.children}</Center>
@@ -96,22 +97,12 @@ const SettingsTitle = styled(
               bordered
               onClick={(event) => {
                 event.stopPropagation();
-                if (onDefault) onDefault();
+                if (onRestore) onRestore();
               }}
             >
               Restore
             </Button>
           )}
-          <Button
-            size="small"
-            disabled={!changed}
-            onClick={(event) => {
-              event.stopPropagation();
-              if (onSave) onSave();
-            }}
-          >
-            Save
-          </Button>
         </Center>
       </div>
     );
@@ -264,27 +255,28 @@ const EntriesSettings = styled(
 
     const [entry, setEntry] = useState<BibtexEntryDefinition>();
     const [field, setField] = useState<BibtexFieldType>();
-    const [state, setState] = useState<BibtexEntryConfig & { changed: boolean }>();
+
+    const [selectedEntry, setSelectedEntry] = useState<BibtexEntryConfig>();
+    useEffect(() => setSelectedEntry(config.find((c) => c.entry === entry?.name)), [entry]);
 
     const resetComponent = (name: BibtexEntryType = Object.values(BibtexEntries)[0].name) => {
       const entryDefinition = BibtexEntries?.[capitalize(name)];
       setEntry(entryDefinition);
       setField(flatten([...entryDefinition.requiredFields, ...entryDefinition.optionalFields])[0]);
-      setState({ ...config.find((ec) => ec.entry === name), changed: false });
     };
 
-    const updateState = (update: BibtexEntryConfig) =>
-      setState({
-        ...update,
-        changed: !isEqual(
-          omit(update, 'changed'),
-          config.find((ec) => ec.entry === entry.name)
-        ),
-      });
+    const updateSelectedEntry = (update: Partial<BibtexEntryConfig>) => {
+      setSelectedEntry({ ...selectedEntry, ...update });
+      onConfigUpdate({ ...selectedEntry, ...update });
+    };
 
-    useEffect(
-      () => entry && setState({ ...config.find((ec) => ec.entry === entry.name), changed: false }),
-      [config]
+    const changed = useMemo(
+      () =>
+        !isEqual(
+          selectedEntry,
+          DEFAULT.entries.find((de) => de.entry === selectedEntry?.entry)
+        ),
+      [selectedEntry]
     );
 
     useEffect(() => resetComponent(), []);
@@ -293,16 +285,17 @@ const EntriesSettings = styled(
       entry && (
         <SettingsRoot {...divProps}>
           <SettingsTitle
-            changed={state.changed}
-            onSave={() => onConfigUpdate && onConfigUpdate(omit(state, ['changed']))}
-            onRestore={() => updateState(config.find((ec) => ec.entry === entry.name))}
+            changed={changed}
+            onRestore={() =>
+              updateSelectedEntry(DEFAULT.entries.find((de) => de.entry === selectedEntry?.entry))
+            }
           >
             Entry:
             <EntrySelectComponent
               value={entry.name}
               onChange={(event) => {
-                if (!state.changed) resetComponent(event.currentTarget.value as BibtexEntryType);
-                else alert('Save or discard changes before proceeding.');
+                resetComponent(event.currentTarget.value as BibtexEntryType);
+                // TODO - alert('Save or discard changes before proceeding.');
               }}
             >
               {Object.values(BibtexEntries).map((e, index) => (
@@ -314,8 +307,8 @@ const EntriesSettings = styled(
             <div className="row">
               <span>Normalize:</span>
               <Switch
-                checked={state.normalize}
-                onCheckedChange={(val) => updateState({ ...state, normalize: val })}
+                checked={selectedEntry?.normalize}
+                onCheckedChange={(val) => updateSelectedEntry({ normalize: val })}
               />
             </div>
             <div className="row">
@@ -342,15 +335,16 @@ const EntriesSettings = styled(
                       .map((field) => (
                         <Checkbox
                           key={`${entry.name}.${field}`}
-                          disabled={!state.normalize}
+                          disabled={!selectedEntry?.normalize}
                           defaultLabel={typeof field === 'string' ? field : `[${field.join('|')}]`}
-                          checked={!!state.requiredFields?.find((rf) => isEqual(rf, field))}
+                          checked={
+                            !!selectedEntry?.requiredFields?.find((rf) => isEqual(rf, field))
+                          }
                           onCheckedChange={(checked) =>
-                            updateState({
-                              ...state,
+                            updateSelectedEntry({
                               requiredFields: checked
-                                ? [...state.requiredFields, field]
-                                : state.requiredFields.filter((rf) => !isEqual(rf, field)),
+                                ? [...selectedEntry?.requiredFields, field]
+                                : selectedEntry?.requiredFields.filter((rf) => !isEqual(rf, field)),
                             })
                           }
                         />
@@ -366,20 +360,19 @@ const EntriesSettings = styled(
                   <BibtexFieldSelect
                     entry={entry}
                     value={field}
-                    disabled={!state.normalize}
+                    disabled={!selectedEntry?.normalize}
                     onChange={(el) => {
-                      if (!state.changed) setField((el.currentTarget.value as any) || '');
-                      else alert('Save or discard changes before proceeding.');
+                      setField((el.currentTarget.value as any) || '');
+                      // TODO - alert('Save or discard changes before proceeding.');
                     }}
                   />
                   using the pattern
                   <RegExpInput
-                    disabled={!state.normalize}
-                    regexp={state?.validators?.[field]}
+                    disabled={!selectedEntry?.normalize}
+                    regexp={selectedEntry?.validators?.[field]}
                     onRegExpChange={(regexp) => {
-                      updateState({
-                        ...state,
-                        validators: { ...state.validators, [field]: regexp },
+                      updateSelectedEntry({
+                        validators: { ...selectedEntry?.validators, [field]: regexp },
                       });
                     }}
                   />
@@ -441,29 +434,24 @@ const NormalizerSettings = styled(
   ) {
     const { config, onConfigUpdate, ...tableProps } = props;
 
-    const [state, setState] = useState<NormalizerCofig & { changed: boolean }>({
-      ...config,
-      changed: false,
-    });
+    const changed = useMemo(() => !isEqual(config, DEFAULT.normalizer), [config]);
 
-    const updateState = (values: Partial<NormalizerCofig>) =>
-      setState({
-        ...state,
-        ...values,
-        changed: !isEqual(config, omit({ ...state, ...values }, 'changed')),
-      });
+    const updateConfig = (values: Partial<NormalizerCofig>) =>
+      onConfigUpdate({ ...config, ...values });
+
+    const ref = useRef<HTMLTextAreaElement>();
+    useEffect(() => {
+      const timeout = setTimeout(
+        () => (ref.current.value = config?.preserveNames?.names.join(' ')),
+        500
+      );
+      return () => clearTimeout(timeout);
+    }, [config?.preserveNames?.names]);
 
     return (
       <SettingsRoot {...tableProps}>
         {tableProps.children}
-        <SettingsTitle
-          changed={state.changed}
-          onSave={() => {
-            onConfigUpdate(omit(state, 'changed'));
-            setState({ ...state, changed: false });
-          }}
-          onRestore={() => setState({ ...config, changed: false })}
-        >
+        <SettingsTitle changed={changed} onRestore={() => onConfigUpdate(DEFAULT.normalizer)}>
           Normalizer
         </SettingsTitle>
         <SettingsBody>
@@ -476,8 +464,8 @@ const NormalizerSettings = styled(
                 <td>
                   <Switch
                     id="replace-quotes"
-                    checked={state?.awaysUseBraces}
-                    onCheckedChange={(v) => updateState({ awaysUseBraces: v })}
+                    checked={config?.useBraces}
+                    onCheckedChange={(v) => updateConfig({ useBraces: v })}
                   />
                 </td>
                 <td></td>
@@ -489,8 +477,8 @@ const NormalizerSettings = styled(
                 <td>
                   <Switch
                     id="remove-fields"
-                    checked={state?.removeNotRequiredFields}
-                    onCheckedChange={(v) => updateState({ removeNotRequiredFields: v })}
+                    checked={config?.clearEntries}
+                    onCheckedChange={(v) => updateConfig({ clearEntries: v })}
                   />
                 </td>
                 <td></td>
@@ -502,8 +490,8 @@ const NormalizerSettings = styled(
                 <td>
                   <Switch
                     id="format-author"
-                    checked={state?.formatAuthorField}
-                    onCheckedChange={(v) => updateState({ formatAuthorField: v })}
+                    checked={config?.autoFormatFields}
+                    onCheckedChange={(v) => updateConfig({ autoFormatFields: v })}
                   />
                 </td>
                 <td></td>
@@ -515,27 +503,24 @@ const NormalizerSettings = styled(
                 <td>
                   <Switch
                     id="escape-proper-names"
-                    checked={state?.escapeProperNames.enabled}
+                    checked={config?.preserveNames.enabled}
                     onCheckedChange={(v) =>
-                      updateState({
-                        escapeProperNames: { ...state?.escapeProperNames, enabled: v },
+                      updateConfig({
+                        preserveNames: { ...config?.preserveNames, enabled: v },
                       })
                     }
                   />
                 </td>
                 <td>
                   <textarea
+                    ref={ref}
                     rows={2}
-                    disabled={!state?.escapeProperNames.enabled}
-                    value={state?.escapeProperNames.names.join(' ')}
-                    onChange={(event) =>
-                      updateState({
-                        escapeProperNames: {
-                          ...state?.escapeProperNames,
-                          names: event.target.value.split(' ').map((v) => v.trim()),
-                        },
-                      })
-                    }
+                    disabled={!config?.preserveNames.enabled}
+                    defaultValue={config?.preserveNames.names.join(' ')}
+                    onChange={(event) => {
+                      const names = event.target.value.trim().replaceAll(/\s+/g, ' ').split(' ');
+                      updateConfig({ preserveNames: { ...config?.preserveNames, names } });
+                    }}
                   ></textarea>
                 </td>
               </tr>

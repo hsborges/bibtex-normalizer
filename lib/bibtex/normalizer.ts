@@ -63,7 +63,7 @@ export default function normalize(node: Node, config?: BibtexNormalizerConfig): 
     return `${node.key},\n  ${node.fields
       .sort((a, b) => fieldSorter(node.parent.command as BibtexEntryType, a.name, b.name))
       .filter((field) => {
-        if (!config?.normalizer.removeNotRequiredFields) return true;
+        if (!config?.normalizer.clearEntries) return true;
         const entryConfig = config?.entries.find(
           (ce) => ce.entry === field.parent.parent.command.trim().toLowerCase()
         );
@@ -80,19 +80,21 @@ export default function normalize(node: Node, config?: BibtexNormalizerConfig): 
   } else if (node instanceof ConcatNode) {
     return node.concat
       .map((cv) => {
-        const type = ['month', 'year'].includes(node.parent.name.trim().toLowerCase())
-          ? 'literal'
-          : config?.normalizer.awaysUseBraces
-          ? 'braced'
-          : cv.type;
-
         let fieldValue = cv.value.trim();
+
+        const type =
+          ['month', 'year', 'volume', 'number'].includes(node.parent.name.trim().toLowerCase()) &&
+          fieldValue !== ''
+            ? 'literal'
+            : config?.normalizer.useBraces
+            ? 'braced'
+            : cv.type;
 
         if (
           node.parent.name.trim().toLowerCase() === 'title' &&
-          config?.normalizer.escapeProperNames.enabled
+          config?.normalizer.preserveNames.enabled
         ) {
-          config.normalizer.escapeProperNames.names.forEach((name) => {
+          config.normalizer.preserveNames.names.forEach((name) => {
             if (new RegExp(`{.*${name}.*?}`, 'gi').test(fieldValue)) return;
 
             fieldValue = ` ${fieldValue} `
@@ -104,7 +106,7 @@ export default function normalize(node: Node, config?: BibtexNormalizerConfig): 
 
         if (
           node.parent.name.trim().toLowerCase() === 'author' &&
-          config?.normalizer.formatAuthorField
+          config?.normalizer.autoFormatFields
         ) {
           fieldValue = fieldValue
             .split(/\sand\s/i)

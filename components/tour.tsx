@@ -22,6 +22,8 @@ export default function TourComponent(props: {
     setTimeout(() => setMounted(true), 500);
   }, []);
 
+  const key = `BN_TOUR_${props.tourName.toUpperCase()}`;
+
   return (
     <>
       <style>{`
@@ -36,15 +38,14 @@ export default function TourComponent(props: {
       `}</style>
       <Steps
         enabled={
-          (typeof localStorage !== 'undefined'
-            ? localStorage.getItem(`BN_TOUR_${props.tourName}`) !== '1'
-            : true) && mounted
+          (typeof localStorage !== 'undefined' ? localStorage.getItem(key) !== '1' : true) &&
+          mounted
         }
         steps={props.steps.map((step) => ({ ...step, tooltipClass: 'introjs-custom' }))}
         initialStep={0}
         onBeforeChange={props.onBeforeChange}
         onExit={(index) => {
-          if (index !== undefined) localStorage.setItem(`BN_TOUR_${props.tourName}`, '1');
+          if (index !== undefined) localStorage.setItem(key, '1');
         }}
         options={{ doneLabel: 'Done', disableInteraction: true }}
       />

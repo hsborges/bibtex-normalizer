@@ -5,8 +5,7 @@ import { createContext, useEffect, useState } from 'react';
 import regexParser from 'regex-parser';
 
 import { BibtexEntryType, BibtexFieldType } from '../lib/bibtex/definitions';
-import * as BibtexEntries from '../lib/bibtex/entries';
-import * as BibtexFields from '../lib/bibtex/fields';
+import * as ConfigProfiles from './ConfigProfiles';
 
 export type BibtexEntryConfig = {
   entry: BibtexEntryType;
@@ -16,10 +15,10 @@ export type BibtexEntryConfig = {
 };
 
 export type NormalizerCofig = {
-  awaysUseBraces: boolean;
-  removeNotRequiredFields: boolean;
-  formatAuthorField: boolean;
-  escapeProperNames: {
+  useBraces: boolean;
+  clearEntries: boolean;
+  autoFormatFields: boolean;
+  preserveNames: {
     enabled: boolean;
     names: string[];
   };
@@ -37,66 +36,37 @@ const ConfigContext = createContext<{
 }>({});
 
 export const ConfigProvider = ({ children }) => {
-  const [config, setConfig] = useState<BibtexNormalizerConfig>({
-    normalizer: {
-      awaysUseBraces: true,
-      removeNotRequiredFields: false,
-      formatAuthorField: true,
-      escapeProperNames: {
-        enabled: true,
-        names: ['YouTube', 'Facebook', 'Instagram', 'Twitter', 'GitHub'],
-      },
-    },
-    entries: Object.values(BibtexEntries).map((entry) => ({
-      entry: entry.name,
-      normalize: true,
-      requiredFields: entry.requiredFields,
-      validators: Object.values(BibtexFields).reduce(
-        (memo, field) => ({
-          ...memo,
-          ...(field.validator ? { [field.name]: field.validator } : {}),
-        }),
-        {} as Record<BibtexFieldType, RegExp>
-      ),
-    })),
-  });
+  const [config, setConfig] = useState<BibtexNormalizerConfig>(ConfigProfiles.DEFAULT);
 
-  const updateEntryConfig = (data: BibtexEntryConfig) => {
+  const updateEntryConfig = (data: BibtexEntryConfig) =>
     setConfig({
       ...config,
       entries: [...config.entries.filter((e) => e.entry !== data.entry), data],
     });
 
-    localStorage.setItem(
-      `entries.${data.entry}`,
-      JSON.stringify(data, (key, value) =>
-        value instanceof RegExp ? { $regexp: value.toString() } : value
-      )
-    );
-  };
-
-  const updateNormalizerConfig = (data: NormalizerCofig) => {
+  const updateNormalizerConfig = (data: NormalizerCofig) =>
     setConfig({ ...config, normalizer: data });
-    localStorage.setItem(`normalizer`, JSON.stringify(data));
-  };
+
+  useEffect(
+    () =>
+      localStorage.setItem(
+        'BN_NORMALIZER_CONFIG',
+        JSON.stringify(config, (key, value) =>
+          value instanceof RegExp ? { $regexp: value.toString() } : value
+        )
+      ),
+    [config]
+  );
 
   useEffect(() => {
-    const updatedConfig = Object.values(BibtexEntries).map<BibtexEntryConfig>((be) => {
-      const lsConfig = localStorage.getItem(`entries.${be.name}`);
-      if (!lsConfig) return config.entries.find((e) => e.entry === be.name);
-      else
-        return JSON.parse(lsConfig, (key, value) =>
+    const lsConfig = localStorage.getItem('BN_NORMALIZER_CONFIG');
+    if (lsConfig) {
+      setConfig(
+        JSON.parse(lsConfig, (key, value) =>
           value['$regexp'] ? regexParser(value['$regexp']) : value
-        ) as BibtexEntryConfig;
-    }, {});
-
-    const normalizerConf = Object.assign(
-      {},
-      config.normalizer,
-      JSON.parse(localStorage.getItem('normalizer') || '{}')
-    );
-
-    setConfig({ ...config, normalizer: normalizerConf, entries: updatedConfig });
+        )
+      );
+    }
   }, []);
 
   return (

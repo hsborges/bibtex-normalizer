@@ -29,6 +29,7 @@ export const Booktitle: BibtexFieldDefinition = {
 export const Chapter: BibtexFieldDefinition = {
   name: 'chapter',
   description: 'A chapter (or section or whatever) number.',
+  validator: /^\d+$/,
 };
 
 export const Crossref: BibtexFieldDefinition = {
@@ -129,6 +130,7 @@ export const Type: BibtexFieldDefinition = {
 export const Volume: BibtexFieldDefinition = {
   name: 'volume',
   description: 'The volume of a journal or multivolume book.',
+  validator: /^\d+$/,
 };
 
 export const Year: BibtexFieldDefinition = {
