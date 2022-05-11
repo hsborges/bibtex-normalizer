@@ -259,7 +259,7 @@ export default function SettingComponent() {
       <StyledSettings hidden={!showSettings} onClose={() => setShowSettings(false)} />
       <Toast.Provider swipeDirection="right">
         <TourComponent
-          tourName="editorTour"
+          tourName="editor"
           steps={[
             {
               element: '#bn-editor-codemirror',
