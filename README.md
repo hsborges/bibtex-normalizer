@@ -2,10 +2,10 @@
 
 Bibtex-normalizer is an open source project to validate and normalize Bibtex entries online. This tool uses a defined standard to organize your references in a single way, making it easier to read.
 
-<center>
+<p align="center">
 <img src="public/images/screenshot.png" height="350px" />
 <a href="https://hsborges.github.io/bibtex-normalizer">https://hsborges.github.io/bibtex-normalizer</a>
-</center>
+</p>
 
 ## Authors
 
