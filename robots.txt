@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://hsborges.github.io/bibtex-normalizer
+
+# Sitemaps
+Sitemap: https://hsborges.github.io/bibtex-normalizer/sitemap.xml
