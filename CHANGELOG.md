@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.4.1](https://github.com/hsborges/bibtex-normalizer/compare/v2.4.0...v2.4.1) (2022-05-12)
+
+
+### Features
+
+* add link to github issues on footer ([232ca4c](https://github.com/hsborges/bibtex-normalizer/commit/232ca4c7dd03ae8d4098ccfefcb030d04b909467))
+
 ## [2.4.0](https://github.com/hsborges/bibtex-normalizer/compare/v2.3.1...v2.4.0) (2022-05-11)
 
 
