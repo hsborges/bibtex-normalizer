@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build && next export -o bibtex-normalizer",
+    "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "next lint",
     "commit": "cz",
@@ -53,6 +54,7 @@
     "eslint-config-next": "12.1.6",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^7.0.4",
+    "next-sitemap": "^2.5.20",
     "prettier": "^2.6.2",
     "standard-version": "^9.3.2",
     "typescript": "^4.6.4"
