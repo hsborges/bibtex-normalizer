@@ -4,6 +4,8 @@ Bibtex-normalizer is an open source project to validate and normalize Bibtex ent
 
 <p align="center">
 <img src="public/images/screenshot.png" height="350px" />
+</p>
+<p align="center">
 <a href="https://hsborges.github.io/bibtex-normalizer">https://hsborges.github.io/bibtex-normalizer</a>
 </p>
 
